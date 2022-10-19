@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react'
 
 function App() {
+  const [data, setData] = useState('');
+  const [isFetch, setIsFetch] = useState(false)
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      const response = await fetch("http://localhost:9000/testApi/test")
+      
+      const data = await response.json();
+      setData(data)
+      setIsFetch(true)
+    }
+    fetchApi();
+  },[])
+
+  console.log(data.character?.realm)
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <div>
+    {isFetch ? Object.entries(data.character?.realm).map(([key, value]) => {
+      return <p key={key}>{value}
+        
+      </p>
+    }) : <p>nie dziala</p>}
+   </div>
   );
 }
 
