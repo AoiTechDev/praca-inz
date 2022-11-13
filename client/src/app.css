@@ -1,0 +1,47 @@
+:root{
+    --redish: rgb(56,31,37);
+    --grey: rgb(17,16,16, 0.5);
+    --grey_Op: rgba(56,31,37,0.8);
+    --purple: rgb(197,15,249);
+    --black: rgb(17,16,16, 0.75);
+    --black09: rgb(17,16,16, 0.95);
+    --crismon: #b31923;
+    --white: #ACACAD;
+}
+
+.app{
+    height: 100vh;
+}
+main{
+  
+    height: 100%;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+}
+
+
+.talents{
+    height: 50vh;
+    width: 100%;
+}
+.bg{
+    width:60%;
+    height: 90%;
+    position: absolute;
+    left: 20%;
+    top: 10%;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 1;
+    -webkit-box-shadow: -11px 2px 41px 100px var(--redish), 
+    inset 0px 2px 48px 100px var(--redish);
+    -moz-box-shadow: -11px 2px 41px 100px var(--redish),
+    inset 0px 2px 48px 100px var(--redish);
+    box-shadow: -11px 2px 41px 100px var(--redish),
+    inset 0px 2px 48px 100px var(--redish);
+
+}

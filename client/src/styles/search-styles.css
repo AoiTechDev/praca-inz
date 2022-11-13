@@ -1,0 +1,51 @@
+.search{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    height: 9vh;
+    z-index: 2;
+}
+.inputs{
+    display: flex;
+    gap: 10px;
+    margin-right: 10rem;
+ }
+ .find-player-btn{
+    height: 3.4rem;
+    width: 30%;
+}
+#outlined-basic{
+    color: var(--white);
+    text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    letter-spacing: "3px";
+}
+.nav{
+    height: 4.5rem;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    margin-left: 1rem;
+    background-color: var(--grey);
+    border-radius: 15px;
+}
+.nav-item{
+    color: var(--white);
+    font-size: 1.3rem;
+    padding: 0 1rem 0 1rem ;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    border-left: 1px solid var(--white);
+    text-decoration: none;
+}
+
+.nav-item:last-child{
+    padding: 0 1.3rem 0 1.3rem ;
+}
+
+.nav-item:hover {
+    background-color: var(--black);
+    border-radius: 15px;
+}

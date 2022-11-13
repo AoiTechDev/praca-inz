@@ -1,54 +1,164 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors=require("cors");
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-///////////////////////////HERE ARE MY ROUTS////////////////////////////////
-var testApiRouter = require('./routes/testApi')
+require("dotenv").config();
 
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const passport = require("passport");
+const cors = require("cors");
+require("./auth");
+var axios = require("axios");
+var test = require("./routes");
+const OauthClient = require("./getToken.js");
+const BNET_ID = process.env.BNET_OAUTH_CLIENT_ID;
+const BNET_SECRET = process.env.BNET_OAUTH_CLIENT_SECRET;
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require("node-localstorage").LocalStorage;
+  localStorage = new LocalStorage("./scratch");
+}
 
-////////////////////////////////////////////////////////////////////////////
-var app = express();
+const app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({ extended: false }));
+// configure Express
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  session({
+    secret: "5WNB9V6heoFK09gM8KzNjvZzRzwQX5dh", // Change this value to a unique value for your application!
+    saveUninitialized: true,
+    resave: true,
+  })
+);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-///////////////////////////HERE ARE MY ROUTS////////////////////////////////
-app.use('/testApi', testApiRouter);
+axios
+  .post(
+    "https://oauth.battle.net/token?grant_type=client_credentials",
+    {},
+    {
+      auth: {
+        username: BNET_ID,
+        password: BNET_SECRET,
+      },
+    }
+  )
+  .then(function (response) {
+    localStorage.setItem("token", response.data.access_token);
+    console.log(localStorage.getItem("token"));
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
-
-
-
-///////////////////////////////////////////////////////////////////////////
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.get("/itest", (req, res) => {
+  console.log(req.query.server);
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.get("/eq_media", (req, res) => {
+  url = `https://eu.api.blizzard.com/data/wow/media/item/${req.query.id}`;
+  axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Battlenet-Namespace": "static-eu",
+      },
+      params: {
+        locale: "en_US",
+      },
+    })
+    //.then((response) => console.log(response.data))
+    .then((response) => res.json(response.data))
+    .catch((err) => console.error(err));
 });
 
-module.exports = app;
+async function getItem(id) {
+  url = `https://eu.api.blizzard.com/data/wow/media/item/${id}`;
+  return await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Battlenet-Namespace": "static-eu",
+    },
+    params: {
+      locale: "en_US",
+    },
+  });
+}
+
+app.get("/test", (req, res) => {
+  urlMedia = `https://eu.api.blizzard.com/profile/wow/character/${req.query.server}/${req.query.nickname}/character-media`;
+  urlProfileInfo = `https://eu.api.blizzard.com/profile/wow/character/${req.query.server}/${req.query.nickname}`;
+  urlStatistic = `https://eu.api.blizzard.com/profile/wow/character/${req.query.server}/${req.query.nickname}/statistics`;
+  urlEq = `https://eu.api.blizzard.com/profile/wow/character/${req.query.server}/${req.query.nickname}/equipment`;
+  axios
+    .all([
+      axios.get(urlMedia, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Battlenet-Namespace": "profile-eu",
+        },
+        params: {
+          locale: "en_US",
+        },
+      }),
+      axios.get(urlProfileInfo, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Battlenet-Namespace": "profile-eu",
+        },
+        params: {
+          locale: "en_US",
+        },
+      }),
+      axios.get(urlStatistic, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Battlenet-Namespace": "profile-eu",
+        },
+        params: {
+          locale: "en_US",
+        },
+      }),
+      axios.get(urlEq, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Battlenet-Namespace": "profile-eu",
+        },
+        params: {
+          locale: "en_US",
+        },
+      }),
+    ])
+    .then(
+      axios.spread((media, profile, stats, eq) => {
+        const promises = [];
+
+        eq.data.equipped_items.map((item) => {
+          promises.push(
+            getItem(item.item.id).then((response) => response.data)
+          );
+        });
+
+        Promise.all(promises).then((response) => {
+          res.json({
+            media: media.data,
+            profile: profile.data,
+            stats: stats.data,
+            eq: eq.data,
+            media_eq: response,
+          });
+        });
+        Promise.all(promises).then((res) => console.log(res));
+      })
+    )
+    .catch(function (error) {
+      console.log(error);
+    });
+});
+
+app.use(function (err, req, res, next) {
+  console.error(err);
+  res.send("<h1>Internal Server Error</h1>");
+});
+
+const server = app.listen(9000, function () {
+  console.log("Listening on port %d", server.address().port);
+});
