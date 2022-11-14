@@ -2,6 +2,7 @@ import "../styles/playerInfo-styles.css";
 import React  from "react";
 
 function PlayerInfo({data}) {
+    console.log(data)
     return ( 
        <div className="left-nav">
     <div className="player-name">
