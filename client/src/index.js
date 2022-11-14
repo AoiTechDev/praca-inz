@@ -11,6 +11,7 @@ import Dungeons from './components/Dungeons';
 import Raids from './components/Raids';
 import PVP from './components/PVP';
 import Collection from './components/Collection';
+import Comparison from './components/Comparison';
 
 
 // import {
@@ -43,6 +44,7 @@ export default function Apptest() {
             <Route path='raids' element={<Raids/>}/>
             <Route path='pvp' element={<PVP/>}/>
             <Route path='collection' element={<Collection/>}/>
+            <Route path='comparison' element={<Comparison/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

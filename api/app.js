@@ -11,7 +11,7 @@ var test = require("./routes");
 const OauthClient = require("./getToken.js");
 const BNET_ID = process.env.BNET_OAUTH_CLIENT_ID;
 const BNET_SECRET = process.env.BNET_OAUTH_CLIENT_SECRET;
-
+const EU_BLIZZARD = "https://eu.api.blizzard.com";
 if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require("node-localstorage").LocalStorage;
   localStorage = new LocalStorage("./scratch");
@@ -83,50 +83,39 @@ async function getItem(id) {
   });
 }
 
-app.get("/test", (req, res) => {
-  urlMedia = `https://eu.api.blizzard.com/profile/wow/character/${req.query.server}/${req.query.nickname}/character-media`;
-  urlProfileInfo = `https://eu.api.blizzard.com/profile/wow/character/${req.query.server}/${req.query.nickname}`;
-  urlStatistic = `https://eu.api.blizzard.com/profile/wow/character/${req.query.server}/${req.query.nickname}/statistics`;
-  urlEq = `https://eu.api.blizzard.com/profile/wow/character/${req.query.server}/${req.query.nickname}/equipment`;
-  axios
-    .all([
-      axios.get(urlMedia, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Battlenet-Namespace": "profile-eu",
-        },
-        params: {
-          locale: "en_US",
-        },
-      }),
-      axios.get(urlProfileInfo, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Battlenet-Namespace": "profile-eu",
-        },
-        params: {
-          locale: "en_US",
-        },
-      }),
-      axios.get(urlStatistic, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Battlenet-Namespace": "profile-eu",
-        },
-        params: {
-          locale: "en_US",
-        },
-      }),
-      axios.get(urlEq, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Battlenet-Namespace": "profile-eu",
-        },
-        params: {
-          locale: "en_US",
-        },
-      }),
-    ])
+async function axiosGet(url) {
+  return await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Battlenet-Namespace": "profile-eu",
+    },
+    params: {
+      locale: "en_US",
+    },
+  });
+}
+
+async function characterData(nickname, server) {
+  //urlMedia = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/character-media`;
+  urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}`;
+
+  return await axios.all([ axiosGet(urlProfileInfo)]);
+}
+async function allCharacterData(nickname, server) {
+  urlMedia = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/character-media`;
+  urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}`;
+  urlStatistic = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/statistics`;
+  urlEq = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/equipment`;
+
+  return await axios.all([
+    axiosGet(urlMedia),
+    axiosGet(urlProfileInfo),
+    axiosGet(urlStatistic),
+    axiosGet(urlEq),
+  ]);
+}
+app.get("/character", (req, res) => {
+  allCharacterData(req.query.nickname, req.query.server)
     .then(
       axios.spread((media, profile, stats, eq) => {
         const promises = [];
@@ -146,12 +135,77 @@ app.get("/test", (req, res) => {
             media_eq: response,
           });
         });
-        Promise.all(promises).then((res) => console.log(res));
+        //Promise.all(promises).then((res) => console.log(res));
       })
     )
     .catch(function (error) {
       console.log(error);
     });
+});
+
+app.get("/guild_member", (req, res) => {
+  urlRoster = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guildname}/roster`;
+  axiosGet(urlRoster).then((roster) => {
+    const promises = [];
+    console.log(roster);
+    roster.data.members.map((member) => {
+      console.log(member);
+      urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${req.query.server}/${member.name}`;
+      promises.push(axiosGet(urlProfileInfo));
+    });
+
+    Promise.all(promises).then(() => {
+      res.json({
+        profile: profile,
+      });
+    });
+  });
+});
+
+app.get("/guild", (req, res, next) => {
+  urlGuild = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guildname}`;
+  urlRoster = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guildname}/roster`;
+  axios
+    .all([axiosGet(urlGuild), axiosGet(urlRoster)])
+
+    .then(
+      axios.spread((guild, roster) => {
+        const promises = [];
+
+        roster.data.members.map((member) => {
+          //console.log(member.character.name);,
+          let lower_name = member.character.name.toLowerCase();
+          urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${req.query.server}/${lower_name}`;
+
+          promises.push(
+            axiosGet(urlProfileInfo).then(
+              response => response.data
+            )
+          );
+        });
+
+        Promise.all(promises)
+          .then((response) => {
+            res.json({
+              guild: guild.data,
+              roster: roster.data,
+              roster_profile: response,
+            });
+          })
+          .catch((error) => {
+            if (error.response) {
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              console.log(error.request);
+            } else {
+              console.log("Error", error.message);
+            }
+            console.log(error.config);
+          });
+      })
+    );
 });
 
 app.use(function (err, req, res, next) {

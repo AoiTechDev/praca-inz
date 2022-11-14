@@ -17,7 +17,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
         ? "rgba(0,128,254, 0.56) 0px 0px 40px 25px"
         : "rgba(0, 0, 0, 0.56) 0px 0px 40px 25px"),
 
-    console.log(id)
+    
     setItemInfo({
       name: id.name,
       type: id.inventory_type.name,
