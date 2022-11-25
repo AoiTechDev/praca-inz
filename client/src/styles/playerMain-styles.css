@@ -41,6 +41,22 @@
     width: 80%;
     height: 90vh;
     z-index: 2;
+    overflow-y: scroll;
+}
+.achievements{
+    
+    width: 74%;
+    background-color: var(--black);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) ;
+}
+.achiv-category{
+    color: var(--white);
+    font-size: 1rem;
+    padding: 1rem;
+    border: 1px solid red;
+    margin: 1rem;
 }
 .player-img{
     width: 75%;
@@ -76,7 +92,7 @@
     grid-column-gap: 100%;
     grid-row-gap: 5px;
     height: 70%;
-    z-index: 10;
+    z-index: 4;
 }
 .type{
     width: 100%;

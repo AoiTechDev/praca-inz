@@ -1,11 +1,9 @@
 import "../styles/playerMain-styles.css";
 
 import React, { useState } from "react";
-import ItemInfo from './ItemInfo'
-
+import ItemInfo from "./ItemInfo";
 
 function PlayerMain({ data, isFetch, handleMouseLeave }) {
-    
   function toggle(id, key) {
     const item = document.getElementsByClassName("item")[key];
     (item.style.boxShadow =
@@ -16,23 +14,21 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
         : id.quality.name === "Rare"
         ? "rgba(0,128,254, 0.56) 0px 0px 40px 25px"
         : "rgba(0, 0, 0, 0.56) 0px 0px 40px 25px"),
-
-    
-    setItemInfo({
-      name: id.name,
-      type: id.inventory_type.name,
-      ilvl: id.level.value,
-      stats: id.stats,
-      boe: id.binding.name,
-      quality: id.quality.name,
-      arrmor_type: id.item_subclass.name,
-      durability: id.durability?.display_string,
-      weapon_dmg: id?.weapon?.damage?.display_string,
-      spell: id?.spells === undefined ? "" : id?.spells[0]?.description,
-      armor: id?.armor?.display?.display_string,
-      attack_speed: id?.weapon?.attack_speed?.display_string,
-      dps: id?.weapon?.dps?.display_string
-    });
+      setItemInfo({
+        name: id.name,
+        type: id.inventory_type.name,
+        ilvl: id.level.value,
+        stats: id.stats,
+        boe: id.binding.name,
+        quality: id.quality.name,
+        arrmor_type: id.item_subclass.name,
+        durability: id.durability?.display_string,
+        weapon_dmg: id?.weapon?.damage?.display_string,
+        spell: id?.spells === undefined ? "" : id?.spells[0]?.description,
+        armor: id?.armor?.display?.display_string,
+        attack_speed: id?.weapon?.attack_speed?.display_string,
+        dps: id?.weapon?.dps?.display_string,
+      });
   }
 
   const [itemInfo, setItemInfo] = useState({
@@ -48,9 +44,17 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
     spell: "",
     armor: "",
     attack_speed: "",
-    dps: ""
+    dps: "",
   });
 
+  const achiv = data.achiv_data.root_categories.map((item, index) => 
+    <div key={index} className="achiv-category">
+      <p>{item.name}</p>
+      
+      </div>
+  )
+
+  
   return (
     <div className="player">
       <div
@@ -72,11 +76,16 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
                   onMouseEnter={() => toggle(data.eq.equipped_items[key], key)}
                   onMouseLeave={() => handleMouseLeave(key)}
                 >
-                  <ItemInfo itemInfo={itemInfo}/>
+                  <ItemInfo itemInfo={itemInfo} />
                 </div>
               );
             })}
         </div>
+      </div>
+      <div className="achievements">
+    
+        {achiv}
+       
       </div>
     </div>
   );

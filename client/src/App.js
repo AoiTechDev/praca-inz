@@ -21,9 +21,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [searchState, setSeatchState] = useState("character");
   const [guildFetch, setGuildFetch] = useState(false);
-  const [test, setTest] = useState(false);
+  //const [test, setTest] = useState(false);
   const navigate = useNavigate();
-  
+
   function handleChange(e) {
     setFormData((prev) => {
       return {
@@ -32,13 +32,16 @@ function App() {
       };
     });
   }
-  console.log(test)
+  console.log(data);
   async function getPlayer() {
     setLoading(true);
     const url = "http://localhost:9000/character";
     await axios
       .get(url, {
-        params: { nickname: formData.Nickname.toLowerCase(), server: formData.Server.toLowerCase() },
+        params: {
+          nickname: formData.Nickname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
       })
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
@@ -48,23 +51,24 @@ function App() {
     navigate("/");
   }
 
-
-  function getGuildMember(nick){
-    setFormData(prev => ({
+  function getGuildMember(nick) {
+    setFormData((prev) => ({
       ...prev,
-      Nickname: nick.toLowerCase()
-    }))
-    setTest(prev => !prev)
-    console.log('run')
+      Nickname: nick.toLowerCase(),
+    }));
+    // setTest(prev => !prev)
+    console.log("run");
   }
-
 
   async function getGuild() {
     setLoading(true);
     const url = "http://localhost:9000/guild";
     await axios
       .get(url, {
-        params: { guildname: formData.Guildname.toLowerCase(), server: formData.Server.toLowerCase() },
+        params: {
+          guildname: formData.Guildname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
       })
       .then((res) => setGuildData(res.data))
       .catch((err) => console.error(err.data));
@@ -78,8 +82,6 @@ function App() {
     return rect;
   }
 
-  
-
   useEffect(() => {
     const e = document.getElementsByClassName("item-info");
 
@@ -91,17 +93,13 @@ function App() {
         e[i].style.top = "-400px";
       }
     }
-
-
-
-
   });
 
   const handleMouseLeave = (key) => {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-  console.log(formData)
+
   return (
     <div
       className="app"
@@ -110,16 +108,16 @@ function App() {
       }}
     >
       <main
-      // style={{
-      //   backgroundImage: isFetch && "url(hall3.jpg)",
-      // }}
+      style={{
+        backgroundImage: isFetch && "url(hall3.jpg)",
+      }}
       >
-        <div
+        {/* <div
           className="bg"
           style={{
             backgroundImage: isFetch && "url(hall3.jpg)",
           }}
-        ></div>
+        ></div> */}
         <Search
           handleChange={handleChange}
           getPlayer={getPlayer}
@@ -142,7 +140,7 @@ function App() {
               guildFetch: guildFetch,
               getGuildMember: getGuildMember,
               getPlayer: getPlayer,
-              test: test
+              //test: test
               //guildMember: guildMember
             }}
           />
