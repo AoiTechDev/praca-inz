@@ -50,15 +50,16 @@
     width: 100%;
     padding: 10px;
     position: absolute;
-    left: 12rem;
-    top: -4rem;
+    top: 2rem;
     background-color: var(--black09);
     visibility: hidden;
     border-radius: 15px;
+    z-index: 5;
 
 }
 .minor-stats > span:hover .minor-stats-tooltip{
     visibility: visible;
+    
 }
 .minor-stats > span{
     cursor: pointer;

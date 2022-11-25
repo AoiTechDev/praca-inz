@@ -9,6 +9,7 @@ require("./auth");
 var axios = require("axios");
 var test = require("./routes");
 const OauthClient = require("./getToken.js");
+const { response } = require("express");
 const BNET_ID = process.env.BNET_OAUTH_CLIENT_ID;
 const BNET_SECRET = process.env.BNET_OAUTH_CLIENT_SECRET;
 const EU_BLIZZARD = "https://eu.api.blizzard.com";
@@ -72,22 +73,21 @@ app.get("/eq_media", (req, res) => {
 
 async function getItem(id) {
   url = `https://eu.api.blizzard.com/data/wow/media/item/${id}`;
-  return await axios.get(url, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Battlenet-Namespace": "static-eu",
-    },
-    params: {
-      locale: "en_US",
-    },
-  });
+  return await axiosGet(url, 'static-eu')
 }
 
-async function axiosGet(url) {
+async function getAchiv(id){
+  url = `${EU_BLIZZARD}/data/wow/achievement-category/${id}`;
+  //console.log(url)
+  return await axiosGet(url, 'static-eu')
+}
+
+
+async function axiosGet(url, namespace="profile-eu") {
   return await axios.get(url, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Battlenet-Namespace": "profile-eu",
+      "Battlenet-Namespace": namespace,
     },
     params: {
       locale: "en_US",
@@ -101,40 +101,100 @@ async function characterData(nickname, server) {
 
   return await axios.all([ axiosGet(urlProfileInfo)]);
 }
+
+async function characterAchievements(nickname, server){
+  urlAchiv = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/achievements`;
+
+  return await axiosGet(urlAchiv)
+}
+
+
 async function allCharacterData(nickname, server) {
   urlMedia = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/character-media`;
   urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}`;
   urlStatistic = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/statistics`;
   urlEq = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/equipment`;
+  test = `${EU_BLIZZARD}/data/wow/achievement-category/index`;
+
 
   return await axios.all([
     axiosGet(urlMedia),
     axiosGet(urlProfileInfo),
     axiosGet(urlStatistic),
+    characterAchievements(nickname, server),
+    axiosGet(test, 'static-eu'),
     axiosGet(urlEq),
+    
   ]);
 }
+
+
 app.get("/character", (req, res) => {
   allCharacterData(req.query.nickname, req.query.server)
     .then(
-      axios.spread((media, profile, stats, eq) => {
-        const promises = [];
+      axios.spread((media, profile, stats, achiv, achiv_data, eq) => {
+        const promisesEq = [];
+        const promisesAchiv = []
+        const rest = []
 
         eq.data.equipped_items.map((item) => {
-          promises.push(
+          promisesEq.push(
             getItem(item.item.id).then((response) => response.data)
           );
         });
 
-        Promise.all(promises).then((response) => {
-          res.json({
-            media: media.data,
-            profile: profile.data,
-            stats: stats.data,
-            eq: eq.data,
-            media_eq: response,
-          });
-        });
+        achiv_data.data.root_categories.map((item) => {
+          promisesAchiv.push(getAchiv(item.id)
+          .then(response => response.data)
+          );
+
+          //promisesAchiv.push(getAchiv(item.id).then((response) => response.data))
+          //console.log(getAchiv(item.id))
+        })
+        
+        try{
+          let result = Promise.all(promisesEq, promisesAchiv);
+          result.then((response) => {
+            console.log(response[0])
+            res.json({
+              media: media.data,
+              profile: profile.data,
+              stats: stats.data,
+              eq: eq.data,
+              achiv: achiv.data,
+              achiv_data: achiv_data.data,
+              achiv_root: response,
+              media_eq: response,
+            });
+          })
+        } catch(error){
+          console.log(error)
+        }
+
+        // Promise.all([promisesEq, promisesAchiv]).then((response) => {
+        //   res.json({
+        //     media: media.data,
+        //     profile: profile.data,
+        //     stats: stats.data,
+        //     eq: eq.data,
+        //     achiv: achiv.data,
+        //     achiv_data: achiv_data.data,
+        //     achiv_root: response,
+        //     media_eq: response,
+        //   });
+        // })
+        // .catch((error) => {
+        //   if (error.response) {
+        //     console.log(error.response.data);
+        //     console.log(error.response.status);
+        //     console.log(error.response.headers);
+        //   } else if (error.request) {
+        //     console.log(error.request);
+        //   } else {
+        //     console.log("Error", error.message);
+        //   }
+        //   console.log(error.config);
+        // });
         //Promise.all(promises).then((res) => console.log(res));
       })
     )
@@ -207,6 +267,8 @@ app.get("/guild", (req, res, next) => {
       })
     );
 });
+
+
 
 app.use(function (err, req, res, next) {
   console.error(err);
