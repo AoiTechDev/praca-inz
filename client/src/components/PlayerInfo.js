@@ -2,11 +2,11 @@ import "../styles/playerInfo-styles.css";
 import React  from "react";
 
 function PlayerInfo({data}) {
-    console.log(data)
+    
     return ( 
        <div className="left-nav">
     <div className="player-name">
-      <h3>{data.profile.active_title.name}</h3>
+      <h3>{data.profile.active_title?.name}</h3>
       <h1
         style={{
           color:

@@ -45,6 +45,7 @@ export default function Apptest() {
             <Route path='pvp' element={<PVP/>}/>
             <Route path='collection' element={<Collection/>}/>
             <Route path='comparison' element={<Comparison/>}/>
+            
           </Route>
         </Routes>
       </BrowserRouter>

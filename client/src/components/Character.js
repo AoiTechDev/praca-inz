@@ -4,7 +4,7 @@ import PlayerMain from "./PlayerMain";
 import { useOutletContext } from "react-router-dom";
 
 function Character() {
-    const {data, isFetch, handleMouseLeave} = useOutletContext();
+    const {data, isFetch, handleMouseLeave, getSubCategory, achivSubCategory} = useOutletContext();
     
     return (  
         <div className="player-info">
@@ -14,6 +14,8 @@ function Character() {
                   data={data}
                   isFetch={isFetch}
                   handleMouseLeave={handleMouseLeave}
+                  getSubCategory={getSubCategory}
+                  achivSubCategory={achivSubCategory}
                 />
               </div>
     );
