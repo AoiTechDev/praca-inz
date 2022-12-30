@@ -15,7 +15,7 @@ function ItemInfo({itemInfo}) {
             : "grey",
       }}
     >
-      {itemInfo.name}
+      {itemInfo?.name}
     </h3>
     <p
       style={{
@@ -45,7 +45,7 @@ function ItemInfo({itemInfo}) {
           }}
           key={key}
         >
-          +{stat.value} {stat.type.name}
+          +{stat.value} {stat?.type?.name}
         </p>
       ))}
 

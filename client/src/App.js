@@ -22,6 +22,7 @@ function App() {
   const [searchState, setSeatchState] = useState("character");
   const [guildFetch, setGuildFetch] = useState(false);
   //const [test, setTest] = useState(false);
+  const [achivSubCategory, setAchivSubCategory] =  useState({})
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -32,7 +33,7 @@ function App() {
       };
     });
   }
-  console.log(data);
+  
   async function getPlayer() {
     setLoading(true);
     const url = "http://localhost:9000/character";
@@ -51,6 +52,23 @@ function App() {
     navigate("/");
   }
 
+  async function getSubCategory(e){
+    //setLoading(true);
+    const url = "http://localhost:9000/achiv_sub_category";
+    await axios
+      .get(url, {
+        params: {
+          id: e.id
+        },
+      })
+      .then((res) => setAchivSubCategory(res.data))
+      .catch((err) => console.log(err));
+    //setLoading(false);
+    
+  }
+  
+
+  
   function getGuildMember(nick) {
     setFormData((prev) => ({
       ...prev,
@@ -99,7 +117,7 @@ function App() {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-
+  //console.log(data)
   return (
     <div
       className="app"
@@ -136,6 +154,8 @@ function App() {
               data: data,
               isFetch: isFetch,
               handleMouseLeave: handleMouseLeave,
+              getSubCategory: getSubCategory,
+              achivSubCategory: achivSubCategory,
               guildData: guildData,
               guildFetch: guildFetch,
               getGuildMember: getGuildMember,

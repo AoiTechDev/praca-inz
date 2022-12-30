@@ -1,9 +1,11 @@
 import "../styles/playerMain-styles.css";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ItemInfo from "./ItemInfo";
+import Achievements from "./Achievements";
 
-function PlayerMain({ data, isFetch, handleMouseLeave }) {
+
+function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory, getSubCategory }) {
   function toggle(id, key) {
     const item = document.getElementsByClassName("item")[key];
     (item.style.boxShadow =
@@ -47,14 +49,40 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
     dps: "",
   });
 
-  const achiv = data.achiv_data.root_categories.map((item, index) => 
-    <div key={index} className="achiv-category">
-      <p>{item.name}</p>
-      
-      </div>
-  )
+  const [achivState, setAchivState] = useState(0)
+  //const [achivSub, setAchivSub] = useState({})
+  const [achivs, setAchivs] = useState(data.achiv_data.root_categories)
+
+
+  function addAchivState(){
+    setAchivState(prev => prev >= 2 ? prev = 2 : prev + 1)
+  }
+  function subAchivState(){
+    setAchivState(prev => prev - 1)
+  }
 
   
+  useEffect(() => {
+    //setAchivSub(achivSubCategory.achievements)
+    setAchivs(achivSubCategory.achievements)
+  },[achivState]);
+
+
+  // const achiv = data.achiv_data.root_categories.map((item, index) => 
+  //   <div key={index} className="achiv-category"  onClick={() => {getSubCategory(item); addAchivState()}}>
+  //     <p>{item.name}</p>
+  //     </div>
+  // )
+
+  const achiv = data.achiv_data.root_categories.map((item, index) => 
+  <div key={index} className="achiv-category"  onClick={() => {getSubCategory(item); addAchivState()}}>
+    <p>{item.name}</p>
+    </div>
+  
+    )
+  
+  console.log(achivs)
+ 
   return (
     <div className="player">
       <div
@@ -82,11 +110,19 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
             })}
         </div>
       </div>
-      <div className="achievements">
+      {/* <div className="achievements">
     
         {achiv}
        
-      </div>
+      </div> */}
+
+      <Achievements 
+       achiv={achiv}
+       achivState={achivState}
+       addAchivState={addAchivState}
+       subAchivState={subAchivState}
+       achivSubCategory={achivSubCategory} 
+       />
     </div>
   );
 }

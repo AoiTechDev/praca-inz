@@ -129,6 +129,14 @@ async function allCharacterData(nickname, server) {
 }
 
 
+
+app.get("/achiv_sub_category", (req,res) => {
+  getAchiv(req.query.id)
+  .then((response) => res.json(response.data))
+  .catch((err) => console.error(err))
+})
+
+
 app.get("/character", (req, res) => {
   allCharacterData(req.query.nickname, req.query.server)
     .then(
@@ -153,9 +161,9 @@ app.get("/character", (req, res) => {
         })
         
         try{
-          let result = Promise.all(promisesEq, promisesAchiv);
+          let result = Promise.all(promisesEq);
           result.then((response) => {
-            console.log(response[0])
+            //console.log(response)
             res.json({
               media: media.data,
               profile: profile.data,
@@ -163,7 +171,6 @@ app.get("/character", (req, res) => {
               eq: eq.data,
               achiv: achiv.data,
               achiv_data: achiv_data.data,
-              achiv_root: response,
               media_eq: response,
             });
           })
