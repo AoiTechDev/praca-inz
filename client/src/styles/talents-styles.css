@@ -1,0 +1,65 @@
+.container{
+    width: 74%;
+    background-color: var(--black);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, 1fr)) ;
+    margin-top: 20px;
+    justify-items: center;
+}
+
+.spell_img{
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-bottom: 10px;
+    position: relative;
+    
+}
+
+.talents_container{
+    display: grid;
+    grid-template-columns: repeat(2, 60px);
+}
+
+.spell_tooltip{
+    visibility: hidden;
+    width: 300px;
+    background-color: var(--black);
+    z-index: 10;
+    color: white;
+    position: absolute;
+    padding: 15px;
+    border: 2px solid black;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.spec_tooltip{
+    
+    right: 100px;
+}
+.class_tooltip{
+    left: 100px;
+}
+.spell_img:hover .spell_tooltip{
+    visibility: visible;
+}
+.rank{
+    margin-bottom: 10px;
+}
+.cast{
+    display: flex;
+    justify-content: space-between;
+}
+.description{
+    color:#F5C331
+}
+.name{
+    font-size: 1.2rem;
+    
+}

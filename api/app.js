@@ -5,10 +5,9 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
-require("./auth");
+
 var axios = require("axios");
 var test = require("./routes");
-const OauthClient = require("./getToken.js");
 const { response } = require("express");
 const BNET_ID = process.env.BNET_OAUTH_CLIENT_ID;
 const BNET_SECRET = process.env.BNET_OAUTH_CLIENT_SECRET;
@@ -76,6 +75,12 @@ async function getItem(id) {
   return await axiosGet(url, 'static-eu')
 }
 
+async function getSpellMedia(id) {
+  url = `${EU_BLIZZARD}/data/wow/media/spell/${id}`;
+  return await axiosGet(url, 'static-eu')
+}
+
+
 async function getAchiv(id){
   url = `${EU_BLIZZARD}/data/wow/achievement-category/${id}`;
   //console.log(url)
@@ -115,6 +120,7 @@ async function allCharacterData(nickname, server) {
   urlStatistic = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/statistics`;
   urlEq = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/equipment`;
   test = `${EU_BLIZZARD}/data/wow/achievement-category/index`;
+  talents = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/specializations`;
 
 
   return await axios.all([
@@ -124,6 +130,7 @@ async function allCharacterData(nickname, server) {
     characterAchievements(nickname, server),
     axiosGet(test, 'static-eu'),
     axiosGet(urlEq),
+    axiosGet(talents),
     
   ]);
 }
@@ -140,10 +147,13 @@ app.get("/achiv_sub_category", (req,res) => {
 app.get("/character", (req, res) => {
   allCharacterData(req.query.nickname, req.query.server)
     .then(
-      axios.spread((media, profile, stats, achiv, achiv_data, eq) => {
+      axios.spread((media, profile, stats, achiv, achiv_data, eq, talents) => {
         const promisesEq = [];
         const promisesAchiv = []
         const rest = []
+        const class_talents_arr=[]
+        const spec_talents_arr=[]
+        
 
         eq.data.equipped_items.map((item) => {
           promisesEq.push(
@@ -151,17 +161,43 @@ app.get("/character", (req, res) => {
           );
         });
 
+
         achiv_data.data.root_categories.map((item) => {
           promisesAchiv.push(getAchiv(item.id)
           .then(response => response.data)
           );
 
+          //console.log(talents_arr)
           //promisesAchiv.push(getAchiv(item.id).then((response) => response.data))
           //console.log(getAchiv(item.id))
         })
         
+
+        talents.data.specializations[0].loadouts.map((idx) => {
+          if(idx.is_active){
+            idx.selected_spec_talents.map((index) => {
+             
+              spec_talents_arr.push(getSpellMedia(index.tooltip.spell_tooltip.spell.id)
+              .then(response => response.data))
+            })
+
+            idx.selected_class_talents.map((index) => {
+              
+              class_talents_arr.push(getSpellMedia(index.tooltip.spell_tooltip.spell.id)
+              .then(response => response.data))
+            })
+
+          }
+        })
+
+     
+        let eq_p = Promise.all(promisesEq)
+        let spec_talents = Promise.all(spec_talents_arr)
+        let class_talents = Promise.all(class_talents_arr)
+        let achiv_p = Promise.all(promisesAchiv)
+
         try{
-          let result = Promise.all(promisesEq);
+          let result = Promise.all([eq_p, spec_talents,class_talents, achiv_p]);
           result.then((response) => {
             //console.log(response)
             res.json({
@@ -171,7 +207,11 @@ app.get("/character", (req, res) => {
               eq: eq.data,
               achiv: achiv.data,
               achiv_data: achiv_data.data,
-              media_eq: response,
+              media_eq: response[0],
+              spec_talents_media: response[1],
+              class_talents_media: response[2],
+              achiv_test: response[3],
+              talents: talents.data
             });
           })
         } catch(error){
@@ -229,7 +269,7 @@ app.get("/guild_member", (req, res) => {
   });
 });
 
-app.get("/guild", (req, res, next) => {
+app.get("/guild", (req, res) => {
   urlGuild = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guildname}`;
   urlRoster = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guildname}/roster`;
   axios
