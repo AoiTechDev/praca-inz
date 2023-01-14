@@ -33,7 +33,7 @@ function App() {
       };
     });
   }
-  
+  console.log(data)
   async function getPlayer() {
     setLoading(true);
     const url = "http://localhost:9000/character";

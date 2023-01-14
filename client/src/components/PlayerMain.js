@@ -3,9 +3,11 @@ import "../styles/playerMain-styles.css";
 import React, { useState, useEffect } from "react";
 import ItemInfo from "./ItemInfo";
 import Achievements from "./Achievements";
+import Talents from "./Talents";
 
 
-function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory, getSubCategory }) {
+function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory }) {
+
   function toggle(id, key) {
     const item = document.getElementsByClassName("item")[key];
     (item.style.boxShadow =
@@ -52,7 +54,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory, getSubC
   const [achivState, setAchivState] = useState(0)
   //const [achivSub, setAchivSub] = useState({})
   const [achivs, setAchivs] = useState(data.achiv_data.root_categories)
-
+  const [subAchivs, setSubAchivs] = useState([])
 
   function addAchivState(){
     setAchivState(prev => prev >= 2 ? prev = 2 : prev + 1)
@@ -61,27 +63,27 @@ function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory, getSubC
     setAchivState(prev => prev - 1)
   }
 
-  
+  function supAchiv(id){
+    setSubAchivs(data.achiv_test[id].subcategories)
+  }
+  console.log(subAchivs)
+
+
   useEffect(() => {
-    //setAchivSub(achivSubCategory.achievements)
     setAchivs(achivSubCategory.achievements)
+    console.log(achivs)
   },[achivState]);
 
 
-  // const achiv = data.achiv_data.root_categories.map((item, index) => 
-  //   <div key={index} className="achiv-category"  onClick={() => {getSubCategory(item); addAchivState()}}>
-  //     <p>{item.name}</p>
-  //     </div>
-  // )
 
-  const achiv = data.achiv_data.root_categories.map((item, index) => 
-  <div key={index} className="achiv-category"  onClick={() => {getSubCategory(item); addAchivState()}}>
-    <p>{item.name}</p>
+
+  const achiv = data.achiv_test.map((item, index) => 
+  <div key={index} className="achiv-category" onClick={() => {supAchiv(index); addAchivState();}}>
+    <p >{item.name}</p>
     </div>
-  
     )
   
-  console.log(achivs)
+ 
  
   return (
     <div className="player">
@@ -121,8 +123,9 @@ function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory, getSubC
        achivState={achivState}
        addAchivState={addAchivState}
        subAchivState={subAchivState}
-       achivSubCategory={achivSubCategory} 
+       subAchivs={subAchivs}
        />
+       <Talents data={data}/>
     </div>
   );
 }
