@@ -53,6 +53,8 @@ app.get("/itest", (req, res) => {
   console.log(req.query.server);
 });
 
+
+
 app.get("/eq_media", (req, res) => {
   url = `https://eu.api.blizzard.com/data/wow/media/item/${req.query.id}`;
   axios
@@ -115,6 +117,7 @@ async function characterAchievements(nickname, server){
 
 
 async function allCharacterData(nickname, server) {
+
   urlMedia = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/character-media`;
   urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}`;
   urlStatistic = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/statistics`;
@@ -130,8 +133,7 @@ async function allCharacterData(nickname, server) {
     characterAchievements(nickname, server),
     axiosGet(test, 'static-eu'),
     axiosGet(urlEq),
-    axiosGet(talents),
-    
+    axiosGet(talents),   
   ]);
 }
 
@@ -144,39 +146,52 @@ app.get("/achiv_sub_category", (req,res) => {
 })
 
 
-app.get("/character", (req, res) => {
-  allCharacterData(req.query.nickname, req.query.server)
+const errorHandler = (error,req,res,next) => {
+  return res.status(404).send(error.message)
+ }
+
+ 
+app.get("/character", (req, res, next) => {
+  
+  const character = allCharacterData(req.query.nickname, req.query.server)
+  
+  // character
+  // .then((res) => {
+  //   try{
+      
+  //   }catch(err){
+  //     return next(err)
+  //   } 
+  // })
+  // .catch((err) => {
+  //   return next(err)
+  // })
+
+  character
     .then(
       axios.spread((media, profile, stats, achiv, achiv_data, eq, talents) => {
-        const promisesEq = [];
-        const promisesAchiv = []
-        const rest = []
+        const promises_eq_arr = [];
+        const promises_achiv_arr = []
         const class_talents_arr=[]
         const spec_talents_arr=[]
         
-
         eq.data.equipped_items.map((item) => {
-          promisesEq.push(
+          promises_eq_arr.push(
             getItem(item.item.id).then((response) => response.data)
           );
         });
 
-
         achiv_data.data.root_categories.map((item) => {
-          promisesAchiv.push(getAchiv(item.id)
+          promises_achiv_arr.push(getAchiv(item.id)
           .then(response => response.data)
           );
 
-          //console.log(talents_arr)
-          //promisesAchiv.push(getAchiv(item.id).then((response) => response.data))
-          //console.log(getAchiv(item.id))
         })
         
-
         talents.data.specializations[0].loadouts.map((idx) => {
           if(idx.is_active){
             idx.selected_spec_talents.map((index) => {
-             
+            
               spec_talents_arr.push(getSpellMedia(index.tooltip.spell_tooltip.spell.id)
               .then(response => response.data))
             })
@@ -190,27 +205,24 @@ app.get("/character", (req, res) => {
           }
         })
 
-     
-        let eq_p = Promise.all(promisesEq)
-        let spec_talents = Promise.all(spec_talents_arr)
-        let class_talents = Promise.all(class_talents_arr)
-        let achiv_p = Promise.all(promisesAchiv)
+        let eq_promises = Promise.all(promises_eq_arr)
+        let spec_talents_promises = Promise.all(spec_talents_arr)
+        let class_talents_promises = Promise.all(class_talents_arr)
+        let achiv_promises = Promise.all(promises_achiv_arr)
 
         try{
-          let result = Promise.all([eq_p, spec_talents,class_talents, achiv_p]);
+          let result = Promise.all([eq_promises, spec_talents_promises,class_talents_promises, achiv_promises]);
           result.then((response) => {
-            //console.log(response)
             res.json({
               media: media.data,
               profile: profile.data,
               stats: stats.data,
               eq: eq.data,
               achiv: achiv.data,
-              achiv_data: achiv_data.data,
               media_eq: response[0],
               spec_talents_media: response[1],
               class_talents_media: response[2],
-              achiv_test: response[3],
+              achiv_categories: response[3],
               talents: talents.data
             });
           })
@@ -218,36 +230,13 @@ app.get("/character", (req, res) => {
           console.log(error)
         }
 
-        // Promise.all([promisesEq, promisesAchiv]).then((response) => {
-        //   res.json({
-        //     media: media.data,
-        //     profile: profile.data,
-        //     stats: stats.data,
-        //     eq: eq.data,
-        //     achiv: achiv.data,
-        //     achiv_data: achiv_data.data,
-        //     achiv_root: response,
-        //     media_eq: response,
-        //   });
-        // })
-        // .catch((error) => {
-        //   if (error.response) {
-        //     console.log(error.response.data);
-        //     console.log(error.response.status);
-        //     console.log(error.response.headers);
-        //   } else if (error.request) {
-        //     console.log(error.request);
-        //   } else {
-        //     console.log("Error", error.message);
-        //   }
-        //   console.log(error.config);
-        // });
-        //Promise.all(promises).then((res) => console.log(res));
       })
     )
-    .catch(function (error) {
-      console.log(error);
-    });
+    .catch((err) => {
+      return next(err)
+    })
+
+    
 });
 
 app.get("/guild_member", (req, res) => {
@@ -315,7 +304,7 @@ app.get("/guild", (req, res) => {
     );
 });
 
-
+app.use(errorHandler);
 
 app.use(function (err, req, res, next) {
   console.error(err);

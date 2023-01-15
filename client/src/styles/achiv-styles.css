@@ -5,13 +5,17 @@
     color: var(--white);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) ;
+    border: 2px solid black;
+    border-radius: 1rem;
 }
 .achiv-category{
     color: var(--white);
+    background-color: rgb(17,16,16, 0.8);;
     font-size: 1rem;
     padding: 1rem;
-    border: 1px solid red;
+    border: 2px solid #a7800b;
     margin: 1rem;
+    border-radius: 0.7rem;
 }
 
 .t2, .t1{

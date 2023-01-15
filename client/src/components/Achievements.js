@@ -2,14 +2,20 @@ import React from "react";
 import "../styles/achiv-styles.css";
 
 
-function Achievements({achiv, achivState,  subAchivState, subAchivs}) {
+function Achievements({achiv, achivState,  subAchivState, subAchivs,data}) {
 
    
     
-    console.log(achivState)
 
+    
     const subCatAchivs = subAchivs.map((item, index) => 
-        <div key={index} className="achiv-category">{item.name}</div>
+        <div key={index} className="achiv-category">
+            {item.name}
+            {data.achiv.category_progress.map((category, idx)=>{
+                return category.category.id === item.id ? <div key={idx}>{category.points}</div> : ''
+            }
+            )}
+        </div>
     )
     return (
     <>
