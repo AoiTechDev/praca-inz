@@ -46,7 +46,7 @@ function Talents({data}) {
                 idx.loadouts.map((spec_idx)=>{
                     if(spec_idx.is_active){
                         //console.log(spec_idx.selected_spec_talents[e].tooltip.talent.name)
-                        let tmp = spec_idx.selected_class_talents[e]
+                        let tmp = spec_idx.selected_spec_talents[e]
                         setSpellInfo({
                             name: tmp.tooltip.talent.name,
                             rank: tmp.rank,

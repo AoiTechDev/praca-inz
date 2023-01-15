@@ -6,7 +6,7 @@ function PlayerInfo({data}) {
     return ( 
        <div className="left-nav">
     <div className="player-name">
-      <h3>{data.profile.active_title?.name}</h3>
+      <h3>{data?.profile.active_title?.name}</h3>
       <h1
         style={{
           color:
@@ -38,7 +38,7 @@ function PlayerInfo({data}) {
                 "#C69B6D",
         }}
       >
-        {data.profile.name}
+        {data?.profile?.name}
       </h1>
 
       <div className="ilvl"> level: {data.profile.level}</div>

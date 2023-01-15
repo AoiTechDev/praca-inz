@@ -1,12 +1,12 @@
 import "../styles/playerMain-styles.css";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ItemInfo from "./ItemInfo";
 import Achievements from "./Achievements";
 import Talents from "./Talents";
 
 
-function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory }) {
+function PlayerMain({ data, isFetch, handleMouseLeave }) {
 
   function toggle(id, key) {
     const item = document.getElementsByClassName("item")[key];
@@ -53,7 +53,6 @@ function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory }) {
 
   const [achivState, setAchivState] = useState(0)
   //const [achivSub, setAchivSub] = useState({})
-  const [achivs, setAchivs] = useState(data.achiv_data.root_categories)
   const [subAchivs, setSubAchivs] = useState([])
 
   function addAchivState(){
@@ -64,26 +63,19 @@ function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory }) {
   }
 
   function supAchiv(id){
-    setSubAchivs(data.achiv_test[id].subcategories)
+    setSubAchivs(data.achiv_categories[id].subcategories)
   }
-  console.log(subAchivs)
-
-
-  useEffect(() => {
-    setAchivs(achivSubCategory.achievements)
-    console.log(achivs)
-  },[achivState]);
 
 
 
 
-  const achiv = data.achiv_test.map((item, index) => 
+  const achiv = data.achiv_categories.map((item, index) => 
   <div key={index} className="achiv-category" onClick={() => {supAchiv(index); addAchivState();}}>
     <p >{item.name}</p>
     </div>
     )
   
- 
+
  
   return (
     <div className="player">
@@ -124,6 +116,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave, achivSubCategory }) {
        addAchivState={addAchivState}
        subAchivState={subAchivState}
        subAchivs={subAchivs}
+       data={data}
        />
        <Talents data={data}/>
     </div>

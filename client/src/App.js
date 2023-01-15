@@ -23,6 +23,7 @@ function App() {
   const [guildFetch, setGuildFetch] = useState(false);
   //const [test, setTest] = useState(false);
   const [achivSubCategory, setAchivSubCategory] =  useState({})
+  const [responseStatus, setResponseStatus] = useState(0)
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -33,7 +34,18 @@ function App() {
       };
     });
   }
-  console.log(data)
+ 
+
+  useEffect(() =>{
+    if(responseStatus === 200){
+      setIsFetch(true);
+      navigate("/");
+    }else if(responseStatus === 404){
+      setIsFetch(false)
+    }
+  }, [responseStatus])
+
+
   async function getPlayer() {
     setLoading(true);
     const url = "http://localhost:9000/character";
@@ -44,12 +56,20 @@ function App() {
           server: formData.Server.toLowerCase(),
         },
       })
-      .then((res) => setData(res.data))
-      .catch((err) => console.log(err));
-    setIsFetch(true);
-
-    setLoading(false);
-    navigate("/");
+      .then((res) => {
+        if(res.status === 200){
+          setResponseStatus(res.status)
+          setData(res.data)
+          
+        } 
+      })
+      .catch((err) =>{
+        console.log(err)
+        setResponseStatus(err.response.status) 
+      })
+   
+      setLoading(false);
+   
   }
 
   async function getSubCategory(e){
@@ -146,7 +166,11 @@ function App() {
           getGuild={getGuild}
           formData={formData}
         />
-
+        {
+          responseStatus === 404 && <div>
+            no character
+          </div> 
+        }
         {isFetch && (
           //<Character data={data} isFetch={isFetch} handleMouseLeave={handleMouseLeave}/>
           <Outlet
@@ -160,6 +184,7 @@ function App() {
               guildFetch: guildFetch,
               getGuildMember: getGuildMember,
               getPlayer: getPlayer,
+              responseStatus: responseStatus,
               //test: test
               //guildMember: guildMember
             }}
