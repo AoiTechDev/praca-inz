@@ -58,6 +58,8 @@ function App() {
       })
       .then((res) => {
         if(res.status === 200){
+
+          console.log(res)
           setResponseStatus(res.status)
           setData(res.data)
           
@@ -71,7 +73,7 @@ function App() {
       setLoading(false);
    
   }
-
+  console.log(data)
   async function getSubCategory(e){
     //setLoading(true);
     const url = "http://localhost:9000/achiv_sub_category";
@@ -115,23 +117,7 @@ function App() {
     setGuildFetch(true);
   }
 
-  function offset(el) {
-    var rect = el.getBoundingClientRect();
-    return rect;
-  }
 
-  useEffect(() => {
-    const e = document.getElementsByClassName("item-info");
-
-    for (let i = 0; i < e.length; i++) {
-      if (offset(e[i]).top > 400) {
-        e[i].style.top = "-300px";
-      }
-      if (offset(e[i]).top > 600) {
-        e[i].style.top = "-400px";
-      }
-    }
-  });
 
   const handleMouseLeave = (key) => {
     const item = document.getElementsByClassName("item")[key];

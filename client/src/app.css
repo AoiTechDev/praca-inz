@@ -1,9 +1,9 @@
 :root{
     --redish: rgb(56,31,37);
-    --grey: rgb(17,16,16, 0.5);
+    --grey: rgb(17,16,16, 1);
     --grey_Op: rgba(56,31,37,0.8);
     --purple: rgb(197,15,249);
-    --black: rgb(17,16,16, 0.75);
+    --black: rgb(17,16,16, 9);
     --black09: rgb(17,16,16, 0.95);
     --crismon: #b31923;
     --white: #ACACAD;

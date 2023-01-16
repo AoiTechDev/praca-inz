@@ -8,7 +8,17 @@ import Talents from "./Talents";
 
 function PlayerMain({ data, isFetch, handleMouseLeave }) {
 
-  function toggle(id, key) {
+const handleMouseOut = () => {
+  const tooltip = document.getElementsByClassName("item-info")[0]
+  tooltip.style.visibility = "hidden"
+};
+
+function offset(el) {
+  var rect = el.getBoundingClientRect();
+  return rect;
+}
+
+  function toggle(id, key) {  
     const item = document.getElementsByClassName("item")[key];
     (item.style.boxShadow =
       id.quality.name === "Epic"
@@ -17,6 +27,8 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
         ? "rgba(238,119,1, 0.56) 0px 0px 40px 25px"
         : id.quality.name === "Rare"
         ? "rgba(0,128,254, 0.56) 0px 0px 40px 25px"
+        : id.quality.name === "Uncommon"
+        ? "green 0px 0px 40px 25px"
         : "rgba(0, 0, 0, 0.56) 0px 0px 40px 25px"),
       setItemInfo({
         name: id.name,
@@ -32,7 +44,40 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
         armor: id?.armor?.display?.display_string,
         attack_speed: id?.weapon?.attack_speed?.display_string,
         dps: id?.weapon?.dps?.display_string,
+        sell_price: id?.sell_price?.display_strings,
+        set_name: id?.set?.display_string,
+        set_effects: id?.set?.effects,
+        set_items: id?.set?.items,
       });
+
+      const tooltip = document.getElementsByClassName("item-info")[0]
+      tooltip.style.visibility = "visible"
+      const player = document.getElementsByClassName("player")[0]
+      // console.log(offset(player))
+      // console.log(offset(item))
+
+    
+     
+      let test = 0
+      let item_top = offset(item).top - 80
+      if(key === 0 || key % 2 === 0){
+        test = offset(item).left - offset(player).left + 100
+      }else {
+        test = offset(item).left - window.innerWidth/3 - 150
+        window.innerWidth < 1400 
+      
+
+       if(window.innerWidth > 1000 & window.innerWidth < 1400){
+        test = offset(item).left - window.innerWidth/3 - 250
+       }
+       if(window.innerWidth < 1000 ){
+        test = offset(item).left - window.innerWidth/3 - 300
+       }
+      }
+      console.log(window.innerWidth)
+      tooltip.style.left = `${test}px`
+      tooltip.style.top = `${item_top}px`
+      
   }
 
   const [itemInfo, setItemInfo] = useState({
@@ -49,6 +94,10 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
     armor: "",
     attack_speed: "",
     dps: "",
+    sell_price:"",
+    set_name: "",
+    set_effects: [],
+    set_items: [],
   });
 
   const [achivState, setAchivState] = useState(0)
@@ -63,15 +112,17 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
   }
 
   function supAchiv(id){
-    setSubAchivs(data.achiv_categories[id].subcategories)
+    if(data.achiv_categories[id].name !== "Character"){
+      setSubAchivs(data.achiv_categories[id].subcategories)
+    }else{
+      setSubAchivs(data.achiv_categories[id].achievements)
+
+    }
   }
-
-
-
 
   const achiv = data.achiv_categories.map((item, index) => 
   <div key={index} className="achiv-category" onClick={() => {supAchiv(index); addAchivState();}}>
-    <p >{item.name}</p>
+    <div className="achiv_name">{item.name}</div>
     </div>
     )
   
@@ -89,19 +140,24 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
           {isFetch &&
             data?.media_eq?.map((item, key) => {
               return (
-                <div
+
+        
+                 <div
                   className="item"
                   key={key}
                   style={{
                     backgroundImage: `url(${item.assets[0].value})`,
                   }}
                   onMouseEnter={() => toggle(data.eq.equipped_items[key], key)}
-                  onMouseLeave={() => handleMouseLeave(key)}
-                >
-                  <ItemInfo itemInfo={itemInfo} />
+                  onMouseLeave={() => {handleMouseLeave(key); handleMouseOut();}}
+                  >
+                 {/* <ItemInfo itemInfo={itemInfo} /> */}
                 </div>
               );
             })}
+        </div>
+        <div className="test" >
+          <ItemInfo itemInfo={itemInfo} />
         </div>
       </div>
       {/* <div className="achievements">

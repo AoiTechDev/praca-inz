@@ -5,19 +5,67 @@
     color: var(--white);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) ;
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 1rem;
+    align-items: center;
+    padding: 40px 10px 10px 10px;
+    position: relative;
+    box-shadow: black 10px 10px 15px 5px;
 }
 .achiv-category{
     color: var(--white);
-    background-color: rgb(17,16,16, 0.8);;
+    background-color: #b31923;
     font-size: 1rem;
     padding: 1rem;
-    border: 2px solid #a7800b;
     margin: 1rem;
     border-radius: 0.7rem;
+    display:flex;
+    gap: 15px;
+    cursor: pointer;
+    min-height: 100px;
+    box-shadow: black 10px 10px 15px 5px;
+    transition: transform .2s;
 }
 
-.t2, .t1{
-    text-align: center;
+.achiv-category:hover{
+    transform: scale(1.2);
+}
+.achiv_name{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.points{
+    color: rgb(238,119,1);
+}
+
+.achiv_button{
+    width: 120px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #b31923;
+    box-shadow: black 4px 4px 10px 3px;
+    color: var(--white);
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    left: 5px;
+}
+
+.achiv_button:hover{
+    background-color: #720c13;
+    
+}
+.achiv_title{
+    position: absolute;
+    top: 7px;
+    left: 43%;
+    font-size: 1.5rem;
 }

@@ -10,21 +10,27 @@ function Achievements({achiv, achivState,  subAchivState, subAchivs,data}) {
     
     const subCatAchivs = subAchivs.map((item, index) => 
         <div key={index} className="achiv-category">
-            {item.name}
+        <div className="achiv_name"> 
+        {item.name}
             {data.achiv.category_progress.map((category, idx)=>{
-                return category.category.id === item.id ? <div key={idx}>{category.points}</div> : ''
+                return category.category.id === item.id ? <div key={idx} className="points">{category.points}</div> : ''
             }
-            )}
+            )}</div>
+           
         </div>
     )
     return (
     <>
        
-
-       {achivState === 0 ? <div className="achievements">{achiv}</div>  : 
+        
+       {achivState === 0 ? <div className="achievements">
+        <div className="achiv_title">Achievements</div>
+        {achiv}</div>  : 
        <> 
-       <button onClick={subAchivState}>Back</button>
-        <div className="achievements">{subCatAchivs}</div>
+       <button onClick={subAchivState} className="achiv_button">Back</button>
+        <div className="achievements">
+        <div className="achiv_title">Achievements</div>
+            {subCatAchivs}</div>
        </> 
        }
         

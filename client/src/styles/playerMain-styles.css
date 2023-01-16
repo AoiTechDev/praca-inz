@@ -23,7 +23,9 @@
 }
 .item:hover .item-info{
     visibility: visible;
-
+}
+.item:hover{
+    transform: scale(1.2);
 }
 .item-info p{
     margin: 5px;
@@ -42,7 +44,7 @@
     height: 90vh;
     z-index: 2;
     overflow-y: scroll;
-    
+    position: relative;
 }
 
 .player-img{
@@ -88,7 +90,35 @@
     justify-content:space-between;
     margin: 0 0 3px 5px;
 }
-.durability{
+.durability .sell_price{
     margin: 7px;
     margin-top: 15px;
+}
+.sell_price{
+    display:flex;
+    gap: 5px;
+}
+.gold span{
+    color: rgb(255, 193, 77);
+}
+.silver span{
+    color: rgb(180, 180, 178);
+}
+.copper span{
+    color: rgb(180, 61, 25);
+}
+
+.set_name{
+    color: rgb(250, 178, 46);
+}
+.set_items_names{
+    margin: 3px 0 0 10px;
+}
+.set_effects{
+    margin-bottom: 10px;
+}
+.test{
+    position: absolute;
+    width: 70%;
+    height: 100%;
 }
