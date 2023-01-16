@@ -2,45 +2,47 @@ import "../styles/playerInfo-styles.css";
 import React  from "react";
 
 function PlayerInfo({data}) {
-    
+    console.log(data)
+
+    const class_color_styles = {
+      color:
+        data.profile.character_class.name === "Death Knight"
+          ? "#C41E3A"
+          : data.profile.character_class.name === "Demon Hunter"
+          ? "#A330C9"
+          : data.profile.character_class.name === "Druid"
+          ? "#FF7C0A"
+          : data.profile.character_class.name === "Evoker"
+          ? "#33937F"
+          : data.profile.character_class.name === "Hunter"
+          ? "#AAD372"
+          : data.profile.character_class.name === "Mage"
+          ? "#3FC7EB"
+          : data.profile.character_class.name === "Monk"
+          ? "#00FF98"
+          : data.profile.character_class.name === "Paladin"
+          ? "#F48CBA"
+          : data.profile.character_class.name === "Priest"
+          ? "#FFFFFF"
+          : data.profile.character_class.name === "Rouge"
+          ? "#FFF468"
+          : data.profile.character_class.name === "Shaman"
+          ? "#0070DD"
+          : data.profile.character_class.name === "Warlock"
+          ? "#8788EE"
+          : data.profile.character_class.name === "Warrior" &&
+            "#C69B6D",
+    }
     return ( 
        <div className="left-nav">
     <div className="player-name">
       <h3>{data?.profile.active_title?.name}</h3>
       <h1
-        style={{
-          color:
-            data.profile.character_class.name === "Death Knight"
-              ? "#C41E3A"
-              : data.profile.character_class.name === "Demon Hunter"
-              ? "#A330C9"
-              : data.profile.character_class.name === "Druid"
-              ? "#FF7C0A"
-              : data.profile.character_class.name === "Evoker"
-              ? "#33937F"
-              : data.profile.character_class.name === "Hunter"
-              ? "#AAD372"
-              : data.profile.character_class.name === "Mage"
-              ? "#3FC7EB"
-              : data.profile.character_class.name === "Monk"
-              ? "#00FF98"
-              : data.profile.character_class.name === "Paladin"
-              ? "#F48CBA"
-              : data.profile.character_class.name === "Priest"
-              ? "#FFFFFF"
-              : data.profile.character_class.name === "Rouge"
-              ? "#FFF468"
-              : data.profile.character_class.name === "Shaman"
-              ? "#0070DD"
-              : data.profile.character_class.name === "Warlock"
-              ? "#8788EE"
-              : data.profile.character_class.name === "Warrior" &&
-                "#C69B6D",
-        }}
+        style={class_color_styles}
       >
         {data?.profile?.name}
       </h1>
-
+        <h2  style={class_color_styles}>{data.talents.active_specialization.name}</h2>
       <div className="ilvl"> level: {data.profile.level}</div>
       <div className="ilvl">
         Item level: {data.profile.equipped_item_level}

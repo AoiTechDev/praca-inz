@@ -14,9 +14,28 @@ function Talents({data}) {
         range: "",
     })
     
+    const [isHover, setIsHover] = useState(false)
 
+    const handleMouseOver = () => { 
+        const tooltip = document.getElementsByClassName("tooltip_container")[0]
+        if(isHover === false){
+            tooltip.style.visibility = "visible"
+        }
+        setIsHover(true);
+      };
     
+    const handleMouseOut = () => {
+        const tooltip = document.getElementsByClassName("tooltip_container")[0]
+        if(isHover === true){
+            tooltip.style.visibility = "hidden"
+        }
+        setIsHover(false);
+    };
+    
+
+
     function specTooltip(e){
+
         data.talents.specializations.map((idx) => {
             if(idx.specialization.name === spec){
                 idx.loadouts.map((spec_idx)=>{
@@ -36,11 +55,9 @@ function Talents({data}) {
                 })
             }
         })
-        
     }
-
-
     function classTooltip(e){
+        
         data.talents.specializations.map((idx) => {
             if(idx.specialization.name === spec){
                 idx.loadouts.map((spec_idx)=>{
@@ -60,41 +77,51 @@ function Talents({data}) {
                 })
             }
         })
-        
     }
 
+   
+
+
+    
+    // function talentTooltip(e){
+    //     // data.talents.specializations.map((idx) => {
+    //     //     console.log(idx, e)
+    //     // })
+       
+    //     const spell = document.getElementsByClassName("spell_img")[e]
+        
+    // }
+    
     
     const class_talents = data.class_talents_media.map((spell, index) => 
         <div key={index} style={{
             backgroundImage: `url(${spell.assets[0].value})`
-        }} className="spell_img"
-            onMouseEnter={() => specTooltip(index)}>
-            <div className="spell_tooltip class_tooltip">
-            <div className="name">{spellInfo.name}</div>
-                <div className="rank">Rank: {spellInfo.rank}/{spellInfo.rank}</div>
-
-                <div className="cast">
-                    <div>{spellInfo.cast_time}</div>
-                    <div>{spellInfo.cooldown}</div>
-                </div>
-                <div>{spellInfo.range}</div>
-                <div> {spellInfo.power_cost}</div>
-               
-                <div className="description">{spellInfo.description}</div>
-                
-                
-            </div>
+        }} className="spell_img spec_talents"
+            onMouseEnter={() => {specTooltip(index), handleMouseOver()}}
+            onMouseLeave={handleMouseOut}
+            >
+              
         </div>
     )
     
     const spec_talents = data.spec_talents_media.map((spell, index) => 
     <div key={index} style={{
         backgroundImage: `url(${spell.assets[0].value})`
-    }} className="spell_img"
-        onMouseEnter={() => classTooltip(index)}
+    }} className="spell_img class_talents"
+    onMouseEnter={() => {classTooltip(index), handleMouseOver()}}
+    onMouseLeave={handleMouseOut}
     >
-         <div className="spell_tooltip spec_tooltip" >
-                <div className="name">{spellInfo.name}</div>
+    </div>
+)
+    return (  
+    <>
+        <div className="container">
+            <div className="talents_container">
+                <div className="classname class"><h2>Class Talents</h2></div>
+                {class_talents}
+            </div>
+            <div className="tooltip_container">
+                 <div className="name">{spellInfo.name}</div>
                 <div className="rank">Rank: {spellInfo.rank}/{spellInfo.rank}</div>
 
                 <div className="cast">
@@ -105,19 +132,9 @@ function Talents({data}) {
                 <div> {spellInfo.power_cost}</div>
                
                 <div className="description">{spellInfo.description}</div>
-                
-               
-         </div>
-    </div>
-)
-    return (  
-    <>
-        <div className="container">
-            <div className="talents_container">
-                {class_talents}
             </div>
-            
             <div className="talents_container">
+                <div className="classname spec"><h2>Specialization Talents</h2></div>
                 {spec_talents}
             </div>
         </div>

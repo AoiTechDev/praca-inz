@@ -3,6 +3,7 @@
 .left-nav{
     max-width:300px;
     z-index: 2;
+    
 }
 .player-name{
     background-color: var(--black) ;
@@ -15,13 +16,15 @@
     margin: 1rem;
     border-radius: 15px;
     z-index: 2;
+    box-shadow: black 10px 10px 15px 5px;
 }
-.player-name h3,h1{
+.player-name h3,h1, h2{
     margin: 0;
 }
-.player-name h1{
+.player-name h2{
     margin-bottom: 1rem;
 }
+
 .ilvl{
     color: var(--white);
     font-size: 1rem;
@@ -32,7 +35,7 @@
     text-align: left;
     margin: 1rem;
     border-radius: 15px;
-    
+    box-shadow: black 10px 10px 15px 5px;
 }
 .stats-left{
     width:100%;

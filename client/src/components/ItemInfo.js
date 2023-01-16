@@ -2,7 +2,9 @@ import '../styles/playerInfo-styles.css'
 import React from 'react'
 
 function ItemInfo({itemInfo}) {
-    return ( <div className="item-info">
+    
+    return (
+       <div className="item-info">
     <h3
       style={{
         color:
@@ -12,6 +14,8 @@ function ItemInfo({itemInfo}) {
             ? "rgb(238,119,1)"
             : itemInfo.quality === "Rare"
             ? "rgb(0,128,254)"
+            : itemInfo.quality === "Uncommon"
+            ? "green"
             : "grey",
       }}
     >
@@ -56,7 +60,44 @@ function ItemInfo({itemInfo}) {
     >
       {itemInfo?.spell}
     </p>
-    <div className="durability">{itemInfo.durability}</div>
+
+    <div className="set_name"> {itemInfo?.set_name}</div>
+    <div className="set_items">
+      {itemInfo?.set_items?.map((item, index) =>(
+        <div key={index} className="set_items_names"
+          style={{
+            color: 
+            item.is_equipped ? "rgb(245, 222, 15)"
+            : "rgb(77, 77, 76)"
+          }}
+        >{item.item.name}</div>
+      )
+      )}
+
+    </div>
+
+
+    <div className="set_effects">
+      {itemInfo?.set_effects?.map((effect, key) =>
+        <div key={key}
+          style={{
+            color: effect.is_active ? "lime"
+            : "rgb(77, 77, 76)"
+          }}
+        >{effect?.display_string}</div>
+      )}
+
+    </div>
+
+    <div className="durability">{itemInfo?.durability}</div>
+
+    {itemInfo.sell_price && <div className="sell_price">
+      <div>{itemInfo?.sell_price?.header}  </div> 
+      <div className="gold">{itemInfo?.sell_price?.gold}<span>g</span> </div>
+      <div className="silver"> {itemInfo?.sell_price?.silver}<span>s</span> </div>
+      <div className="copper">{itemInfo?.sell_price?.copper}<span>c</span>  </div>
+    </div>}
+    
   </div> );
 }
 
