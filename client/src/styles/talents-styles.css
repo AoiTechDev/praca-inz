@@ -35,15 +35,18 @@
     position: relative;
     transition: 0.3s;
     border-radius: 10px;
+    box-shadow: black 10px 10px 15px 5px;
+    
 }
 
 .talents_container{
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, 60px);
+    grid-template-columns: repeat(auto-fill, minmax(50px, 2fr));
     padding: 50px;
+    gap: 15px;
     position: relative;
 }
-
 
 .spec_tooltip{
     right: 100px;

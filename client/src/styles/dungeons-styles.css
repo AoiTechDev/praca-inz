@@ -1,0 +1,40 @@
+.dung_container{
+    width: 74%;
+    background-color: var(--black);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) ;
+    border: 1px solid black;
+    border-radius: 1rem;
+    align-items: center;
+    padding: 40px 10px 10px 10px;
+    position: relative;
+    box-shadow: black 10px 10px 15px 5px;
+
+}
+.dungeon{
+    
+    color: var(--white);
+    background-color: #b31923;
+    font-size: 1rem;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.7rem;
+    display:flex;
+    gap: 15px;
+    cursor: pointer;
+    min-height: 100px;
+    box-shadow: black 10px 10px 15px 5px;
+    transition: transform .2s;
+}
+
+.dungeon:hover{
+    transform: scale(1.2);
+}
+
+.dung_title{
+    position: absolute;
+    top: 7px;
+    left: 43%;
+    font-size: 1.5rem;
+}

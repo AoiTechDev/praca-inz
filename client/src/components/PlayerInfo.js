@@ -35,7 +35,7 @@ function PlayerInfo({data}) {
     }
     return ( 
        <div className="left-nav">
-    <div className="player-name">
+    <div className="player-name-left">
       <h3>{data?.profile.active_title?.name}</h3>
       <h1
         style={class_color_styles}
