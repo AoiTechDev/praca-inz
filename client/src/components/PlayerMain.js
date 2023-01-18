@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ItemInfo from "./ItemInfo";
 import Achievements from "./Achievements";
 import Talents from "./Talents";
+import Dungeons from "./Dungeons";
 
 
 function PlayerMain({ data, isFetch, handleMouseLeave }) {
@@ -19,17 +20,21 @@ function offset(el) {
 }
 
   function toggle(id, key) {  
+
+
     const item = document.getElementsByClassName("item")[key];
-    (item.style.boxShadow =
-      id.quality.name === "Epic"
-        ? "rgba(197,15,249,0.56) 0px 0px 40px 25px"
-        : id.quality.name === "Legendary"
-        ? "rgba(238,119,1, 0.56) 0px 0px 40px 25px"
-        : id.quality.name === "Rare"
-        ? "rgba(0,128,254, 0.56) 0px 0px 40px 25px"
-        : id.quality.name === "Uncommon"
-        ? "green 0px 0px 40px 25px"
-        : "rgba(0, 0, 0, 0.56) 0px 0px 40px 25px"),
+    const quality_color = id.quality.name === "Epic"
+    ? "rgba(197,15,249,0.56) 0px 0px 40px 25px"
+    : id.quality.name === "Legendary"
+    ? "rgba(238,119,1, 0.56) 0px 0px 40px 25px"
+    : id.quality.name === "Rare"
+    ? "rgba(0,128,254, 0.56) 0px 0px 40px 25px"
+    : id.quality.name === "Uncommon"
+    ? "green 0px 0px 40px 25px"
+    : "rgba(0, 0, 0, 0.56) 0px 0px 40px 25px"
+
+    item.style.boxShadow =quality_color
+        
       setItemInfo({
         name: id.name,
         type: id.inventory_type.name,
@@ -165,7 +170,7 @@ function offset(el) {
         {achiv}
        
       </div> */}
-
+      <Talents data={data}/>
       <Achievements 
        achiv={achiv}
        achivState={achivState}
@@ -174,7 +179,7 @@ function offset(el) {
        subAchivs={subAchivs}
        data={data}
        />
-       <Talents data={data}/>
+       <Dungeons data={data}/>
     </div>
   );
 }

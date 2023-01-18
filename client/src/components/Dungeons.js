@@ -1,10 +1,17 @@
 import React from "react";
 import '../styles/dungeons-styles.css';
-import '../styles/main-page.css'
-function Dungeons() {
-    return ( <div className="main">
 
-        DUNGEONS
+function Dungeons({data}) {
+    console.log(data)
+    const best_dung_run = data.dungeons.current_period.best_runs.map((dung, index) =>
+        <div key={index} className="dungeon">
+            {dung.dungeon.name}
+        </div>
+    )
+    return ( 
+    <div className="dung_container">
+        <div className="dung_title"> Dungeons</div>
+        {best_dung_run}
     </div> );
 }
 

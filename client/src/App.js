@@ -73,7 +73,7 @@ function App() {
       setLoading(false);
    
   }
-  console.log(data)
+  
   async function getSubCategory(e){
     //setLoading(true);
     const url = "http://localhost:9000/achiv_sub_category";

@@ -5,25 +5,26 @@
     z-index: 2;
     
 }
-.player-name{
+.player-name-left{
     background-color: var(--black) ;
-    height: 20%;
+    block-size: fit-content;
     width: 100%;
     color: var(--crismon);
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 2rem;
     margin: 1rem;
     border-radius: 15px;
     z-index: 2;
     box-shadow: black 10px 10px 15px 5px;
 }
-.player-name h3,h1, h2{
+.player-name-left h3,h1, h2{
     margin: 0;
 }
-.player-name h2{
+.player-name-left h2{
     margin-bottom: 1rem;
 }
+
 
 .ilvl{
     color: var(--white);
