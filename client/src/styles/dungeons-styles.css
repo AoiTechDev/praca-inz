@@ -16,6 +16,8 @@
     
     color: var(--white);
     background-color: #b31923;
+    background-repeat: no-repeat;
+    background-size: contain;
     font-size: 1rem;
     padding: 1rem;
     margin: 2rem 1rem 1rem 1rem;

@@ -1,6 +1,6 @@
 import React from "react";
 import '../../styles/dungeons-styles.css';
-import affixes_data from "../../affixes/affixes"
+import affixes_data from "../../dungeons_data/affixes"
 function DungStats({data, dungId}) {
     
  
@@ -18,7 +18,7 @@ function DungStats({data, dungId}) {
             { return item.name === affix.name && <div
                 key={index}
                 style={{
-                    backgroundImage: `url(affixes/${item.name === affix.name && item.imgUrl})`,
+                    backgroundImage: `url(affixes/${item.imgUrl})`,
 
                 }}
                 className="affix"
