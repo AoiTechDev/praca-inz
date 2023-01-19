@@ -1,9 +1,9 @@
 .dung_container{
-    width: 74%;
+    width: 75%;
     background-color: var(--black);
     color: var(--white);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) ;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) ;
     border: 1px solid black;
     border-radius: 1rem;
     align-items: center;
@@ -11,27 +11,41 @@
     position: relative;
     box-shadow: black 10px 10px 15px 5px;
     margin-top: 20px;
+    padding: 1.5rem;
 }
 .dungeon{
     
     color: var(--white);
-    background-color: #b31923;
+    background-position: top;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-size: contain;
-    font-size: 1rem;
-    padding: 1rem;
     margin: 2rem 1rem 1rem 1rem;
     border-radius: 0.7rem;
     display:flex;
     gap: 15px;
     cursor: pointer;
-    min-height: 100px;
+    height: 150px;
     box-shadow: black 10px 10px 15px 5px;
-    transition: transform .2s;
+    transition: transform .3s;
+}
+.dung-name{
+    font-size: 1.3rem;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    border-radius: 0.7rem;
+    padding: 15px;
+    visibility: hidden;
+    color: var(--white);
 }
 
 .dungeon:hover{
     transform: scale(1.2);
+
+}
+.dungeon:hover .dung-name{
+    visibility: visible;
+    background-color: rgb(17,16,16, .7);
 }
 
 .dung_title{
@@ -52,13 +66,9 @@
     text-align: center;
     font-size: 2.5rem;
 }
-.dung-name{
-    font-size: 1.2rem;
-    width: 100%;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-}
+
+
+
 .affixes-container{
     display: flex;
     flex-direction: row;
@@ -99,4 +109,15 @@
 }
 .affix:hover .affix-tooltip{
     visibility: visible;
+}
+
+@media only screen and (max-width: 1550px) {
+    .dungeon{
+        height: 120px;
+    }
+  }
+@media only screen and (max-width: 1300px) {
+.dungeon{
+    height: 100px;
+}
 }
