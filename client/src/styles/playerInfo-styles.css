@@ -19,12 +19,6 @@
     box-shadow: black 10px 10px 15px 5px;
 }
 
-@media only screen and (max-width: 1300px) {
-    .left-nav{
-        display: none;
-    }
- }
-
 
 .player-name-left h3,h1, h2{
     margin: 0;
@@ -86,3 +80,68 @@
 .minor-stats span{
     margin: 7px;
 }
+
+
+
+.shrink-player-info{
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.shrink-container{
+    background-color: var(--black);
+    color: var(--white);
+    border: 1px solid black;
+    border-radius: 1rem;
+    box-shadow: black 10px 10px 15px 5px;
+    padding: 15px;
+}
+.shrink-player-name-container{
+    width: 30%;
+}
+.shrink-player-stats{
+    width: 70%;
+}
+.shrink-player-name{
+    padding: 1.5rem;
+}
+
+.shrink-player-name > h3{
+   margin: 0;
+   color: var(--crismon)
+}
+.shrink-player-stats{
+    display: flex;
+    justify-content: space-around;
+}
+.shrink-player-stats hr{
+    margin: 0;
+}
+.health-rage{
+    width: 20%;
+    display: grid;
+    place-items: center;
+    font-size: 1.2rem;
+}
+.rage{
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+}
+.health{
+    color: var(--crismon);
+    font-size: 2rem;
+}
+.shrink-player-info{
+    display: none;
+}
+@media only screen and (max-width: 1450px) {
+    .left-nav{
+        display: none;
+    }
+    .shrink-player-info{
+        display: flex;
+    }
+ }
