@@ -1,5 +1,5 @@
 .achievements{
-    
+
     width: 74%;
     background-color: var(--black);
     color: var(--white);
@@ -13,11 +13,12 @@
     box-shadow: black 10px 10px 15px 5px;
 }
 .achiv-category{
+    
     color: var(--white);
     background-color: #b31923;
     font-size: 1rem;
     padding: 1rem;
-    margin: 1rem;
+    margin: 2rem 1rem 1rem 1rem;
     border-radius: 0.7rem;
     display:flex;
     gap: 15px;
@@ -42,31 +43,6 @@
 .points{
     color: rgb(238,119,1);
 }
-
-.achiv_button{
-    width: 120px;
-    height: 40px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    background-color: #b31923;
-    box-shadow: black 4px 4px 10px 3px;
-    color: var(--white);
-    font-size: 20px;
-    cursor: pointer;
-    transition: 0.4s;
-    position: relative;
-    left: 5px;
-    overflow: hidden;
-
-   
-}
-
-.achiv_button:hover{
-    background-color: #720c13;
-    
-}
-
 
 
 
