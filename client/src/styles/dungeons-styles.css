@@ -3,14 +3,14 @@
     background-color: var(--black);
     color: var(--white);
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) ;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) ;
     border: 1px solid black;
     border-radius: 1rem;
     align-items: center;
     padding: 40px 10px 10px 10px;
     position: relative;
     box-shadow: black 10px 10px 15px 5px;
-
+    margin-top: 20px;
 }
 .dungeon{
     
@@ -18,7 +18,7 @@
     background-color: #b31923;
     font-size: 1rem;
     padding: 1rem;
-    margin: 1rem;
+    margin: 2rem 1rem 1rem 1rem;
     border-radius: 0.7rem;
     display:flex;
     gap: 15px;
@@ -37,4 +37,64 @@
     top: 7px;
     left: 43%;
     font-size: 1.5rem;
+}
+.dung-stats{
+    padding: 50px;
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    
+}
+.dung-inside-name{
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+}
+.dung-name{
+    font-size: 1.2rem;
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.affixes-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    gap: 3rem;
+}
+.affix{
+    width: 50px;
+    height: 50px;
+    position: relative;
+    box-shadow: black 7px 7px 12px 5px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.affix-tooltip{
+    width: 200px;
+    block-size: fit-content;
+    visibility: hidden;
+    border: 1px solid red;
+    background-color: var(--black);
+    position: absolute;
+    left: 65px;
+    bottom: 0;
+    z-index: 999;  
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 1rem;
+    
+}
+.affix-name{
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 7px;
+}
+.affix-description{
+    color: var(--description)
+}
+.affix:hover .affix-tooltip{
+    visibility: visible;
 }

@@ -4,6 +4,7 @@
     color: var(--white);
     display: grid;
     grid-template-columns: repeat(3, minmax(200px, 1fr)) ;
+    
     margin-top: 20px;
     justify-items: center;
     border: 1px solid black;
@@ -12,11 +13,20 @@
     box-shadow: black 10px 10px 15px 5px;
 }
 
+@media only screen and (max-width: 1400px) {
+    .container {
+        grid-template-columns: repeat(1, minmax(200px, 1fr)) ;
+    }
+    .tooltip_container{
+        margin: 0;
+    }
+  }
+
 .tooltip_container{
     width: 75%;
     block-size: fit-content;
-    margin-top: 50px;
     background-color: var(--black);
+    margin-top: 50px;
     color: white;
     padding: 15px;
     border: 2px solid black;
@@ -68,7 +78,7 @@
     justify-content: space-between;
 }
 .description{
-    color:#F5C331
+    color:var(--description)
 }
 .name{
     font-size: 1.2rem;

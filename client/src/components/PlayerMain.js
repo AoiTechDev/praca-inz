@@ -105,16 +105,19 @@ function offset(el) {
     set_items: [],
   });
 
-  const [achivState, setAchivState] = useState(0)
+  const [achivState, setAchivState] = useState('category')
   //const [achivSub, setAchivSub] = useState({})
   const [subAchivs, setSubAchivs] = useState([])
 
   function addAchivState(){
-    setAchivState(prev => prev >= 2 ? prev = 2 : prev + 1)
+    setAchivState('subcategory')
+
   }
   function subAchivState(){
-    setAchivState(prev => prev - 1)
+    setAchivState('category')
   }
+
+ 
 
   function supAchiv(id){
     if(data.achiv_categories[id].name !== "Character"){
@@ -141,12 +144,12 @@ function offset(el) {
           backgroundImage: `url(${data.media.assets[3].value})`,
         }}
       >
-        <div className="eq">
+       
+      </div>
+      <div className="eq">
           {isFetch &&
             data?.media_eq?.map((item, key) => {
               return (
-
-        
                  <div
                   className="item"
                   key={key}
@@ -161,15 +164,17 @@ function offset(el) {
               );
             })}
         </div>
-        <div className="test" >
+        <div className="eq-tooltip" >
           <ItemInfo itemInfo={itemInfo} />
         </div>
-      </div>
       {/* <div className="achievements">
     
         {achiv}
        
       </div> */}
+      <div className="shrink-player-stats">
+        
+      </div>
       <Talents data={data}/>
       <Achievements 
        achiv={achiv}

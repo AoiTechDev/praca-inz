@@ -135,7 +135,7 @@ async function allCharacterData(nickname, server) {
     axiosGet(urlEq),
     axiosGet(talents),  
     axiosGet(dungeons),
-  ]);
+  ]);S
 }
 
 
@@ -160,7 +160,7 @@ app.get("/character", (req, res, next) => {
   // .then((res) => {
   //   try{
       
-  //   }catch(err){
+  //   }catch(err){S
   //     return next(err)
   //   } 
   // })

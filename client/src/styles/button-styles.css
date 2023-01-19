@@ -1,0 +1,22 @@
+.back_button{
+    width: 120px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: #b31923;
+    box-shadow: black 4px 4px 10px 3px;
+    color: var(--white);
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.4s;
+    position: absolute;
+    left: 25px;
+    top: 0;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.back_button:hover{
+    background-color: #720c13;
+    
+}

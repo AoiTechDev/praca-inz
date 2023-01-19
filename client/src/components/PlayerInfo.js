@@ -1,48 +1,28 @@
 import "../styles/playerInfo-styles.css";
 import React  from "react";
-
+import class_colors from "../class_colors/classColors"
 function PlayerInfo({data}) {
-    console.log(data)
 
-    const class_color_styles = {
-      color:
-        data.profile.character_class.name === "Death Knight"
-          ? "#C41E3A"
-          : data.profile.character_class.name === "Demon Hunter"
-          ? "#A330C9"
-          : data.profile.character_class.name === "Druid"
-          ? "#FF7C0A"
-          : data.profile.character_class.name === "Evoker"
-          ? "#33937F"
-          : data.profile.character_class.name === "Hunter"
-          ? "#AAD372"
-          : data.profile.character_class.name === "Mage"
-          ? "#3FC7EB"
-          : data.profile.character_class.name === "Monk"
-          ? "#00FF98"
-          : data.profile.character_class.name === "Paladin"
-          ? "#F48CBA"
-          : data.profile.character_class.name === "Priest"
-          ? "#FFFFFF"
-          : data.profile.character_class.name === "Rouge"
-          ? "#FFF468"
-          : data.profile.character_class.name === "Shaman"
-          ? "#0070DD"
-          : data.profile.character_class.name === "Warlock"
-          ? "#8788EE"
-          : data.profile.character_class.name === "Warrior" &&
-            "#C69B6D",
-    }
+
+    const color_class_style = class_colors.find((color) => 
+      color.class === data.profile.character_class.name && color.color
+    )
+    
     return ( 
        <div className="left-nav">
     <div className="player-name-left">
       <h3>{data?.profile.active_title?.name}</h3>
+      
       <h1
-        style={class_color_styles}
+        style={{
+          color: color_class_style
+        }}
       >
         {data?.profile?.name}
       </h1>
-        <h2  style={class_color_styles}>{data.talents.active_specialization.name}</h2>
+        <h2  style={{
+          color: color_class_style
+        }}>{data.talents.active_specialization.name}</h2>
       <div className="ilvl"> level: {data.profile.level}</div>
       <div className="ilvl">
         Item level: {data.profile.equipped_item_level}
