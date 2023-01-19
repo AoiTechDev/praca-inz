@@ -40,7 +40,11 @@ function Dungeons({ data }) {
             style={{
                         backgroundImage: `url(dungeons/${dungeon.imgUrl})`
                     }}
-          ></div>
+          >
+             <div className="dung-name">
+                {dungeons.dungeon.name}
+                </div>
+          </div>
         )
       );
     })
