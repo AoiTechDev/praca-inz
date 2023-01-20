@@ -1,6 +1,6 @@
 import React from "react";
 import '../../styles/dungeons-styles.css';
-import affixes_data from "../../dungeons_data/affixes"
+import affixes_data from "../../affixes/affixes"
 function DungStats({data, dungId}) {
     
  

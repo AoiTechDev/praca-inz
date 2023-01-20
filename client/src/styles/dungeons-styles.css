@@ -19,7 +19,7 @@
     background-position: top;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    margin: 2rem 1rem 1rem 1rem;
+    margin: 5rem 1rem 1rem 1rem;
     border-radius: 0.7rem;
     display:flex;
     gap: 15px;
@@ -48,11 +48,19 @@
     background-color: rgb(17,16,16, .7);
 }
 
-.dung_title{
+.dung-header{
     position: absolute;
     top: 7px;
-    left: 43%;
+    left: 40%;
     font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.dung-title{
+
 }
 .dung-stats{
     padding: 50px;
@@ -111,13 +119,27 @@
     visibility: visible;
 }
 
+@media only screen and (max-width: 1700px) {
+    .dungeon{
+        height: 130px;
+    }
+  }
+
 @media only screen and (max-width: 1550px) {
     .dungeon{
         height: 120px;
     }
+    .dung-name{
+        font-size: 1rem;
+    }
   }
 @media only screen and (max-width: 1300px) {
-.dungeon{
-    height: 100px;
-}
+    .dungeon{
+        height: 100px;
+
+    }
+
+    .dung-header{
+        left: 38%;
+    }
 }
