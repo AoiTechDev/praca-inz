@@ -169,7 +169,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
        
       </div> */}
       <ShrinkPlayerInfo data={data} />
-      <Talents data={data} />
+      <Talents data={data} offset={offset}/>
       <Achievements
         achiv={achiv}
         achivState={achivState}

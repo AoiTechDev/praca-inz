@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "../styles/talents-styles.css";
 
-function Talents({data}) {
+function Talents({data, offset}) {
 
     const spec = data.talents.active_specialization.name
     const [spellInfo, setSpellInfo] = useState({
@@ -13,13 +13,97 @@ function Talents({data}) {
         power_cost: "",
         range: "",
     })
+
+    //const [mousePos, setMousePos] = useState({});
+
+    // useEffect(() => {
+    //     const handleMouseMove = (event) => {
+    //       setMousePos({ x: event.clientX, y: event.clientY });
+    //     };
+    
+    //     window.addEventListener('mousemove', handleMouseMove);
+    
+    //     return () => {
+    //       window.removeEventListener(
+    //         'mousemove',
+    //         handleMouseMove
+    //       );
+    //     };
+    //   }, []);
+
+
+ 
+
+
     
     const [isHover, setIsHover] = useState(false)
 
-    const handleMouseOver = () => { 
+    const handleMouseOver = (id, con) => { 
+        const container = document.getElementsByClassName("container")[0]
+        const container_spec = document.getElementsByClassName("spec_con")[0]
+        const container_class = document.getElementsByClassName("class_con")[0]
+
         const tooltip = document.getElementsByClassName("tooltip_container")[0]
+        const talent = document.getElementsByClassName("spell_img")[id]
+       
+       
+        const spec_rect = container_spec.getBoundingClientRect();
+        const class_rect = container_class.getBoundingClientRect();
+
+        const targetRect = talent.getBoundingClientRect();
+
+
+      
+
         if(isHover === false){
             tooltip.style.visibility = "visible"
+            if(window.innerWidth < 1450){
+                if(con === "spec"){
+                    const top = targetRect.top -  spec_rect.top + 430;
+                    const left = targetRect.left -spec_rect.left ;
+                    tooltip.style.top = `${top+30}px`
+                    if(left > 500){
+                        tooltip.style.left = `${left-130}px`
+                    }else{
+                        tooltip.style.left = `${left}px`
+                    }
+                   
+                    console.log(left)
+                }else if(con === "class"){
+                    const top = targetRect.top - class_rect.top + 220;
+                    const left = targetRect.left -class_rect.left;
+                    tooltip.style.top = `${top+240}px`
+                    if(left > 500){
+                        tooltip.style.left = `${left-130}px`
+                    }else{
+                        tooltip.style.left = `${left}px`
+                    }
+                    
+                }
+            }else{
+                if(con === "spec"){
+                    const top = targetRect.top -  spec_rect.top;
+                    const left = targetRect.left -spec_rect.left + offset(container).left;
+                    tooltip.style.top = `${top+60}px`
+                    if(left < 40){
+                        tooltip.style.left = `${left+200}px`
+                    }else{
+                        tooltip.style.left = `${left}px`
+                    }
+                   
+                }else if(con === "class"){
+                    const top = targetRect.top - class_rect.top + 50;
+                    const left = targetRect.left -class_rect.left + offset(container).left;
+                    tooltip.style.top = `${top+60}px`
+                    tooltip.style.left = `${left+130}px`
+                    console.log(top)
+                }
+            }
+            
+
+            
+            
+            
         }
         setIsHover(true);
       };
@@ -34,6 +118,13 @@ function Talents({data}) {
     
 
 
+    // useEffect(()=>{
+    //     const tooltip = document.getElementsByClassName("tooltip_container")[0]
+    //     if(isHover === false){
+    //         tooltip.style.left = `${mousePos.x-200}px`
+    //         tooltip.style.top = `${mousePos.y+200}px`
+    //     }
+    // },[mousePos])
     function specTooltip(e){
 
         data.talents.specializations.map((idx) => {
@@ -97,8 +188,9 @@ function Talents({data}) {
         <div key={index} style={{
             backgroundImage: `url(${spell.assets[0].value})`
         }} className="spell_img spec_talents"
-            onMouseEnter={() => {specTooltip(index), handleMouseOver()}}
+            onMouseEnter={() => {specTooltip(index), handleMouseOver(index, 'spec')}}
             onMouseLeave={handleMouseOut}
+      
             >
               
         </div>
@@ -108,17 +200,23 @@ function Talents({data}) {
     <div key={index} style={{
         backgroundImage: `url(${spell.assets[0].value})`
     }} className="spell_img class_talents"
-    onMouseEnter={() => {classTooltip(index), handleMouseOver()}}
+    onMouseEnter={() => {classTooltip(index), handleMouseOver(index, 'class')}}
     onMouseLeave={handleMouseOut}
+  
     >
     </div>
 )
     return (  
-    <>
-        <div className="container">
-            <div className="talents_container">
+        <>
+             <div className="container">
+            <div className="talents_container class_con">
                 <div className="classname class"><h2>Class Talents</h2></div>
                 {class_talents}
+            </div>
+           
+            <div className="talents_container spec_con">
+                <div className="classname spec"><h2>Specialization Talents</h2></div>
+                {spec_talents}
             </div>
             <div className="tooltip_container">
                  <div className="name">{spellInfo.name}</div>
@@ -132,13 +230,12 @@ function Talents({data}) {
                 <div> {spellInfo.power_cost}</div>
                
                 <div className="description">{spellInfo.description}</div>
-            </div>
-            <div className="talents_container">
-                <div className="classname spec"><h2>Specialization Talents</h2></div>
-                {spec_talents}
-            </div>
         </div>
-    </>
+        </div>
+        
+        </>
+       
+
     );
 }
 
