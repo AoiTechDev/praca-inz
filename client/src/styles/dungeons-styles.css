@@ -93,7 +93,9 @@
     box-shadow: black 7px 7px 12px 5px;
     border-radius: 10px;
     margin-top: 20px;
+    
 }
+
 .affix-tooltip{
     width: 200px;
     block-size: fit-content;
@@ -120,6 +122,23 @@
 .affix:hover .affix-tooltip{
     visibility: visible;
 }
+
+.dung-members{
+    margin-top: 40px;
+}
+
+.dung-member{
+    font-size: 1.5rem;
+    margin: 15px;
+    display: grid;
+    grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+}
+
+
+.dung-member-ilvl{
+    text-align: center;
+}
+
 
 @media only screen and (max-width: 1700px) {
     .dungeon{
