@@ -3,7 +3,7 @@
     background-color: var(--black);
     color: var(--white);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) ;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) ;
     border: 1px solid black;
     border-radius: 1rem;
     align-items: center;
@@ -63,8 +63,10 @@
 
 }
 .dung-stats{
+    
     padding: 50px;
     margin-left: 30px;
+    grid-area: 2 / 1 / 2 / 6;
     display: flex;
     flex-direction: column;
     
