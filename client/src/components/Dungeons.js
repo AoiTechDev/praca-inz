@@ -9,16 +9,18 @@ function Dungeons({ data }) {
   const mythic_rating = data.dungeons.current_mythic_rating.color;
   function addDungState(id) {
     setDungId(id);
+
     setDungState("dung_stats");
   }
   function subDungState() {
     setDungState("dungeons");
   }
 
-  const test = data.dungeons.current_period.best_runs.map((dungeons) =>
-    dungeons_imgs.map((dungeon, index) => {
+  const dungeons = data.dungeons.current_period.best_runs.map((dungeons, index) =>
+    dungeons_imgs.map((dungeon) => {
       return (
-        dungeon.name === dungeons.dungeon.name && (
+        dungeon.name === dungeons.dungeon.name &&
+        dungeons.is_completed_within_time && (
           <div
             key={index}
             className="dungeon"
@@ -54,7 +56,7 @@ function Dungeons({ data }) {
       )}
 
       {dungState === "dungeons" ? (
-        test
+        dungeons
       ) : (
         <DungStats data={data} dungId={dungId} />
       )}

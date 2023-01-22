@@ -13,6 +13,7 @@ function DungStats({data, dungId}) {
 // >{affix.name}</div>
 
     const dungStats = data.dungeons.current_period.best_runs[dungId]
+    console.log(dungStats)
     const affixes = dungStats.keystone_affixes.map((affix) =>
         affixes_data.map((item, index)=>
             { return item.name === affix.name && <div
