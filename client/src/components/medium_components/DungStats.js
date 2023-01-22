@@ -2,15 +2,11 @@ import React from "react";
 import "../../styles/dungeons-styles.css";
 import affixes_data from "../../affixes/affixes";
 function DungStats({ data, dungId }) {
-  //     <div key={index} className="affix"
-  //     style={{
-  //         backgroundImage: affixes_data.map((item) =>
-  //            console.log(item.name === affix.name)
-  //         )
-  //     }}
-  // >{affix.name}</div>
-
   const dungStats = data.dungeons.current_period.best_runs[dungId];
+  const map_r = dungStats.map_rating.color.r
+  const map_g = dungStats.map_rating.color.g
+  const map_b = dungStats.map_rating.color.b
+
 
   const affixes = dungStats.keystone_affixes.map((affix) =>
     affixes_data.map((item, index) => {
@@ -37,7 +33,6 @@ function DungStats({ data, dungId }) {
     <div key={index} className="dung-member">
       <div className="dung-member-name">{member.character.name} </div>
       <div className="dung-member-realm"> {member.character.realm.slug}</div>
-
       <div className="dung-member-ilvl">{member.equipped_item_level}</div>
       <div className="dung-member-spec">{member.specialization.name}</div>
       <div className="dung-member-race">{member.race.name}</div>
@@ -45,8 +40,20 @@ function DungStats({ data, dungId }) {
   ));
   return (
     <div className="dung-stats">
-      <div className="dung-inside-name">{dungStats.dungeon.name}</div>
+      <div className="dung-inside-name">{dungStats.dungeon.name} 
+      <span style={{
+          color: `rgb(${map_r}, ${map_g}, ${map_b})`,
+        }}>{dungStats.keystone_level}</span>
+       </div>
       <div className="affixes-container">{affixes}</div>
+      <div
+        className="map-rating"
+        style={{
+          color: `rgb(${map_r}, ${map_g}, ${map_b})`,
+        }}
+      >
+        <span>Map rating:</span> {Math.round(dungStats.map_rating.rating)}
+      </div>
       <div className="dung-members">{members}</div>
     </div>
   );

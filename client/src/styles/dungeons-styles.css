@@ -123,6 +123,15 @@
     visibility: visible;
 }
 
+.map-rating{
+    text-align: center;
+    margin-top: 40px;
+    font-size: 2rem;
+}
+
+.map-rating span{
+    color: var(--white)
+}
 .dung-members{
     margin-top: 40px;
 }
@@ -134,7 +143,11 @@
     grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
 }
 
-
+.dung-inside-name{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
 .dung-member-ilvl{
     text-align: center;
 }
