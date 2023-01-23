@@ -1,0 +1,51 @@
+.raid-container{
+    width: 75%;
+    background-color: var(--black);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    border: 1px solid black;
+    border-radius: 1rem;
+    align-items: center;
+    padding: 40px 10px 10px 10px;
+    position: relative;
+    box-shadow: black 10px 10px 15px 5px;
+    margin-top: 20px;
+    padding: 1.5rem;
+}
+
+.raid-title{
+    position: absolute;
+    top: 0;
+    font-size: 1.5rem;
+    display: flex;
+    margin: 10px;
+}
+
+
+.raid-img{
+    width: 60%;
+    min-height: 300px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-top: 30px;
+    border-radius: 1rem;
+    box-shadow: black 10px 10px 15px 5px;
+    transition: transform .3s;
+    cursor: pointer;
+}
+.raid-name{
+    height: 300px;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    visibility: hidden;
+}
+
+.raid-img:hover{
+    transform: scale(1.1);
+}
+.raid-img:hover .raid-name{
+    visibility: visible;
+    background-color: rgb(17,16,16, .7);
+}

@@ -125,6 +125,8 @@ async function allCharacterData(nickname, server) {
   test = `${EU_BLIZZARD}/data/wow/achievement-category/index`;
   talents = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/specializations`;
   dungeons = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/mythic-keystone-profile`;
+  raids = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/encounters/raids`;
+
 
   return await axios.all([
     axiosGet(urlMedia),
@@ -135,6 +137,7 @@ async function allCharacterData(nickname, server) {
     axiosGet(urlEq),
     axiosGet(talents),  
     axiosGet(dungeons),
+    axiosGet(raids)
   ]);S
 }
 
@@ -156,21 +159,10 @@ app.get("/character", (req, res, next) => {
   
   const character = allCharacterData(req.query.nickname, req.query.server)
   
-  // character
-  // .then((res) => {
-  //   try{
-      
-  //   }catch(err){S
-  //     return next(err)
-  //   } 
-  // })
-  // .catch((err) => {
-  //   return next(err)
-  // })
-
+ 
   character
     .then(
-      axios.spread((media, profile, stats, achiv, achiv_data, eq, talents, dungeons) => {
+      axios.spread((media, profile, stats, achiv, achiv_data, eq, talents, dungeons, raids) => {
         const promises_eq_arr = [];
         const promises_achiv_arr = []
         const class_talents_arr=[]
@@ -226,10 +218,11 @@ app.get("/character", (req, res, next) => {
               achiv_categories: response[3],
               talents: talents.data,
               dungeons: dungeons.data,
+              raids: raids.data
             });
           })
         } catch(error){
-          console.log(error)
+          return next(err)
         }
 
       })
