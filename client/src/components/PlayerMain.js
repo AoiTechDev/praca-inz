@@ -6,6 +6,7 @@ import Achievements from "./Achievements";
 import Talents from "./Talents";
 import Dungeons from "./Dungeons";
 import ShrinkPlayerInfo from "./ShrinkPlayerInfo";
+import Raids from "./Raids";
 
 function PlayerMain({ data, isFetch, handleMouseLeave }) {
   const handleMouseOut = () => {
@@ -179,6 +180,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
         data={data}
       />
       <Dungeons data={data} />
+      <Raids data={data}/>
     </div>
   );
 }
