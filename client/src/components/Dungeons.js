@@ -16,7 +16,7 @@ function Dungeons({ data }) {
     setDungState("dungeons");
   }
 
-  const dungeons = data.dungeons.current_period.best_runs.map((dungeons, index) =>
+  const dungeons = data?.dungeons?.current_period?.best_runs?.map((dungeons, index) =>
     dungeons_imgs.map((dungeon) => {
       return (
         dungeon.name === dungeons.dungeon.name &&
