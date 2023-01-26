@@ -96,7 +96,6 @@ function Talents({data, offset}) {
                     const left = targetRect.left -class_rect.left + offset(container).left;
                     tooltip.style.top = `${top+60}px`
                     tooltip.style.left = `${left+130}px`
-                    console.log(top)
                 }
             }
             
