@@ -124,7 +124,7 @@ async function allCharacterData(nickname, server) {
   urlEq = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/equipment`;
   test = `${EU_BLIZZARD}/data/wow/achievement-category/index`;
   talents = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/specializations`;
-  dungeons = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/mythic-keystone-profile`;
+  dungeons = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/mythic-keystone-profile/season/9`;
   raids = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/encounters/raids`;
 
 

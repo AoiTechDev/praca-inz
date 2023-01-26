@@ -6,7 +6,7 @@ import dungeons_imgs from "../affixes/dunegonsImg";
 function Dungeons({ data }) {
   const [dungState, setDungState] = useState("dungeons");
   const [dungId, setDungId] = useState(0);
-  const mythic_rating = data.dungeons.current_mythic_rating.color;
+  const mythic_rating = data.dungeons.mythic_rating.color;
   function addDungState(id) {
     setDungId(id);
 
@@ -16,10 +16,11 @@ function Dungeons({ data }) {
     setDungState("dungeons");
   }
 
-  const dungeons = data?.dungeons?.current_period?.best_runs?.map((dungeons, index) =>
+  const dungeons = data?.dungeons?.best_runs?.map((dungeons, index) =>
     dungeons_imgs.map((dungeon) => {
+      
       return (
-        dungeon.name === dungeons.dungeon.name &&
+        dungeon.name === dungeons.dungeon.name && 
         dungeons.is_completed_within_time && (
           <div
             key={index}
@@ -41,7 +42,7 @@ function Dungeons({ data }) {
       {dungState === "dung_stats" && <BackButton onClick={subDungState} />}
       {dungState === "dungeons" && (
         <div className="dung-header">
-          <div className="dung-title">Current Dungeons</div>
+          <div className="dung-title">Dungeons</div>
           <div className="dung-rating">
             <span>Mythic rating: </span>
             <span
@@ -49,7 +50,7 @@ function Dungeons({ data }) {
                 color: `rgb(${mythic_rating.r},${mythic_rating.g}, ${mythic_rating.b})`,
               }}
             >
-              {Math.round(data.dungeons.current_mythic_rating.rating)}
+              {Math.round(data.dungeons.mythic_rating.rating)}
             </span>
           </div>
         </div>

@@ -2,7 +2,7 @@ import React from "react";
 import "../../styles/dungeons-styles.css";
 import affixes_data from "../../affixes/affixes";
 function DungStats({ data, dungId }) {
-  const dungStats = data.dungeons.current_period.best_runs[dungId];
+  const dungStats = data.dungeons.best_runs[dungId];
   const map_r = dungStats.map_rating.color.r;
   const map_g = dungStats.map_rating.color.g;
   const map_b = dungStats.map_rating.color.b;
