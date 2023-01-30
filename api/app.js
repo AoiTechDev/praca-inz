@@ -197,6 +197,7 @@ app.get("/character", (req, res, next) => {
                   getSpellMedia(index.tooltip.spell_tooltip.spell.id).then(
                     (response) => response.data
                   )
+                  .catch((err)=>console.error(err))
                 );
               });
 
@@ -205,6 +206,12 @@ app.get("/character", (req, res, next) => {
                   getSpellMedia(index.tooltip.spell_tooltip.spell.id).then(
                     (response) => response.data
                   )
+                  .catch((err)=>{
+                    console.error("Error response: ");
+                    console.error(err.response);
+                    console.error(err.response.status);
+                    console.error(err.response.headers);
+                  })
                 );
               });
             }

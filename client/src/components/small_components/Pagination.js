@@ -12,7 +12,7 @@ export const Pagination = ({mountsPerPage, totalMounts, paginate}) => {
 
   return (
     <div className="pagination-container">
-        <ul className="test">
+        <ul className="pagination-list">
             {mountNumbers.map((number, index) => (
                 <li key={index}  >
                     <a onClick={() => paginate(number, index)}href="#" >
