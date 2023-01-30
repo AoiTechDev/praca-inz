@@ -9,7 +9,6 @@
     --white: #ACACAD;
     --description: #F5C331;
 }
-
 .app{
     height: 100vh;
 }
@@ -23,26 +22,26 @@ main{
     
 }
 
-
-.talents{
-    height: 50vh;
-    width: 100%;
+.section-container{
+    width: 75%;
+    background-color: var(--black);
+    color: var(--white);
+    display: grid;
+    border: 1px solid black;
+    border-radius: 1rem;
+    align-items: center;
+    padding: 40px 10px 10px 10px;
+    position: relative;
+    box-shadow: black 10px 10px 15px 5px;
+    margin-top: 20px;
 }
-.bg{
-    width:60%;
-    height: 90%;
+.section-title{
+    width: 100%;
     position: absolute;
-    left: 20%;
-    top: 10%;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 1;
-    -webkit-box-shadow: -11px 2px 41px 100px var(--redish), 
-    inset 0px 2px 48px 100px var(--redish);
-    -moz-box-shadow: -11px 2px 41px 100px var(--redish),
-    inset 0px 2px 48px 100px var(--redish);
-    box-shadow: -11px 2px 41px 100px var(--redish),
-    inset 0px 2px 48px 100px var(--redish);
-
+    top: 0;
+    font-size: 1.5rem;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

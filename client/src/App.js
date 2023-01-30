@@ -59,7 +59,7 @@ function App() {
       .then((res) => {
         if(res.status === 200){
 
-          console.log(res)
+          
           setResponseStatus(res.status)
           setData(res.data)
           
@@ -123,7 +123,7 @@ function App() {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-  //console.log(data)
+
   return (
     <div
       className="app"

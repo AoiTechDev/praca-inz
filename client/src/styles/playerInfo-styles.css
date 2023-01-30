@@ -144,4 +144,7 @@
     .shrink-player-info{
         display: flex;
     }
+    .shrink-player-info .health{
+        font-size: 1.5rem;
+    }
  }

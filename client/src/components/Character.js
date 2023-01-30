@@ -5,7 +5,7 @@ import { useOutletContext } from "react-router-dom";
 
 function Character() {
     const {data, isFetch, handleMouseLeave, getSubCategory, achivSubCategory, responseStatus} = useOutletContext();
-    console.log(data)
+    
     return (  
         <div className="player-info">
 
