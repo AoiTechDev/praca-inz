@@ -40,11 +40,14 @@
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 30px;
     margin: 2rem 0 0 0;
 }
 .instance-container{
     padding: 1rem;
+    background-color: rgba(5, 5, 5, 0.7);
+    box-shadow: black 10px 10px 15px 5px;
+    border-radius: 1rem;
 }
 
 .instance-name{

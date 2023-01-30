@@ -1,0 +1,50 @@
+.section-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding-top: 5rem;
+}
+.mount-img{
+    width: 150px;
+    height: 150px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.pagination-container{
+    width: 100%;
+    position: absolute;
+    top: 30px;
+    
+}
+.pagination-container ul{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0;
+
+}
+
+.pagination-container ul li{
+    display: inline;
+
+}
+
+.pagination-container ul li a{
+    
+    text-decoration: none;
+    color: var(--white);
+    padding: 8px 10px;
+    transition: background-color .3s;
+}
+
+/* .pagination-container ul li a:hover{
+    background-color: #ddd;
+} */
+/* .pagination-container ul li a:focus{
+    background-color: #4CAF50;
+} */
+
+.active{
+    background-color: green;
+}

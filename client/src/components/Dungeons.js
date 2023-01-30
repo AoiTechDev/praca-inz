@@ -18,9 +18,8 @@ function Dungeons({ data }) {
 
   const dungeons = data?.dungeons?.best_runs?.map((dungeons, index) =>
     dungeons_imgs.map((dungeon) => {
-      
       return (
-        dungeon.name === dungeons.dungeon.name && 
+        dungeon.name === dungeons.dungeon.name &&
         dungeons.is_completed_within_time && (
           <div
             key={index}

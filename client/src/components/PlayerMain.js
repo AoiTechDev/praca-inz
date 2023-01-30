@@ -7,6 +7,8 @@ import Talents from "./Talents";
 import Dungeons from "./Dungeons";
 import ShrinkPlayerInfo from "./ShrinkPlayerInfo";
 import Raids from "./Raids";
+import Collection from './Collection'
+
 
 function PlayerMain({ data, isFetch, handleMouseLeave }) {
   const handleMouseOut = () => {
@@ -57,8 +59,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
     const tooltip = document.getElementsByClassName("item-info")[0];
     tooltip.style.visibility = "visible";
     const player = document.getElementsByClassName("player")[0];
-    // console.log(offset(player))
-    // console.log(offset(item))
+
 
     let test = 0;
     let item_top = offset(item).top - 80;
@@ -75,7 +76,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
         test = offset(item).left - window.innerWidth / 3 - 300;
       }
     }
-    console.log(window.innerWidth);
+   
     tooltip.style.left = `${test}px`;
     tooltip.style.top = `${item_top}px`;
   }
@@ -101,7 +102,6 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
   });
 
   const [achivState, setAchivState] = useState("category");
-  //const [achivSub, setAchivSub] = useState({})
   const [subAchivs, setSubAchivs] = useState([]);
 
   function addAchivState() {
@@ -181,6 +181,8 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
       />
       <Dungeons data={data} />
       <Raids data={data}/>
+
+      <Collection data={data} />
     </div>
   );
 }
