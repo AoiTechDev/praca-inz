@@ -113,8 +113,8 @@ async function allCharacterData(nickname, server) {
   talents = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/specializations`;
   dungeons = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/mythic-keystone-profile/season/9`;
   raids = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/encounters/raids`;
-  mounts = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/mounts`
-
+  mounts = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/mounts`;
+  pets = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/pets`;
 
   return await axios.all([
     axiosGet(urlMedia),
@@ -127,8 +127,8 @@ async function allCharacterData(nickname, server) {
     axiosGet(dungeons),
     axiosGet(raids),
     axiosGet(mounts),
+    axiosGet(pets),
   ]);
-  
 }
 
 app.get("/achiv_sub_category", (req, res) => {
@@ -141,21 +141,19 @@ const errorHandler = (error, req, res, next) => {
   return res.status(404).send(error.message);
 };
 
-async function getMount(id){
+async function getMount(id) {
   const mount_url = `${EU_BLIZZARD}/data/wow/mount/${id}`;
-  return await axiosGet(mount_url, 'static-eu')
+  return await axiosGet(mount_url, "static-eu");
 }
 
-async function getMountMedia(id){
+async function getMountMedia(id) {
   const mount_media_url = `${EU_BLIZZARD}/data/wow/media/creature-display/${id}`;
-  return await axiosGet(mount_media_url, 'static-eu')
+  return await axiosGet(mount_media_url, "static-eu");
 }
-
-
 
 app.get("/character", (req, res, next) => {
   const character = allCharacterData(req.query.nickname, req.query.server);
-  
+
   character
     .then(
       axios.spread(
@@ -170,13 +168,14 @@ app.get("/character", (req, res, next) => {
           dungeons,
           raids,
           mounts,
+          pets
         ) => {
           const promises_eq_arr = [];
           const promises_achiv_arr = [];
           const class_talents_arr = [];
           const spec_talents_arr = [];
           const mounts_arr = [];
-          const mounts_media_arr = []
+          const mounts_media_arr = [];
 
           eq.data.equipped_items.map((item) => {
             promises_eq_arr.push(
@@ -194,44 +193,48 @@ app.get("/character", (req, res, next) => {
             if (idx.is_active) {
               idx.selected_spec_talents.map((index) => {
                 spec_talents_arr.push(
-                  getSpellMedia(index.tooltip.spell_tooltip.spell.id).then(
-                    (response) => response.data
-                  )
-                  .catch((err)=>console.error(err))
+                  getSpellMedia(index.tooltip.spell_tooltip.spell.id)
+                    .then((response) => response.data)
+                    .catch((err) => console.error(err.response))
                 );
               });
 
               idx.selected_class_talents.map((index) => {
                 class_talents_arr.push(
-                  getSpellMedia(index.tooltip.spell_tooltip.spell.id).then(
-                    (response) => response.data
-                  )
-                  .catch((err)=>{
-                    console.error("Error response: ");
-                    console.error(err.response);
-                    console.error(err.response.status);
-                    console.error(err.response.headers);
-                  })
+                  getSpellMedia(index.tooltip.spell_tooltip.spell.id)
+                    .then((response) => response.data)
+                    .catch((err) => {
+                      console.error("Error response: ");
+                      console.error(err.response);
+                    })
                 );
               });
             }
           });
 
-          mounts.data.mounts.map((mount) => 
-           mounts_arr.push(getMount(mount.mount.id).then((response) => response.data))
-          )
-
-
+          mounts.data.mounts.map((mount) =>
+            mounts_arr.push(
+              getMount(mount.mount.id).then((response) => response.data)
+            )
+          );
 
           let eq_promises = Promise.all(promises_eq_arr);
           let spec_talents_promises = Promise.all(spec_talents_arr);
           let class_talents_promises = Promise.all(class_talents_arr);
           let achiv_promises = Promise.all(promises_achiv_arr);
-          let mounts_promises = Promise.all(mounts_arr)
-          
-          await mounts_promises.then((response) => response.map((mount) => mounts_media_arr.push(getMountMedia(mount.creature_displays[0].id).then(res => res.data))))
+          let mounts_promises = Promise.all(mounts_arr);
 
-          let mounts_media_promises = Promise.all(mounts_media_arr)
+          await mounts_promises.then((response) =>
+            response.map((mount) =>
+              mounts_media_arr.push(
+                getMountMedia(mount.creature_displays[0].id).then(
+                  (res) => res.data
+                )
+              )
+            )
+          );
+
+          let mounts_media_promises = Promise.all(mounts_media_arr);
 
           try {
             let result = Promise.all([
@@ -257,7 +260,8 @@ app.get("/character", (req, res, next) => {
                 dungeons: dungeons.data,
                 raids: raids.data,
                 mounts: response[4],
-                mounts_media: response[5]
+                mounts_media: response[5],
+                pets: pets.data,
               });
             });
           } catch (error) {

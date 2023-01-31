@@ -7,8 +7,7 @@ import Talents from "./Talents";
 import Dungeons from "./Dungeons";
 import ShrinkPlayerInfo from "./ShrinkPlayerInfo";
 import Raids from "./Raids";
-import Collection from './Collection'
-
+import Collection from "./Collection";
 
 function PlayerMain({ data, isFetch, handleMouseLeave }) {
   const handleMouseOut = () => {
@@ -60,24 +59,24 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
     tooltip.style.visibility = "visible";
     const player = document.getElementsByClassName("player")[0];
 
-
-    let test = 0;
-    let item_top = offset(item).top - 80;
+    let right = 0;
+    let left = 0;
+    let item_top = offset(item).top - 100;
     if (key === 0 || key % 2 === 0) {
-      test = offset(item).left - offset(player).left + 100;
+      right = offset(item).left - offset(player).left + 100;
     } else {
-      test = offset(item).left - window.innerWidth / 3 - 150;
-      window.innerWidth < 1400;
+      right = offset(item).left - window.innerWidth / 3 - 150;
 
       if ((window.innerWidth > 1000) & (window.innerWidth < 1400)) {
-        test = offset(item).left - window.innerWidth / 3 - 250;
+        right = offset(item).left - window.innerWidth / 3 - 250;
       }
       if (window.innerWidth < 1000) {
-        test = offset(item).left - window.innerWidth / 3 - 300;
+        right = offset(item).left - window.innerWidth / 3 - 300;
       }
     }
-   
-    tooltip.style.left = `${test}px`;
+
+
+    tooltip.style.left = `${right}px`;
     tooltip.style.top = `${item_top}px`;
   }
 
@@ -170,7 +169,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
        
       </div> */}
       <ShrinkPlayerInfo data={data} />
-      <Talents data={data} offset={offset}/>
+      <Talents data={data} offset={offset} />
       <Achievements
         achiv={achiv}
         achivState={achivState}
@@ -180,7 +179,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
         data={data}
       />
       <Dungeons data={data} />
-      <Raids data={data}/>
+      <Raids data={data} />
 
       <Collection data={data} />
     </div>
