@@ -1,56 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/collection-styles.css";
 //import Pagination from '@mui/material/Pagination';
 //import Stack from '@mui/material/Stack';
-import { Pagination } from "./small_components/Pagination";
+
+import { Mounts } from "./medium_components/Mounts";
+import { Pets } from "./medium_components/Pets";
+
 function Collection({ data }) {
-  console.log(data);
+  //console.log(data);
+  const [currentMountPage, setCurrentMountPage] = useState(1);
+  const [currentPetPage, setCurrentPetPage] = useState(1);
+  const [collectionState, setCollectionState] = useState("mounts");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [mountsPerPage] = useState(18);
 
-  const indexOfLastMount = currentPage * mountsPerPage;
-  const indexOfFirstMount = indexOfLastMount - mountsPerPage;
+  function collectionMountChange() {
 
-  const currentMounts = data.mounts_media.slice(
-    indexOfFirstMount,
-    indexOfLastMount
-  );
+    if (collectionState === "pets") {
+      setCollectionState("mounts");
+    }
+    setCurrentMountPage(1)
+  }
+  function collectionPetChange() {
 
-  const paginate = (pageNumber, id) => {
-    setCurrentPage(pageNumber);
+    if (collectionState === "mounts") {
+      setCollectionState("pets");
+    }
+    setCurrentPetPage(1)
+  }
+
+  useEffect(() => {
     const a = document
       .getElementsByClassName("pagination-list")[0]
       .getElementsByTagName("a");
-      
+    a[0].classList.add("active");
+  }, [collectionState]);
 
+  const paginate = (mountPageNumber, petPageNumber, id) => {
+    setCurrentMountPage(mountPageNumber);
+    setCurrentPetPage(petPageNumber);
+
+    const a = document
+      .getElementsByClassName("pagination-list")[0]
+      .getElementsByTagName("a");
+    
+      console.log(a[id])
     for (let i = 0; i < a.length; i++) {
       a[i].classList.remove("active");
     }
     a[id].classList.add("active");
   };
 
-  const mounts = currentMounts.map((mount, index) => (
-    <div className="mount-container" key={index}>
-      <div
-        
-        style={{
-          backgroundImage: `url(${mount.assets[0].value})`,
-        }}
-        className="mount-img"
-      ></div>
-      <div className="mount-info">{data.mounts.map((item) =>  item.creature_displays[0].id === mount.id && item.name)}</div>
-    </div>
-  ));
+  //console.log(paginationClickState)
   return (
     <div className="section-container">
-      <div className="section-title">Mounts</div>
-      <Pagination
-        mountsPerPage={mountsPerPage}
-        totalMounts={data.mounts_media.length}
-        paginate={paginate}
-      />
-      {mounts}
+      <div className="section-title">
+        <button
+          onClick={collectionMountChange}
+          className="change-collection-btn"
+        >
+          Mounts
+        </button>
+        <button onClick={collectionPetChange} className="change-collection-btn">
+          Pets
+        </button>
+      </div>
+      {collectionState === "mounts" ? (
+        <Mounts
+          data={data}
+          paginate={paginate}
+          currentMountPage={currentMountPage}
+          collectionState={collectionState}
+        />
+      ) : (
+        <Pets
+          data={data}
+          paginate={paginate}
+          currentPetPage={currentPetPage}
+          collectionState={collectionState}
+        />
+      )}
     </div>
   );
 }

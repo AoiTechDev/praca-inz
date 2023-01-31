@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import "../styles/talents-styles.css";
 
 function Talents({ data, offset }) {
+  
   const spec = data.talents.active_specialization.name;
+  
   const [spellInfo, setSpellInfo] = useState({
     name: "",
     rank: 0,
@@ -32,7 +34,7 @@ function Talents({ data, offset }) {
       tooltip.style.visibility = "visible";
       if (window.innerWidth < 1450) {
         if (con === "spec") {
-          const top = targetRect.top - spec_rect.top + 430;
+          const top = targetRect.top - spec_rect.top + 360;
           const left = targetRect.left - spec_rect.left;
           tooltip.style.top = `${top + 30}px`;
           if (left > 500) {
@@ -41,7 +43,7 @@ function Talents({ data, offset }) {
             tooltip.style.left = `${left}px`;
           }
         } else if (con === "class") {
-          const top = targetRect.top - class_rect.top + 220;
+          const top = targetRect.top - class_rect.top + 140;
           const left = targetRect.left - class_rect.left;
           tooltip.style.top = `${top + 240}px`;
           if (left > 500) {
@@ -55,14 +57,14 @@ function Talents({ data, offset }) {
           const top = targetRect.top - spec_rect.top;
           const left =
             targetRect.left - spec_rect.left + offset(container).left;
-          tooltip.style.top = `${top + 60}px`;
+          tooltip.style.top = `${top + 70}px`;
           if (left < 40) {
             tooltip.style.left = `${left + 200}px`;
           } else {
             tooltip.style.left = `${left}px`;
           }
         } else if (con === "class") {
-          const top = targetRect.top - class_rect.top + 50;
+          const top = targetRect.top - class_rect.top + 15;
           const left =
             targetRect.left - class_rect.left + offset(container).left;
           tooltip.style.top = `${top + 60}px`;
@@ -124,11 +126,11 @@ function Talents({ data, offset }) {
   }
 
 
-  const class_talents = data.class_talents_media.map((spell, index) => (
+  const class_talents = data?.class_talents_media?.map((spell, index) => (
     <div
       key={index}
       style={{
-        backgroundImage: `url(${spell.assets[0].value})`,
+        backgroundImage: `url(${spell?.assets[0]?.value})`,
       }}
       className="spell_img spec_talents"
       onMouseEnter={() => {
@@ -138,11 +140,11 @@ function Talents({ data, offset }) {
     ></div>
   ));
 
-  const spec_talents = data.spec_talents_media.map((spell, index) => (
+  const spec_talents = data?.spec_talents_media?.map((spell, index) => (
     <div
       key={index}
       style={{
-        backgroundImage: `url(${spell.assets[0].value})`,
+        backgroundImage: `url(${spell?.assets[0]?.value})`,
       }}
       className="spell_img class_talents"
       onMouseEnter={() => {
