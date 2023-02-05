@@ -12,7 +12,8 @@ function Search({
   searchState,
   setSeatchState,
   getGuild,
-  formData
+  formData,
+  getPets
 }) {
   const theme = createTheme({
     palette: {

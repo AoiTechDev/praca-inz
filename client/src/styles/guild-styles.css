@@ -1,26 +1,93 @@
-.member{
+.guild-container{
+    height: 90vh;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    color: var(--white)
+}
+.container-style{
+    background-color: var(--black);
+    border: 1px solid black;
+    border-radius: 1rem;
+    box-shadow: black 10px 10px 15px 5px;
+    padding: 1rem;
+}
+
+.guild-crest{
+    width: 45%;
+    height: 20vh;
     color: var(--white);
    
-    font-size: 1.5rem;
+    display: flex;
+}
+.guild-roster{
+    width: 70%;
+    height: 70%;
+   overflow-y: scroll;
 
-    text-align: center;
-    padding: 10px;
-    border-bottom: 1px solid var(--white);
+}
+
+.guild-fraction-icon{
+    width: 140px;
+    height: 140px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: 1rem;
+    filter: drop-shadow(10px 10px 4px black)
+}
+.guild-name{
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 4.5vmin;
+}
+.guild-server{
+    font-size: 2vmin;
+}
+.guild-all-members{
+    width:50%;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-
-    z-index: 2;
+    place-items: center;
+    font-size: 3vmin;
 }
 
 .guild-members{
-    width: 98%;
-    overflow-y: hidden;
-    z-index: 2;
-    height: 90%;
-    background-color: var(--grey);
-    margin: 1rem 1rem 2rem 1rem;
-    border-radius: 15px;
+    height: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    place-items: center;
+    margin: 1rem 0 1rem 0;
+    text-align: center;
+    
+}
+.guild-members:hover{
+    background-color: black;
+    cursor: pointer;
+}
 
+.guild-members-header{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--white);
+    padding-bottom: 15px;
+}
+
+.active-member{
+    height: 150px;
+    place-items: start legacy;
+    background-color: black;
+    padding-top: 10px;
+}
+.member-more-stats{
+    visibility: hidden;
 }
 ::-webkit-scrollbar{
 
@@ -30,41 +97,3 @@
     background-color: var(--crismon); 
     border-radius: 10px;
   }
-.guild-content{
-    width: 50%;
-    height: 90%;
-    background-color: var(--black);
-    border-radius: 15px;
-    margin: 1rem 0 0 0;
-    padding:1rem;
-
-}
-.titles{
-    width: 98%;
-    background-color: var(--black);
-    margin: 1rem 1rem 0 1rem;
-    border-radius: 15px;
-    height: 2.5rem;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    text-align: center;
-    font-size: 1.5rem;
-}
-.main{
-    height: 90vh;
-    z-index: 2;
-}
-
-.content{
-    width: 100%;
-    height: inherit;
-    display: flex;
-    gap: 13.6%;
-    color: var(--white);
-    flex-direction: column;
-    gap: 0;
-}
-.guild-content > h1{
-    text-align: center;
-    font-size: 4rem;
-}
