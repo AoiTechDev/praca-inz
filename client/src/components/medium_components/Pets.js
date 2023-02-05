@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Pagination } from "../small_components/Pagination";
 
-export const Pets = ({ data, paginate, currentPetPage }) => {
+export const Pets = ({
+  data,
+  paginate,
+  currentPetPage,
+  petData,
+  fetchPetsData,
+}) => {
+
+  
   const [petsPerPage] = useState(18);
   const indexOfLastPet = currentPetPage * petsPerPage;
   const indexOfFirstPet = indexOfLastPet - petsPerPage;
-
-  const currentPets = data?.pets?.pets?.slice(
+  
+  const currentPets = petData?.pets?.pets?.slice(
     indexOfFirstPet,
     indexOfLastPet
   );
@@ -19,12 +27,16 @@ export const Pets = ({ data, paginate, currentPetPage }) => {
   ));
   return (
     <>
-      <Pagination
-        mountsPerPage={petsPerPage}
-        totalMounts={data?.pets?.pets?.length}
-        paginate={paginate}
-      />
-      {pets}
+      {fetchPetsData && (
+        <>
+          <Pagination
+            mountsPerPage={petsPerPage}
+            totalMounts={petData?.pets?.pets?.length}
+            paginate={paginate}
+          />
+          {pets}
+        </>
+      )}
     </>
   );
 };

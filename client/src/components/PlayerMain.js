@@ -9,7 +9,14 @@ import ShrinkPlayerInfo from "./ShrinkPlayerInfo";
 import Raids from "./Raids";
 import Collection from "./Collection";
 
-function PlayerMain({ data, isFetch, handleMouseLeave }) {
+function PlayerMain({
+  data,
+  isFetch,
+  handleMouseLeave,
+  getPets,
+  fetchPetsData,
+  petData,
+}) {
   const handleMouseOut = () => {
     const tooltip = document.getElementsByClassName("item-info")[0];
     tooltip.style.visibility = "hidden";
@@ -74,7 +81,6 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
         right = offset(item).left - window.innerWidth / 3 - 300;
       }
     }
-
 
     tooltip.style.left = `${right}px`;
     tooltip.style.top = `${item_top}px`;
@@ -181,7 +187,7 @@ function PlayerMain({ data, isFetch, handleMouseLeave }) {
       <Dungeons data={data} />
       <Raids data={data} />
 
-      <Collection data={data} />
+      <Collection data={data} getPets={getPets} fetchPetsData={fetchPetsData} petData={petData}/>
     </div>
   );
 }

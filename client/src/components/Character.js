@@ -4,25 +4,40 @@ import PlayerMain from "./PlayerMain";
 import { useOutletContext } from "react-router-dom";
 
 function Character() {
-    const {data, isFetch, handleMouseLeave, getSubCategory, achivSubCategory, responseStatus} = useOutletContext();
-    
-    return (  
-        <div className="player-info">
+  const {
+    data,
+    isFetch,
+    handleMouseLeave,
+    getSubCategory,
+    achivSubCategory,
+    responseStatus,
+    getPets,
+    fetchPetsData,
+    petData,
+  } = useOutletContext();
 
-          {responseStatus === 200 ? <>
-            <PlayerInfo data={data} />
+  return (
+    <div className="player-info">
+      {responseStatus === 200 ? (
+        <>
+          <PlayerInfo data={data} />
 
-            <PlayerMain
-              data={data}
-              isFetch={isFetch}
-              handleMouseLeave={handleMouseLeave}
-              getSubCategory={getSubCategory}
-              achivSubCategory={achivSubCategory}
-            />
-          </> : ''}
-                
-              </div>
-    );
+          <PlayerMain
+            data={data}
+            isFetch={isFetch}
+            handleMouseLeave={handleMouseLeave}
+            getSubCategory={getSubCategory}
+            achivSubCategory={achivSubCategory}
+            getPets={getPets}
+            fetchPetsData={fetchPetsData}
+            petData={petData}
+          />
+        </>
+      ) : (
+        ""
+      )}
+    </div>
+  );
 }
 
 export default Character;

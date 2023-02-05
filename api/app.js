@@ -151,6 +151,22 @@ async function getMountMedia(id) {
   return await axiosGet(mount_media_url, "static-eu");
 }
 
+async function getPets(nickname, server) {
+  const pets = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/pets`;
+  return await axiosGet(pets);
+}
+
+app.get("/pets", (req, res) => {
+  const pets = getPets(req.query.nickname, req.query.server);
+
+  pets.then((response) =>
+    res.json({
+      pets: response.data,
+    })
+  );
+});
+
+
 app.get("/character", (req, res, next) => {
   const character = allCharacterData(req.query.nickname, req.query.server);
 

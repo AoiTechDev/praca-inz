@@ -22,10 +22,11 @@ function App() {
   const [searchState, setSeatchState] = useState("character");
   const [guildFetch, setGuildFetch] = useState(false);
   //const [test, setTest] = useState(false);
-  const [achivSubCategory, setAchivSubCategory] =  useState({})
-  const [responseStatus, setResponseStatus] = useState(0)
+  const [achivSubCategory, setAchivSubCategory] = useState({});
+  const [responseStatus, setResponseStatus] = useState(0);
+  const [petData, setPetData] = useState({});
+  const [fetchPetsData, setFetchPetsData] = useState(false);
   const navigate = useNavigate();
-
   function handleChange(e) {
     setFormData((prev) => {
       return {
@@ -34,19 +35,40 @@ function App() {
       };
     });
   }
- 
 
-  useEffect(() =>{
-    if(responseStatus === 200){
+  useEffect(() => {
+    if (responseStatus === 200) {
       setIsFetch(true);
       navigate("/");
-    }else if(responseStatus === 404){
-      setIsFetch(false)
+    } else if (responseStatus === 404) {
+      setIsFetch(false);
     }
-  }, [responseStatus])
+  }, [responseStatus]);
 
+  
+
+  async function getPets() {
+    const url = "http://localhost:9000/pets";
+    await axios
+      .get(url, {
+        params: {
+          nickname: formData.Nickname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
+      })
+      .then((res) => {
+        setPetData(res.data);
+        setFetchPetsData(true)
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(err);
+        setResponseStatus(err.response.status);
+      });
+  }
 
   async function getPlayer() {
+    setFetchPetsData(false)
     setLoading(true);
     const url = "http://localhost:9000/character";
     await axios
@@ -57,40 +79,34 @@ function App() {
         },
       })
       .then((res) => {
-        if(res.status === 200){
+        if (res.status === 200) {
+          setResponseStatus(res.status);
+          setData(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setResponseStatus(err.response.status);
+        setLoading(false);
+      });
 
-          
-          setResponseStatus(res.status)
-          setData(res.data)
-          
-        } 
-      })
-      .catch((err) =>{
-        console.log(err)
-        setResponseStatus(err.response.status) 
-      })
-   
-      setLoading(false);
-   
+    setLoading(false);
   }
-  
-  async function getSubCategory(e){
+
+  async function getSubCategory(e) {
     //setLoading(true);
     const url = "http://localhost:9000/achiv_sub_category";
     await axios
       .get(url, {
         params: {
-          id: e.id
+          id: e.id,
         },
       })
       .then((res) => setAchivSubCategory(res.data))
       .catch((err) => console.log(err));
     //setLoading(false);
-    
   }
-  
 
-  
   function getGuildMember(nick) {
     setFormData((prev) => ({
       ...prev,
@@ -117,13 +133,11 @@ function App() {
     setGuildFetch(true);
   }
 
-
-
   const handleMouseLeave = (key) => {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-
+  
   return (
     <div
       className="app"
@@ -132,9 +146,9 @@ function App() {
       }}
     >
       <main
-      style={{
-        backgroundImage: isFetch && "url(hall3.jpg)",
-      }}
+        style={{
+          backgroundImage: isFetch && "url(hall3.jpg)",
+        }}
       >
         {/* <div
           className="bg"
@@ -152,11 +166,7 @@ function App() {
           getGuild={getGuild}
           formData={formData}
         />
-        {
-          responseStatus === 404 && <div>
-            no character
-          </div> 
-        }
+        {responseStatus === 404 && <div>no character</div>}
         {isFetch && (
           //<Character data={data} isFetch={isFetch} handleMouseLeave={handleMouseLeave}/>
           <Outlet
@@ -171,6 +181,10 @@ function App() {
               getGuildMember: getGuildMember,
               getPlayer: getPlayer,
               responseStatus: responseStatus,
+              getPets: getPets,
+              fetchPetsData: fetchPetsData,
+              petData: petData,
+              
               //test: test
               //guildMember: guildMember
             }}

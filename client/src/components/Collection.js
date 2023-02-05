@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../styles/collection-styles.css";
 //import Pagination from '@mui/material/Pagination';
 //import Stack from '@mui/material/Stack';
@@ -6,26 +7,25 @@ import "../styles/collection-styles.css";
 import { Mounts } from "./medium_components/Mounts";
 import { Pets } from "./medium_components/Pets";
 
-function Collection({ data }) {
+function Collection({ data, getPets, fetchPetsData, petData }) {
   //console.log(data);
   const [currentMountPage, setCurrentMountPage] = useState(1);
   const [currentPetPage, setCurrentPetPage] = useState(1);
   const [collectionState, setCollectionState] = useState("mounts");
 
-
   function collectionMountChange() {
-
     if (collectionState === "pets") {
       setCollectionState("mounts");
     }
-    setCurrentMountPage(1)
+    setCurrentMountPage(1);
+    
   }
   function collectionPetChange() {
-
     if (collectionState === "mounts") {
       setCollectionState("pets");
     }
-    setCurrentPetPage(1)
+    setCurrentPetPage(1);
+    
   }
 
   useEffect(() => {
@@ -42,14 +42,14 @@ function Collection({ data }) {
     const a = document
       .getElementsByClassName("pagination-list")[0]
       .getElementsByTagName("a");
-    
-      console.log(a[id])
+
+    console.log(a[id]);
     for (let i = 0; i < a.length; i++) {
       a[i].classList.remove("active");
     }
     a[id].classList.add("active");
   };
-
+  
   //console.log(paginationClickState)
   return (
     <div className="section-container">
@@ -60,7 +60,10 @@ function Collection({ data }) {
         >
           Mounts
         </button>
-        <button onClick={collectionPetChange} className="change-collection-btn">
+        <button
+          onClick={() => {getPets();collectionPetChange();}}
+          className="change-collection-btn"
+        >
           Pets
         </button>
       </div>
@@ -77,6 +80,8 @@ function Collection({ data }) {
           paginate={paginate}
           currentPetPage={currentPetPage}
           collectionState={collectionState}
+          petData={petData}
+          fetchPetsData={fetchPetsData}
         />
       )}
     </div>
