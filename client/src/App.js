@@ -45,8 +45,6 @@ function App() {
     }
   }, [responseStatus]);
 
-  
-
   async function getPets() {
     const url = "http://localhost:9000/pets";
     await axios
@@ -58,8 +56,8 @@ function App() {
       })
       .then((res) => {
         setPetData(res.data);
-        setFetchPetsData(true)
-        console.log(res.data)
+        setFetchPetsData(true);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -68,7 +66,7 @@ function App() {
   }
 
   async function getPlayer() {
-    setFetchPetsData(false)
+    setFetchPetsData(false);
     setLoading(true);
     const url = "http://localhost:9000/character";
     await axios
@@ -91,6 +89,25 @@ function App() {
       });
 
     setLoading(false);
+  }
+  async function getGuild() {
+    setLoading(true);
+    const url = "http://localhost:9000/guild";
+    await axios
+      .get(url, {
+        params: {
+          guildname: formData.Guildname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
+      })
+      .then((res) => setGuildData(res.data))
+      .catch((err) => {
+        setLoading(false);
+        console.error(err.data);
+      });
+    setIsFetch(true);
+    setLoading(false);
+    setGuildFetch(true);
   }
 
   async function getSubCategory(e) {
@@ -116,28 +133,11 @@ function App() {
     console.log("run");
   }
 
-  async function getGuild() {
-    setLoading(true);
-    const url = "http://localhost:9000/guild";
-    await axios
-      .get(url, {
-        params: {
-          guildname: formData.Guildname.toLowerCase(),
-          server: formData.Server.toLowerCase(),
-        },
-      })
-      .then((res) => setGuildData(res.data))
-      .catch((err) => console.error(err.data));
-    setIsFetch(true);
-    setLoading(false);
-    setGuildFetch(true);
-  }
-
   const handleMouseLeave = (key) => {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-  
+
   return (
     <div
       className="app"
@@ -184,7 +184,7 @@ function App() {
               getPets: getPets,
               fetchPetsData: fetchPetsData,
               petData: petData,
-              
+
               //test: test
               //guildMember: guildMember
             }}

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "../styles/guild-styles.css";
 import { useOutletContext } from "react-router-dom";
 import class_colors from "../class_colors/classColors";
-
+import { ClassChart } from "./medium_components/ClassChart";
 function Guild() {
   const { guildData, guildFetch, getGuildMember } = useOutletContext();
   const [memberClickState, setMemberClickState] = useState(9999);
@@ -11,7 +11,6 @@ function Guild() {
 
   
 
-  console.log(guildData);
   const guildMembers = guildData?.roster_profile?.map((member, index) =>
     {
       const color_class_style = class_colors?.find(
@@ -125,7 +124,7 @@ function Guild() {
             
           </div>
           <div className="guild-stats container-style">
-              
+              <ClassChart guildData={guildData}/>
           </div>
         </div>
       )}

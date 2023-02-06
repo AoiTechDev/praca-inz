@@ -111,7 +111,7 @@
     border-top-left-radius: 1rem;
     border-top-right-radius: 0.5rem;
     border-bottom: 1px solid var(--white);
-    
+    font-size: 2vmin;
 }
 
 .active-member{
