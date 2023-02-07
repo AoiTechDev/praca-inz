@@ -4,49 +4,43 @@ import "../styles/guild-styles.css";
 import { useOutletContext } from "react-router-dom";
 import class_colors from "../class_colors/classColors";
 import { ClassChart } from "./medium_components/ClassChart";
+import { GuildHeader } from "./small_components/Guild/GuildHeader";
+import { GuildRoster } from "./small_components/Guild/GuildRoster";
 function Guild() {
   const { guildData, guildFetch, getGuildMember } = useOutletContext();
   const [memberClickState, setMemberClickState] = useState(9999);
   const [memberClick, setMemberClick] = useState(false);
 
-  
+  const guildMembers = guildData?.roster_profile?.map((member, index) => {
+    const color_class_style = class_colors?.find(
+      (color) => color?.class === member?.character_class?.name
+    );
 
-  const guildMembers = guildData?.roster_profile?.map((member, index) =>
-    {
-      const color_class_style = class_colors?.find(
-        (color) => color?.class === member?.character_class?.name
-      );
-
-      return  (
-        <div
-          className="guild-members"
-          key={index}
-          onClick={() => guildMemberToggle(index)}
-        >
-          <div className="member-name">{member?.name}</div>
-          <div>{member?.level}</div>
-          <div>{member?.equipped_item_level}</div>
-          <div>{guildData?.roster?.members[index]?.rank}</div>
-          <div className="member-more-stats">
-            <div
-              className="member-class"
-              style={{
-                color: color_class_style?.color
-              }}
-            >
-              {member?.character_class?.name}
-            </div>
-            <div className="member-spec">
-              {member?.active_spec?.name}
-            </div>
-            <div className="member-race">
-              {member?.race?.name}
-            </div>
+    return (
+      <div
+        className="guild-members"
+        key={index}
+        onClick={() => guildMemberToggle(index)}
+      >
+        <div className="member-name">{member?.name}</div>
+        <div>{member?.level}</div>
+        <div>{member?.equipped_item_level}</div>
+        <div>{guildData?.roster?.members[index]?.rank}</div>
+        <div className="member-more-stats">
+          <div
+            className="member-class"
+            style={{
+              color: color_class_style?.color,
+            }}
+          >
+            {member?.character_class?.name}
           </div>
+          <div className="member-spec">{member?.active_spec?.name}</div>
+          <div className="member-race">{member?.race?.name}</div>
         </div>
-      )
-    }
- );
+      </div>
+    );
+  });
 
   function guildMemberToggle(id) {
     const members = document.getElementsByClassName("guild-members");
@@ -81,54 +75,21 @@ function Guild() {
     setMemberClickState(id);
   }
   return (
-    <div className="main-test">
-     
+    <div className="main-guild-container">
       {guildFetch && (
         <div className="guild-container">
-          <div className="guild-crest container-style">
-            <div
-              className="guild-fraction-icon"
-              
-            >
-              <div className='fraction-icon' style={{
-                backgroundImage:
-                  guildData?.faction?.name === "Alliance"
-                    ? `url(fraction/alliance.png)`
-                    : `url(fraction/horde.png)`,
-              }}></div>
-            </div>
-            <div className="guild-name">
-              {guildData?.guild?.name}
-              <div className="guild-server">
-                {" "}
-                {guildData?.guild?.realm?.name}
-              </div>
-            </div>
-            <div className="guild-all-members">
-              Members: {guildData?.guild?.member_count}{" "}
-            </div>
-          </div>
-          <div className="guild-roster container-style">
-            <div className="guild-members-header-container">
-              <div className="guild-members-header">
-              <div>Name</div>
-              <div>Level</div>
-              <div>Item Level</div>
-              <div>Rank</div>
-              </div>
-             
-            </div>
-            <div className="members-container">
-            {guildMembers}
+          <GuildHeader guildData={guildData} />
+          <GuildRoster guildMembers={guildMembers} />
+
+          <div className="guild-stats-container container-style">
+            <div className="guild-stats"><h2>Guild Statistics</h2></div>
+            <div className="guild-class-chart">
+              <ClassChart guildData={guildData} />
             </div>
             
           </div>
-          <div className="guild-stats container-style">
-              <ClassChart guildData={guildData}/>
-          </div>
         </div>
       )}
-   
     </div>
   );
 }

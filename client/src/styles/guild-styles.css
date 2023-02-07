@@ -1,5 +1,5 @@
 
-.main-test{
+.main-guild-container{
     height:90vh;
     position: relative;
     overflow-y: scroll;
@@ -24,7 +24,7 @@
 }
 
 .guild-crest{
-    width: 45%;
+    width: 55%;
     height: 20vh;
     color: var(--white);
    
@@ -37,7 +37,7 @@
    position: relative;
    
 }
-.guild-stats{
+.guild-stats-container{
     width: 70%;
     height: 500px;
 }
@@ -71,7 +71,12 @@
     place-items: center;
     font-size: 3vmin;
 }
-
+.guild-avg-ilvl{
+    width:50%;
+    display: grid;
+    place-items: center;
+    font-size: 3vmin;
+}
 .guild-members{
     height: 30px;
     display: grid;
@@ -135,6 +140,30 @@
     align-items: center;
     font-size: 3vmin;
     
+}
+
+.guild-stats{
+    width: 100% ;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    font-size: 3vmin;
+}
+.guild-class-chart{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.custom-tooltip{
+   background-color: black;
+   padding: .3rem 1.2rem .3rem 1.2rem;
+   border-radius: 15px;
+  
+}
+.class-name-tooltip{
+    font-size: 1.2rem;
 }
 ::-webkit-scrollbar{
 
