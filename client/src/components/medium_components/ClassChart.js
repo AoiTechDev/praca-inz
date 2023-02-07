@@ -5,11 +5,8 @@ import {
   Cell,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
-  Legend,
-  Line,
-  Label,
+  ResponsiveContainer,
 } from "recharts";
 
 export const ClassChart = ({ guildData }) => {
@@ -106,12 +103,22 @@ export const ClassChart = ({ guildData }) => {
     return <path d={getPath(x, y, width, height)} stroke="none" fill={fill} />;
   };
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip = ({ active, payload, label, guild_class_data }) => {
+    const tooltip_class_color = guild_class_data.find(
+      (color) => color.name === label
+    );
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
-          <p className="label">{`${label} : ${payload[0].value}`}</p>
-          <p className="desc">Anything you want can be displayed here.</p>
+          <p
+            className="class-name-tooltip"
+            style={{
+              color: tooltip_class_color.color,
+            }}
+          >
+            {label}
+          </p>
+          <p className="class-count-tooltip">{`Count: ${payload[0].value}`}</p>
         </div>
       );
     }
@@ -119,35 +126,45 @@ export const ClassChart = ({ guildData }) => {
     return null;
   };
 
+  const test = () => {
+    console.log('cos')
+  }
   return (
-    <BarChart
-      width={800}
-      height={300}
-      data={guild_class_data}
-      margin={{
-        top: 20,
-        right: 20,
-        left: 20,
-        bottom: 5,
-      }}
-    >
-      <XAxis dataKey="name" tick={false} label={{value:"Classes"}}/>
-    
-      <YAxis dataKey="count" label={{ value: "Count", angle: -90 }} />
-      <Bar
-        dataKey="count"
-        fill="#8884d8"
-        shape={<TriangleBar />}
-        label={{ position: "top" }}
+    <ResponsiveContainer width="80%" height={400}>
+      <BarChart
+        data={guild_class_data}
+        margin={{
+          top: 20,
+          bottom: 5,
+        }}
       >
-        {guild_class_data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={guild_class_data[index].color} />
-        ))}
-      </Bar>
-      <Tooltip
-        cursor={{ fill: "transparent" }}
-        labelFormatter={(name) => name}
-      />
-    </BarChart>
+        <XAxis
+          dataKey="name"
+          tick={false}
+          label={{ value: "Classes", fill: "#ACACAD" }}
+        />
+
+        <YAxis
+          dataKey="count"
+          label={{ value: "Count", angle: -90, fill: "#ACACAD" }}
+        />
+        <Bar
+          dataKey="count"
+          fill="#8884d8"
+          shape={<TriangleBar />}
+          label={{ position: "top" }}
+            onClick={test}
+        >
+          {guild_class_data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={guild_class_data[index].color} />
+          ))}
+        </Bar>
+
+        <Tooltip
+          content={<CustomTooltip guild_class_data={guild_class_data} />}
+          cursor={{ fill: "transparent" }}
+        />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
