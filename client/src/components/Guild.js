@@ -1,15 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "../styles/guild-styles.css";
-import { useOutletContext } from "react-router-dom";
+import { json, useOutletContext } from "react-router-dom";
 import class_colors from "../class_colors/classColors";
 import { ClassChart } from "./medium_components/ClassChart";
 import { GuildHeader } from "./small_components/Guild/GuildHeader";
 import { GuildRoster } from "./small_components/Guild/GuildRoster";
+import { SpecChart } from "./small_components/SpecChart";
+import _ from "lodash";
+
 function Guild() {
   const { guildData, guildFetch, getGuildMember } = useOutletContext();
   const [memberClickState, setMemberClickState] = useState(9999);
   const [memberClick, setMemberClick] = useState(false);
+  const [charClassName, setCharClassName] = useState("");
+  const specCounts = {};
+  //const specCountsArr = []
+  const [specCountsArr, setSpecCountsArr] = useState([]);
+  const allSpeces = [];
+  let test = [];
+  let cnt = 0;
+
+  useEffect(() => {
+    guildData?.roster_profile?.map(
+      (spec) =>
+        spec?.character_class?.name === charClassName &&
+        allSpeces.push(spec?.active_spec?.name)
+    );
+
+    allSpeces.forEach(function (x) {
+      return (specCounts[x] = (specCounts[x] || 0) + 1);
+    });
+
+    Object.keys(specCounts).map((key, index) => {
+      test.push({ name: key, value: specCounts[key] });
+    });
+    setSpecCountsArr(test);
+  }, [charClassName]);
 
   const guildMembers = guildData?.roster_profile?.map((member, index) => {
     const color_class_style = class_colors?.find(
@@ -82,11 +109,18 @@ function Guild() {
           <GuildRoster guildMembers={guildMembers} />
 
           <div className="guild-stats-container container-style">
-            <div className="guild-stats"><h2>Guild Statistics</h2></div>
-            <div className="guild-class-chart">
-              <ClassChart guildData={guildData} />
+            <div className="guild-stats">
+              <h2>Guild Statistics</h2>
             </div>
-            
+            <div className="guild-class-chart">
+              <ClassChart
+                guildData={guildData}
+                setCharClassName={setCharClassName}
+              />
+            </div>
+            <div className="guild-spec-chart ">
+              <SpecChart specCountsArr={specCountsArr} />
+            </div>
           </div>
         </div>
       )}

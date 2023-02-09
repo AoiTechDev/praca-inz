@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export const ClassChart = ({ guildData }) => {
+export const ClassChart = ({ guildData, setCharClassName, removeAll }) => {
   let guild_class_data = [
     {
       name: "Death Knight",
@@ -126,8 +126,9 @@ export const ClassChart = ({ guildData }) => {
     return null;
   };
 
-  const test = () => {
-    console.log('cos')
+  const getClassNameFromBar = ({payload}) => {
+    setCharClassName(payload.name)
+
   }
   return (
     <ResponsiveContainer width="80%" height={400}>
@@ -151,9 +152,9 @@ export const ClassChart = ({ guildData }) => {
         <Bar
           dataKey="count"
           fill="#8884d8"
-          shape={<TriangleBar />}
+        //   shape={<TriangleBar />}
           label={{ position: "top" }}
-            onClick={test}
+          onClick={getClassNameFromBar}
         >
           {guild_class_data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={guild_class_data[index].color} />

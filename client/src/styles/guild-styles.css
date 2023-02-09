@@ -39,7 +39,7 @@
 }
 .guild-stats-container{
     width: 70%;
-    height: 500px;
+    
 }
 .guild-fraction-icon{
     display: grid;
@@ -164,6 +164,10 @@
 }
 .class-name-tooltip{
     font-size: 1.2rem;
+}
+.guild-spec-chart{
+    display: flex;
+    justify-content: center;
 }
 ::-webkit-scrollbar{
 
