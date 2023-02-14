@@ -311,8 +311,8 @@ app.get("/guild_member", (req, res) => {
 });
 
 app.get("/guild", (req, res) => {
-  urlGuild = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guildname}`;
-  urlRoster = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guildname}/roster`;
+  urlGuild = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guild}`;
+  urlRoster = `${EU_BLIZZARD}/data/wow/guild/${req.query.server}/${req.query.guild}/roster`;
   axios
     .all([axiosGet(urlGuild), axiosGet(urlRoster)])
 

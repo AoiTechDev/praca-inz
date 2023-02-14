@@ -119,7 +119,11 @@ function Guild() {
               />
             </div>
             <div className="guild-spec-chart ">
-              <SpecChart specCountsArr={specCountsArr} />
+              <SpecChart
+                specCountsArr={specCountsArr}
+                charClassName={charClassName}
+                class_colors={class_colors}
+              />
             </div>
           </div>
         </div>
