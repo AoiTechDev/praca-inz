@@ -8,37 +8,22 @@ import {
   Tooltip,
 } from "recharts";
 
-
-export const SpecChart = ({specCountsArr}) => {
-
-    const data01 = [
-        { name: "Group A", value: 400 },
-        { name: "Group B", value: 300 },
-        { name: "Group C", value: 300 },
-        { name: "Group D", value: 200 },
-        { name: "Group E", value: 278 },
-        { name: "Group F", value: 189 },
-      ];
-      
-      const data02 = [
-        { name: "holy", value: 1 },
-        { name: "prot", value: 3 },
-        { name: "retri", value: 5 },
-     
-      ];
-      
-    
+export const SpecChart = ({ specCountsArr, class_colors, charClassName }) => {
+    const color_class_style = class_colors?.find(
+        (color) => color?.class === charClassName
+      );
+      console.log(color_class_style)
   return (
     <ResponsiveContainer height={400}>
       <PieChart width={400} height={400}>
-       
         <Pie
           dataKey="value"
           data={specCountsArr}
-          innerRadius={40}
-          outerRadius={80}
-          fill="#82ca9d"
+          innerRadius={80}
+          outerRadius={120}
+          fill={color_class_style?.color}
           label
+          paddingAngle={5}
         />
         <Tooltip />
       </PieChart>

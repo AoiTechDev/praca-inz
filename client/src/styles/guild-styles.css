@@ -1,6 +1,7 @@
 
 .main-guild-container{
-    height:90vh;
+    width: 80%;
+    height:100vh;
     position: relative;
     overflow-y: scroll;
 }

@@ -58,7 +58,7 @@ function Search({
   };
 
   function changeSearchHandler(e) {
-    let test = e.target.className;
+    let test = e.target.className;  
 
     if (test === "char" || test.slice(9, 13) === "char") {
       setSeatchState("character");

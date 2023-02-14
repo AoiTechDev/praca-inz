@@ -6,6 +6,7 @@ import Search from "./components/Search";
 import Slider from "./components/Slider";
 //import Character from './components/Character';
 import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Find } from "./components/small_components/Find";
 //import { useOutletContext } from "react-router-dom";
 
 function App() {
@@ -13,13 +14,14 @@ function App() {
   const [guildData, setGuildData] = useState({});
   const [formData, setFormData] = useState({
     Nickname: " ",
-    Guildname: " ",
+    Guild: " ",
     Server: " ",
+    GuildServer: " ",
   });
   //const [guildMember, setGuildMember] = useState({})
   const [isFetch, setIsFetch] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchState, setSeatchState] = useState("character");
+  const [searchState, setSearchState] = useState("");
   const [guildFetch, setGuildFetch] = useState(false);
   //const [test, setTest] = useState(false);
   const [achivSubCategory, setAchivSubCategory] = useState({});
@@ -87,7 +89,7 @@ function App() {
         setResponseStatus(err.response.status);
         setLoading(false);
       });
-
+    setSearchState("character");
     setLoading(false);
   }
   async function getGuild() {
@@ -96,8 +98,8 @@ function App() {
     await axios
       .get(url, {
         params: {
-          guildname: formData.Guildname.toLowerCase(),
-          server: formData.Server.toLowerCase(),
+          guild: formData.Guild.toLowerCase(),
+          server: formData.GuildServer.toLowerCase(),
         },
       })
       .then((res) => setGuildData(res.data))
@@ -107,6 +109,7 @@ function App() {
       });
     setIsFetch(true);
     setLoading(false);
+    setSearchState("guild");
     setGuildFetch(true);
   }
 
@@ -137,7 +140,7 @@ function App() {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-
+  console.log(guildData);
   return (
     <div
       className="app"
@@ -156,7 +159,78 @@ function App() {
             backgroundImage: isFetch && "url(hall3.jpg)",
           }}
         ></div> */}
-        <Search
+        {!isFetch && (
+          <div className="find-container">
+            <div className="find-player find-half-container">
+              <Find
+                label={"Nickname"}
+                name={"Nickname"}
+                state={"Player"}
+                server={"Server"}
+                getFun={getPlayer}
+                handleChange={handleChange}
+                formData={formData}
+                value={formData.Nickname}
+                Link={Link}
+              />
+            </div>
+            <div className="find-guild find-half-container">
+              <Find
+                label={"Guild"}
+                name={"Guild"}
+                state={"Guild"}
+                server={"GuildServer"}
+                getFun={getGuild}
+                handleChange={handleChange}
+                formData={formData}
+                value={formData.Guild}
+                Link={Link}
+              />
+            </div>
+          </div>
+        )}
+        {isFetch && (
+          <div className="nav-bar">
+            <div className="nav-btn-container">
+              <Link to="/" className="nav-btn-link">
+                <div className="nav-btn"> Character</div>
+              </Link>
+              <Link to="guild" className="nav-btn-link">
+                <div className="nav-btn">Guild</div>
+              </Link>
+            </div>
+            <div className="nav-search">
+              {searchState === "guild" ? (
+                <Find
+                  label={"Guild"}
+                  name={"Guild"}
+                  state={"Guild"}
+                  server={"GuildServer"}
+                  getFun={getGuild}
+                  handleChange={handleChange}
+                  formData={formData}
+                  value={formData.Guild}
+                  Link={Link}
+                  isFetch={isFetch}
+                />
+              ) : (
+                <Find
+                  label={"Nickname"}
+                  name={"Nickname"}
+                  state={"Player"}
+                  server={"Server"}
+                  getFun={getPlayer}
+                  handleChange={handleChange}
+                  formData={formData}
+                  value={formData.Nickname}
+                  Link={Link}
+                  isFetch={isFetch}
+                />
+              )}
+            </div>
+          </div>
+        )}
+        {/* <Search
           handleChange={handleChange}
           getPlayer={getPlayer}
           isFetch={isFetch}
@@ -165,7 +239,7 @@ function App() {
           setSeatchState={setSeatchState}
           getGuild={getGuild}
           formData={formData}
-        />
+        /> */}
         {responseStatus === 404 && <div>no character</div>}
         {isFetch && (
           //<Character data={data} isFetch={isFetch} handleMouseLeave={handleMouseLeave}/>
