@@ -81,10 +81,13 @@
 
 .classname{
     position: absolute;
-    top: 0;
+    top: -15px;
     width: 100%;
     text-align: center;
-    padding-top: 5px;
+    margin-bottom: 1rem;
+}
+.classname > h3{
+    font-size: 1.5rem;
 }
 
 @media only screen and (max-width: 1450px) {

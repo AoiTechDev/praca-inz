@@ -9,22 +9,23 @@ function PlayerInfo({ data }) {
   return (
     <div className="left-nav">
       <div className="player-name-left">
-        <h3>{data?.profile.active_title?.name}</h3>
+        <span>{data?.profile.active_title?.name}</span>
 
-        <h1
+        <span
           style={{
             color: color_class_style.color,
           }}
+          className="player-nickname"
         >
           {data?.profile?.name}
-        </h1>
-        <h2
+        </span>
+        <span
           style={{
             color: color_class_style.color,
           }}
         >
           {data.talents.active_specialization.name}
-        </h2>
+        </span>
         <div className="ilvl"> level: {data.profile.level}</div>
         <div className="ilvl">
           Item level: {data.profile.equipped_item_level}

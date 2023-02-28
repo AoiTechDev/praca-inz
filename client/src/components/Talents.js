@@ -158,14 +158,14 @@ function Talents({ data, offset }) {
       <div className="container">
         <div className="talents_container class_con">
           <div className="classname class">
-            <h2>Class Talents</h2>
+            <h3>Class Talents</h3>
           </div>
           {class_talents}
         </div>
 
         <div className="talents_container spec_con">
           <div className="classname spec">
-            <h2>Specialization Talents</h2>
+            <h3>Specialization Talents</h3>
           </div>
           {spec_talents}
         </div>

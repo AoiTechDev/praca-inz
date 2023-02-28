@@ -14,26 +14,7 @@ import Collection from './components/Collection';
 import Comparison from './components/Comparison';
 
 
-// import {
-//   createBrowserRouter,
-//   RouterProvider,
-//   //Route,
-// } from "react-router-dom";
-
-// const router = createBrowserRouter([
-//     {
-//       path: "/",
-//       element: <App/>,
-
-//       chilldren:[
-//         {
-//             path: "talents",
-//             element: <Talents/>
-//         }
-//       ]
-//     },
-//   ]);
-export default function Apptest() {
+export default function Root() {
     return (
       <BrowserRouter>
         <Routes>
@@ -56,5 +37,5 @@ export default function Apptest() {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Apptest/>
+    <Root/>
 );
