@@ -19,13 +19,14 @@ export const Find = ({
   server,
   Link,
   isFetch,
+  searchState
 }) => {
   return (
     <div
       className={
         isFetch
           ? "nav-inputs-container animate__animated animate__bounceInRight"
-          : "inputs-container  animate__animated animate__backInUp"
+          : "inputs-container  animate__animated animate__zoomInDown animate__slow"
       }
     >
       {!isFetch && <div className="label "> Find {state}</div>}
@@ -49,7 +50,7 @@ export const Find = ({
           value={server === "Server" ? formData.Server : formData.GuildServer}
         />
 
-        <SubmitButton state={state} getFun={getFun} Link={Link} isFetch={isFetch}/>
+        <SubmitButton state={state} getFun={getFun} Link={Link} isFetch={isFetch} searchState={searchState}/>
       </div>
     </div>
   );

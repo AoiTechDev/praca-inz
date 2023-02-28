@@ -24,26 +24,19 @@
     font-size: 2vmin;
      border-radius: 1rem;
     cursor: pointer;
-    animation: btnScale .3s;
+    transition: .3s;
     box-shadow: black 5px 5px 10px 3px;
 }
 .submit-btn-container{
     height: 4rem;
     width: 40%;
-   
-   
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
-@keyframes btnScale {
-    0%{
-        transform: scale(1);
-    }
-    100%{
-        transform: scale(1.2)
-    }
-}
+
 .submit-btn:hover{
-    transform: scale(1.2);
+    transform: scale(1.1);
     background-color: #8d121a;
     
 }

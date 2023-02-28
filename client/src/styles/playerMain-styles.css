@@ -34,21 +34,20 @@
     margin: 5px 0 0 7px;
 }
 .player-info{
+    margin-top: 10vh;
     width: 100%;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
 }
 
-
-
 .player{
     width: 80%;
     height: 90vh;
+   
     z-index: 2;
     overflow-y: scroll;
     position: relative;
-  
 }
 
 .player-img{

@@ -20,14 +20,14 @@
 }
 
 
-.player-name-left h3,h1, h2{
+.player-name-left span{
     margin: 0;
-}
-.player-name-left h2{
-    margin-bottom: 1rem;
+    font-size: 1.4rem;
 }
 
-
+.player-name-left .player-nickname{
+    font-size: 3rem;
+}
 .ilvl{
     color: var(--white);
     font-size: 1rem;

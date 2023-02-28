@@ -52,7 +52,9 @@ main{
     width:100%;
     height: 100%;
     display: flex;
-    gap: 20px;  
+    gap: 20px;
+   background-repeat: no-repeat;
+   background-size: 100% 100%;
 }
 .find-half-container{
     height: 100%;
@@ -62,16 +64,17 @@ main{
     align-items: center;
 }
 .nav-bar{
+    position: absolute;
+    top: 0;
     background-color: rgba(36, 36, 36, 0.6);
     width: 100%;
     height: 9vh;
     margin-bottom: 20px;
     box-shadow: black 5px 5px 10px 5px;
-}
-.nav-bar{
     display:flex;
     justify-content:space-evenly;
 }
+
 .nav-btn-container{
     display: flex;
     gap: 40px;
@@ -131,3 +134,51 @@ main{
     display: flex;
     gap: 20px;
 }
+.first-page-header{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.first-page-header > h1, h2{
+    --bg-size: 400%;
+  --color-one: hsl(15 90% 55%);
+  --color-two: hsl(40 95% 55%);
+  margin: 0;
+  font-size: clamp(3rem, 20vmin, 5rem);
+  background: linear-gradient(
+                90deg,
+                var(--color-one),
+                var(--color-two),
+                var( --crismon),
+                var(--color-one)
+              ) 0 0 / var(--bg-size) 100%;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: move-bg 8s infinite linear;
+  font-family: "Comic Sans MS", "Comic Sans";
+}
+
+
+@keyframes move-bg {
+    to {
+      background-position: var(--bg-size) 0;
+    }
+  }
+
+  .second-search-container{
+    z-index: 10;
+    position: absolute;
+    width: 70%;
+    height: 70vh;
+    display: grid;
+    place-items: center;
+  }

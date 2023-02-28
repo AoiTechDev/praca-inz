@@ -7,6 +7,8 @@ import Slider from "./components/Slider";
 //import Character from './components/Character';
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { Find } from "./components/small_components/Find";
+import { NavBar } from "./components/medium_components/NavBar";
+import BackButton from "./components/small_components/BackButton";
 //import { useOutletContext } from "react-router-dom";
 
 function App() {
@@ -22,6 +24,10 @@ function App() {
   const [isFetch, setIsFetch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchState, setSearchState] = useState("");
+
+  const [isCharacterSearched, setIsCharacterSearched] = useState(false);
+  const [isGuildSearched, setIsGuildSearched] = useState(false);
+
   const [guildFetch, setGuildFetch] = useState(false);
   //const [test, setTest] = useState(false);
   const [achivSubCategory, setAchivSubCategory] = useState({});
@@ -90,6 +96,7 @@ function App() {
         setLoading(false);
       });
     setSearchState("character");
+    setIsCharacterSearched(true);
     setLoading(false);
   }
   async function getGuild() {
@@ -110,6 +117,7 @@ function App() {
     setIsFetch(true);
     setLoading(false);
     setSearchState("guild");
+    setIsGuildSearched(true);
     setGuildFetch(true);
   }
 
@@ -127,20 +135,16 @@ function App() {
     //setLoading(false);
   }
 
-  function getGuildMember(nick) {
-    setFormData((prev) => ({
-      ...prev,
-      Nickname: nick.toLowerCase(),
-    }));
-    // setTest(prev => !prev)
-    console.log("run");
-  }
-
+  console.log(isFetch);
   const handleMouseLeave = (key) => {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-  console.log(guildData);
+
+  function goBackToCharacter() {
+    setSearchState("character");
+    navigate("/");
+  }
   return (
     <div
       className="app"
@@ -153,14 +157,17 @@ function App() {
           backgroundImage: isFetch && "url(hall3.jpg)",
         }}
       >
-        {/* <div
-          className="bg"
-          style={{
-            backgroundImage: isFetch && "url(hall3.jpg)",
-          }}
-        ></div> */}
         {!isFetch && (
-          <div className="find-container">
+          <div
+            className="find-container"
+            style={{
+              backgroundImage: "url(first-page-bg.jpg)",
+            }}
+          >
+            <div className="first-page-header animate__animated animate__backInDown animate__slow">
+              <h1>Wow</h1>
+              <h2>Profiles</h2>
+            </div>
             <div className="find-player find-half-container">
               <Find
                 label={"Nickname"}
@@ -189,47 +196,49 @@ function App() {
             </div>
           </div>
         )}
-        {isFetch && (
-          <div className="nav-bar">
-            <div className="nav-btn-container">
-              <Link to="/" className="nav-btn-link">
-                <div className="nav-btn"> Character</div>
-              </Link>
-              <Link to="guild" className="nav-btn-link">
-                <div className="nav-btn">Guild</div>
-              </Link>
-            </div>
-            <div className="nav-search">
-              {searchState === "guild" ? (
-                <Find
-                  label={"Guild"}
-                  name={"Guild"}
-                  state={"Guild"}
-                  server={"GuildServer"}
-                  getFun={getGuild}
-                  handleChange={handleChange}
-                  formData={formData}
-                  value={formData.Guild}
-                  Link={Link}
-                  isFetch={isFetch}
-                />
-              ) : (
-                <Find
-                  label={"Nickname"}
-                  name={"Nickname"}
-                  state={"Player"}
-                  server={"Server"}
-                  getFun={getPlayer}
-                  handleChange={handleChange}
-                  formData={formData}
-                  value={formData.Nickname}
-                  Link={Link}
-                  isFetch={isFetch}
-                />
-              )}
-            </div>
+        {isCharacterSearched && searchState === "character" ? (
+          <NavBar
+            Link={Link}
+            setSearchState={setSearchState}
+            searchState={searchState}
+            getGuild={getGuild}
+            handleChange={handleChange}
+            formData={formData}
+            isFetch={isFetch}
+            getFun={getPlayer}
+          />
+        ) : isCharacterSearched ? (
+          <div className="second-search-container">
+            <BackButton onClick={goBackToCharacter} />
+            <Find
+              label={"Guild"}
+              name={"Guild"}
+              state={"Guild"}
+              server={"GuildServer"}
+              getFun={getGuild}
+              handleChange={handleChange}
+              formData={formData}
+              value={formData.Guild}
+              Link={Link}
+            />{" "}
           </div>
+        ) : (
+          isGuildSearched &&
+          searchState ===
+            "guild"(
+              <NavBar
+                Link={Link}
+                setSearchState={setSearchState}
+                searchState={searchState}
+                getGuild={getGuild}
+                handleChange={handleChange}
+                formData={formData}
+                isFetch={isFetch}
+                getFun={getPlayer}
+              />
+            )
         )}
+
         {/* <Search
           handleChange={handleChange}
           getPlayer={getPlayer}
@@ -252,7 +261,7 @@ function App() {
               achivSubCategory: achivSubCategory,
               guildData: guildData,
               guildFetch: guildFetch,
-              getGuildMember: getGuildMember,
+              
               getPlayer: getPlayer,
               responseStatus: responseStatus,
               getPets: getPets,
