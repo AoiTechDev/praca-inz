@@ -8,6 +8,7 @@ import Dungeons from "./Dungeons";
 import ShrinkPlayerInfo from "./ShrinkPlayerInfo";
 import Raids from "./Raids";
 import Collection from "./Collection";
+import MouseTooltip from "react-sticky-mouse-tooltip";
 
 function PlayerMain({
   data,
@@ -17,14 +18,19 @@ function PlayerMain({
   fetchPetsData,
   petData,
 }) {
-  const handleMouseOut = () => {
-    const tooltip = document.getElementsByClassName("item-info")[0];
-    tooltip.style.visibility = "hidden";
-  };
+  const [isHover, setIsHover] = useState(false);
+  
 
   function offset(el) {
     var rect = el.getBoundingClientRect();
     return rect;
+  }
+
+
+  function toggleLeave() {
+    const tooltip = document.getElementsByClassName("item-info")[0];
+    tooltip.style.visibility = "hidden";
+    setIsHover(false);
   }
 
   function toggle(id, key) {
@@ -64,26 +70,8 @@ function PlayerMain({
 
     const tooltip = document.getElementsByClassName("item-info")[0];
     tooltip.style.visibility = "visible";
-    const player = document.getElementsByClassName("player")[0];
 
-    let right = 0;
-    let left = 0;
-    let item_top = offset(item).top - 100;
-    if (key === 0 || key % 2 === 0) {
-      right = offset(item).left - offset(player).left + 100;
-    } else {
-      right = offset(item).left - window.innerWidth / 3 - 150;
-
-      if ((window.innerWidth > 1000) & (window.innerWidth < 1400)) {
-        right = offset(item).left - window.innerWidth / 3 - 250;
-      }
-      if (window.innerWidth < 1000) {
-        right = offset(item).left - window.innerWidth / 3 - 300;
-      }
-    }
-
-    tooltip.style.left = `${right}px`;
-    tooltip.style.top = `${item_top}px`;
+    setIsHover(true);
   }
 
   const [itemInfo, setItemInfo] = useState({
@@ -155,10 +143,12 @@ function PlayerMain({
                 style={{
                   backgroundImage: `url(${item.assets[0].value})`,
                 }}
-                onMouseEnter={() => toggle(data.eq.equipped_items[key], key)}
+                onMouseEnter={() => {
+                  toggle(data.eq.equipped_items[key], key), setIsHover(true);
+                }}
                 onMouseLeave={() => {
                   handleMouseLeave(key);
-                  handleMouseOut();
+                  toggleLeave();
                 }}
               >
                 {/* <ItemInfo itemInfo={itemInfo} /> */}
@@ -167,7 +157,9 @@ function PlayerMain({
           })}
       </div>
       <div className="eq-tooltip">
-        <ItemInfo itemInfo={itemInfo} />
+        <MouseTooltip visible={isHover} offsetX={15} offsetY={10}>
+          <ItemInfo itemInfo={itemInfo} />
+        </MouseTooltip>
       </div>
       {/* <div className="achievements">
     
@@ -187,7 +179,12 @@ function PlayerMain({
       <Dungeons data={data} />
       <Raids data={data} />
 
-      <Collection data={data} getPets={getPets} fetchPetsData={fetchPetsData} petData={petData}/>
+      <Collection
+        data={data}
+        getPets={getPets}
+        fetchPetsData={fetchPetsData}
+        petData={petData}
+      />
     </div>
   );
 }

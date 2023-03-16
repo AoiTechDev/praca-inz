@@ -15,8 +15,6 @@
     z-index: 999;
     color: white;
     position: absolute;
-    left: 70px;
-    top: 50px;
     padding: 15px;
     border: 2px solid black;
     border-radius: 10px;
@@ -89,6 +87,7 @@
     position: absolute;
     top: 0;
 }
+
 .type{
     width: 100%;
     display: flex;
@@ -128,6 +127,7 @@
     width: 70%;
     height: 100%;
     top: 0;
+    z-index: 999;
 }
 
 
