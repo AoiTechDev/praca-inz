@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "../styles/talents-styles.css";
+import { TalentTooltip } from "./small_components/TalentTooltip";
+import MouseTooltip from "react-sticky-mouse-tooltip";
 
 function Talents({ data, offset }) {
-  
   const spec = data.talents.active_specialization.name;
-  
+
   const [spellInfo, setSpellInfo] = useState({
     name: "",
     rank: 0,
@@ -17,73 +18,19 @@ function Talents({ data, offset }) {
 
   const [isHover, setIsHover] = useState(false);
 
-  const handleMouseOver = (id, con) => {
-    const container = document.getElementsByClassName("container")[0];
-    const container_spec = document.getElementsByClassName("spec_con")[0];
-    const container_class = document.getElementsByClassName("class_con")[0];
-
+  function toggleEnter() {
     const tooltip = document.getElementsByClassName("tooltip_container")[0];
-    const talent = document.getElementsByClassName("spell_img")[id];
+    tooltip.style.visibility = "visible";
 
-    const spec_rect = container_spec.getBoundingClientRect();
-    const class_rect = container_class.getBoundingClientRect();
-
-    const targetRect = talent.getBoundingClientRect();
-
-    if (isHover === false) {
-      tooltip.style.visibility = "visible";
-      if (window.innerWidth < 1450) {
-        if (con === "spec") {
-          const top = targetRect.top - spec_rect.top + 360;
-          const left = targetRect.left - spec_rect.left;
-          tooltip.style.top = `${top + 30}px`;
-          if (left > 500) {
-            tooltip.style.left = `${left - 130}px`;
-          } else {
-            tooltip.style.left = `${left}px`;
-          }
-        } else if (con === "class") {
-          const top = targetRect.top - class_rect.top + 140;
-          const left = targetRect.left - class_rect.left;
-          tooltip.style.top = `${top + 240}px`;
-          if (left > 500) {
-            tooltip.style.left = `${left - 130}px`;
-          } else {
-            tooltip.style.left = `${left}px`;
-          }
-        }
-      } else {
-        if (con === "spec") {
-          const top = targetRect.top - spec_rect.top;
-          const left =
-            targetRect.left - spec_rect.left + offset(container).left;
-          tooltip.style.top = `${top + 70}px`;
-          if (left < 40) {
-            tooltip.style.left = `${left + 200}px`;
-          } else {
-            tooltip.style.left = `${left}px`;
-          }
-        } else if (con === "class") {
-          const top = targetRect.top - class_rect.top + 15;
-          const left =
-            targetRect.left - class_rect.left + offset(container).left;
-          tooltip.style.top = `${top + 60}px`;
-          tooltip.style.left = `${left + 130}px`;
-        }
-      }
-    }
     setIsHover(true);
-  };
+  }
 
-  const handleMouseOut = () => {
+  function toggleLeave() {
     const tooltip = document.getElementsByClassName("tooltip_container")[0];
-    if (isHover === true) {
-      tooltip.style.visibility = "hidden";
-    }
+    tooltip.style.visibility = "hidden";
     setIsHover(false);
-  };
+  }
 
- 
   function specTooltip(e) {
     data.talents.specializations.map((idx) => {
       if (idx.specialization.name === spec) {
@@ -125,7 +72,6 @@ function Talents({ data, offset }) {
     });
   }
 
-
   const class_talents = data?.class_talents_media?.map((spell, index) => (
     <div
       key={index}
@@ -134,9 +80,9 @@ function Talents({ data, offset }) {
       }}
       className="spell_img spec_talents"
       onMouseEnter={() => {
-        specTooltip(index), handleMouseOver(index, "spec");
+        specTooltip(index), toggleEnter();
       }}
-      onMouseLeave={handleMouseOut}
+      onMouseLeave={toggleLeave}
     ></div>
   ));
 
@@ -148,11 +94,12 @@ function Talents({ data, offset }) {
       }}
       className="spell_img class_talents"
       onMouseEnter={() => {
-        classTooltip(index), handleMouseOver(index, "class");
+        classTooltip(index), toggleEnter();
       }}
-      onMouseLeave={handleMouseOut}
+      onMouseLeave={toggleLeave}
     ></div>
   ));
+
   return (
     <>
       <div className="container">
@@ -169,21 +116,10 @@ function Talents({ data, offset }) {
           </div>
           {spec_talents}
         </div>
-        <div className="tooltip_container">
-          <div className="name">{spellInfo.name}</div>
-          <div className="rank">
-            Rank: {spellInfo.rank}/{spellInfo.rank}
-          </div>
 
-          <div className="cast">
-            <div>{spellInfo.cast_time}</div>
-            <div>{spellInfo.cooldown}</div>
-          </div>
-          <div>{spellInfo.range}</div>
-          <div> {spellInfo.power_cost}</div>
-
-          <div className="description">{spellInfo.description}</div>
-        </div>
+        <MouseTooltip visible={isHover} offsetX={15} offsetY={10}>
+          <TalentTooltip spellInfo={spellInfo} />
+        </MouseTooltip>
       </div>
     </>
   );

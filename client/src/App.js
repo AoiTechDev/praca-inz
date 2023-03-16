@@ -98,6 +98,7 @@ function App() {
     setSearchState("character");
     setIsCharacterSearched(true);
     setLoading(false);
+    console.log("player");
   }
   async function getGuild() {
     setLoading(true);
@@ -141,10 +142,6 @@ function App() {
     item.style.boxShadow = "";
   };
 
-  function goBackToCharacter() {
-    setSearchState("character");
-    navigate("/");
-  }
   return (
     <div
       className="app"
@@ -196,49 +193,30 @@ function App() {
             </div>
           </div>
         )}
-        {isCharacterSearched && searchState === "character" ? (
+
+        {isFetch && searchState === "character" ? (
           <NavBar
             Link={Link}
             setSearchState={setSearchState}
             searchState={searchState}
-            getGuild={getGuild}
+            //getGuild={getGuild}
             handleChange={handleChange}
             formData={formData}
             isFetch={isFetch}
             getFun={getPlayer}
           />
-        ) : isCharacterSearched ? (
-          <div className="second-search-container">
-            <BackButton onClick={goBackToCharacter} />
-            <Find
-              label={"Guild"}
-              name={"Guild"}
-              state={"Guild"}
-              server={"GuildServer"}
-              getFun={getGuild}
-              handleChange={handleChange}
-              formData={formData}
-              value={formData.Guild}
-              Link={Link}
-            />{" "}
-          </div>
-        ) : (
-          isGuildSearched &&
-          searchState ===
-            "guild"(
-              <NavBar
-                Link={Link}
-                setSearchState={setSearchState}
-                searchState={searchState}
-                getGuild={getGuild}
-                handleChange={handleChange}
-                formData={formData}
-                isFetch={isFetch}
-                getFun={getPlayer}
-              />
-            )
+        ) : isFetch && (
+          <NavBar
+            Link={Link}
+            setSearchState={setSearchState}
+            searchState={searchState}
+            // getGuild={getGuild}
+            handleChange={handleChange}
+            formData={formData}
+            isFetch={isFetch}
+            getFun={getGuild}
+          />
         )}
-
         {/* <Search
           handleChange={handleChange}
           getPlayer={getPlayer}
@@ -261,7 +239,7 @@ function App() {
               achivSubCategory: achivSubCategory,
               guildData: guildData,
               guildFetch: guildFetch,
-              
+
               getPlayer: getPlayer,
               responseStatus: responseStatus,
               getPets: getPets,
