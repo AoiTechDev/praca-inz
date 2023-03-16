@@ -156,11 +156,12 @@ function PlayerMain({
             );
           })}
       </div>
+     
       <div className="eq-tooltip">
-        <MouseTooltip visible={isHover} offsetX={15} offsetY={10}>
+      <MouseTooltip visible={isHover} offsetX={70} offsetY={10}>
           <ItemInfo itemInfo={itemInfo} />
         </MouseTooltip>
-      </div>
+      </div> 
       {/* <div className="achievements">
     
         {achiv}
