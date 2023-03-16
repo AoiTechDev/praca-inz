@@ -4,11 +4,10 @@ export const NavBar = ({
   Link,
   setSearchState,
   searchState,
-  getGuild,
   handleChange,
   formData,
   isFetch,
-  getPlayer
+  getFun
 }) => {
   return (
     <div className="nav-bar">
@@ -32,7 +31,7 @@ export const NavBar = ({
             name={"Guild"}
             state={"Guild"}
             server={"GuildServer"}
-            getFun={getGuild}
+            getFun={getFun}
             handleChange={handleChange}
             formData={formData}
             value={formData.Guild}
@@ -46,7 +45,7 @@ export const NavBar = ({
             name={"Nickname"}
             state={"Player"}
             server={"Server"}
-            getFun={getPlayer}
+            getFun={getFun}
             handleChange={handleChange}
             formData={formData}
             value={formData.Nickname}
