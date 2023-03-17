@@ -61,7 +61,7 @@ function Collection({ data, getPets, fetchPetsData, petData }) {
           Mounts
         </button>
         <button
-          onClick={() => {getPets();collectionPetChange();}}
+          onClick={async () => { await getPets();collectionPetChange();}}
           className="change-collection-btn"
         >
           Pets

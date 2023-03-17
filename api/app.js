@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
-
+const _ = require('lodash')
 var axios = require("axios");
 var axiosThrottle = require("axios-request-throttle");
 
@@ -318,24 +318,37 @@ app.get("/guild", (req, res) => {
 
     .then(
       axios.spread((guild, roster) => {
-        const promises = [];
+        // const promises = [];
 
-        roster.data.members.map((member) => {
-          //console.log(member.character.name);,
+        // roster.data.members.map((member) => {
+        //   //console.log(member.character.name);,
+        //   let lower_name = member.character.name.toLowerCase();
+        //   urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${req.query.server}/${lower_name}`;
+
+        //   promises.push(
+        //     axiosGet(urlProfileInfo).then((response) => response.data)
+        //   );
+        // });
+
+
+       const promises = _.reduce(roster.data.members, (promises, member) => {
           let lower_name = member.character.name.toLowerCase();
           urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${req.query.server}/${lower_name}`;
 
           promises.push(
-            axiosGet(urlProfileInfo).then((response) => response.data)
+            axiosGet(urlProfileInfo)
+            .then((response) => response.data)
+            .catch(() => null)
           );
-        });
+            return promises
+        }, [])
 
         Promise.all(promises)
           .then((response) => {
             res.json({
               guild: guild.data,
               roster: roster.data,
-              roster_profile: response,
+              roster_profile: _.compact(response),
             });
           })
           .catch((error) => {
