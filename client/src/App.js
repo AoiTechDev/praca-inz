@@ -100,6 +100,8 @@ function App() {
     setLoading(false);
     console.log("player");
   }
+
+  
   async function getGuild() {
     setLoading(true);
     const url = "http://localhost:9000/guild";
@@ -217,16 +219,7 @@ function App() {
             getFun={getGuild}
           />
         )}
-        {/* <Search
-          handleChange={handleChange}
-          getPlayer={getPlayer}
-          isFetch={isFetch}
-          Link={Link}
-          searchState={searchState}
-          setSeatchState={setSeatchState}
-          getGuild={getGuild}
-          formData={formData}
-        /> */}
+
         {responseStatus === 404 && <div>no character</div>}
         {isFetch && (
           //<Character data={data} isFetch={isFetch} handleMouseLeave={handleMouseLeave}/>
