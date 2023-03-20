@@ -1,18 +1,47 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+//import { Pagination } from "../small_components/OldPagination";
 import { Pagination } from "../small_components/Pagination";
 
-export const Mounts = ({data, currentMountPage, paginate, collectionState}) => {
- 
-  const [mountsPerPage] = useState(18);
-  const indexOfLastMount = currentMountPage * mountsPerPage;
-  const indexOfFirstMount = indexOfLastMount - mountsPerPage;
+export const Mounts = ({
+  data,
+  currentMountPage,
+  collectionState,
+  setCurrentMountPage,
+  perPage
+}) => {
+  
+  const indexOfLastMount = currentMountPage * perPage;
+  const indexOfFirstMount = indexOfLastMount - perPage;
 
   const currentMounts = data.mounts_media.slice(
     indexOfFirstMount,
     indexOfLastMount
   );
 
+  const pageNumberLimit = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPageLimit, setMaxPageLimit] = useState(10);
+  const [minPageLimit, setMinPageLimit] = useState(0);
 
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const onPrevClick = () => {
+    if ((currentPage - 1) % pageNumberLimit === 0) {
+      setMaxPageLimit(maxPageLimit - pageNumberLimit);
+      setMinPageLimit(minPageLimit - pageNumberLimit);
+    }
+    setCurrentPage((prev) => prev - 1);
+  };
+
+  const onNextClick = () => {
+    if (currentPage + 1 > maxPageLimit) {
+      setMaxPageLimit(maxPageLimit + pageNumberLimit);
+      setMinPageLimit(minPageLimit + pageNumberLimit);
+    }
+    setCurrentPage((prev) => prev + 1);
+  };
 
   const mounts = currentMounts.map((mount, index) => (
     <div className="collection-container" key={index}>
@@ -30,12 +59,30 @@ export const Mounts = ({data, currentMountPage, paginate, collectionState}) => {
     </div>
   ));
 
+  const paginationAttributes = {
+    currentPage,
+    maxPageLimit,
+    minPageLimit,
+    totalMounts: data.mounts_media.length,
+    perPage,
+  };
+
   return (
     <>
-      <Pagination
+      {/* <Pagination
         mountsPerPage={mountsPerPage}
         totalMounts={data.mounts_media.length}
         paginate={paginate}
+        collectionState={collectionState}
+        setCurrentMountPage={setCurrentMountPage}
+        currentMountPage={currentMountPage}
+      /> */}
+      <Pagination
+        {...paginationAttributes}
+        onPrevClick={onPrevClick}
+        onNextClick={onNextClick}
+        onPageChange={onPageChange}
+        setCurrentMountPage={setCurrentMountPage}
         collectionState={collectionState}
       />
       {mounts}

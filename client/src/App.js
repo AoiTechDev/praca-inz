@@ -65,18 +65,18 @@ function App() {
       .then((res) => {
         setPetData(res.data);
         setFetchPetsData(true);
-        console.log(res.data);
+        
       })
       .catch((err) => {
         console.log(err);
         setResponseStatus(err.response.status);
       });
-      console.log('pobrano pety')
   }
 
   async function getPlayer() {
     setFetchPetsData(false);
     setLoading(true);
+    setPetData({})
     const url = "http://localhost:9000/character";
     await axios
       .get(url, {
@@ -99,7 +99,7 @@ function App() {
     setSearchState("character");
     setIsCharacterSearched(true);
     setLoading(false);
-    console.log("player");
+
   }
 
   
@@ -139,7 +139,7 @@ function App() {
     //setLoading(false);
   }
 
-  console.log(data);
+  
   const handleMouseLeave = (key) => {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";

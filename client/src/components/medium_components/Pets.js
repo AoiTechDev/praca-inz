@@ -1,52 +1,52 @@
 import React, { useState, useEffect } from "react";
+//import { Pagination } from "../small_components/OldPagination";
 import { Pagination } from "../small_components/Pagination";
-
 export const Pets = ({
   data,
   paginate,
   currentPetPage,
   petData,
   fetchPetsData,
+  setCurrentPetPage,
+  collectionState,
+  perPage
 }) => {
   console.log(petData);
-  const [petsPerPage] = useState(18);
-  const indexOfLastPet = currentPetPage * petsPerPage;
-  const indexOfFirstPet = indexOfLastPet - petsPerPage;
+ 
+  const indexOfLastPet = currentPetPage * perPage;
+  const indexOfFirstPet = indexOfLastPet - perPage;
   const idTable = [];
-  const currentPets = petData?.pets?.pets?.slice(
-    indexOfFirstPet,
-    indexOfLastPet
-  );
+  
+  const pageNumberLimit = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPageLimit, setMaxPageLimit] = useState(10);
+  const [minPageLimit, setMinPageLimit] = useState(0);
 
-  const test = petData?.pets_media.slice(indexOfFirstPet, indexOfLastPet);
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
-  // const pets = currentPets?.map((pet, index) => (
-  //   <div className="collection-container" key={index}>
-  //     {petData.pets_media.map((item, key) => {
-  //       if (pet.creature_display !== undefined) {
-  //         if (pet.creature_display.id === item.id) {
-  //           if(!idTable.includes(item.id)){
-  //             idTable.push(item.id)
-  //           return (
-  //             <div
-  //               className="collection-img"
-  //               style={{
-  //                 backgroundImage: `url(${item.assets[0].value}`,
-  //               }}
-  //               key={key}
-  //             ></div>
-  //           );
-  //           }
+   const onPrevClick = () => {
+    if ((currentPage - 1) % pageNumberLimit === 0) {
+      setMaxPageLimit(maxPageLimit - pageNumberLimit);
+      setMinPageLimit(minPageLimit - pageNumberLimit);
+    }
+    setCurrentPage((prev) => prev - 1);
+  };
 
-  //         }
-  //       }
-  //     })}
+  const onNextClick = () => {
+    if (currentPage + 1 > maxPageLimit) {
+      setMaxPageLimit(maxPageLimit + pageNumberLimit);
+      setMinPageLimit(minPageLimit + pageNumberLimit);
+    }
+    setCurrentPage((prev) => prev + 1);
+  };
 
-  //     <div className="collection-info"> {pet?.species?.name}</div>
-  //   </div>
-  // ));
 
-  const pets = test?.map((pet, index) => (
+  
+  const currentPets = petData?.pets_media.slice(indexOfFirstPet, indexOfLastPet);
+
+  const pets = currentPets?.map((pet, index) => (
     <div className="collection-container" key={index}>
       <div
         className="collection-img"
@@ -69,15 +69,26 @@ export const Pets = ({
     </div>
   ));
 
+  const paginationAttributes = {
+    currentPage,
+    maxPageLimit,
+    minPageLimit,
+    totalPets: petData.pets_media.length,
+    perPage
+  };
+
   return (
     <>
       {fetchPetsData && (
         <>
-          <Pagination
-            mountsPerPage={petsPerPage}
-            totalMounts={petData?.pets?.pets?.length}
-            paginate={paginate}
-          />
+         <Pagination
+        {...paginationAttributes}
+        onPrevClick={onPrevClick}
+        onNextClick={onNextClick}
+        onPageChange={onPageChange}
+        setCurrentPetPage={setCurrentPetPage}
+        collectionState={collectionState}
+      />
           {pets}
         </>
       )}
