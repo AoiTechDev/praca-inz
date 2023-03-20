@@ -71,6 +71,7 @@ function App() {
         console.log(err);
         setResponseStatus(err.response.status);
       });
+      console.log('pobrano pety')
   }
 
   async function getPlayer() {
@@ -138,7 +139,7 @@ function App() {
     //setLoading(false);
   }
 
-  console.log(isFetch);
+  console.log(data);
   const handleMouseLeave = (key) => {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
