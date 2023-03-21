@@ -51,3 +51,16 @@
     left: 43%;
     font-size: 1.5rem;
 }
+.achiv{
+    color: var(--white);
+    background-color: #b31923;
+    font-size: 1rem;
+    padding: 1rem;
+    margin: 2rem 1rem 1rem 1rem;
+    border-radius: 0.7rem;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px;
+    box-shadow: black 10px 10px 15px 5px;
+}

@@ -12,7 +12,7 @@ export const SpecChart = ({ specCountsArr, class_colors, charClassName }) => {
     const color_class_style = class_colors?.find(
         (color) => color?.class === charClassName
       );
-      console.log(color_class_style)
+      
   return (
     <ResponsiveContainer height={400}>
       <PieChart width={400} height={400}>

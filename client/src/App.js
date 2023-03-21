@@ -27,7 +27,7 @@ function App() {
 
   const [isCharacterSearched, setIsCharacterSearched] = useState(false);
   const [isGuildSearched, setIsGuildSearched] = useState(false);
-
+  const [achivsData, setAchivData] = useState({})
   const [guildFetch, setGuildFetch] = useState(false);
   //const [test, setTest] = useState(false);
   const [achivSubCategory, setAchivSubCategory] = useState({});
@@ -53,6 +53,19 @@ function App() {
     }
   }, [responseStatus]);
 
+  async function getAchivsByCategory(id){
+    const url = 'http://localhost:9000/achivs'
+    await axios
+    .get(url, {
+      params: {
+        id: id
+      }
+    })
+    .then((res) => setAchivData(res.data))
+    .catch((err) => console.error(err))
+  }
+
+
   async function getPets() {
     const url = "http://localhost:9000/pets";
     await axios
@@ -68,7 +81,7 @@ function App() {
         
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         setResponseStatus(err.response.status);
       });
   }
@@ -144,7 +157,7 @@ function App() {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-
+  console.log(achivsData)
   return (
     <div
       className="app"
@@ -239,7 +252,8 @@ function App() {
               getPets: getPets,
               fetchPetsData: fetchPetsData,
               petData: petData,
-
+              getAchivsByCategory: getAchivsByCategory,
+              achivsData: achivsData
               //test: test
               //guildMember: guildMember
             }}

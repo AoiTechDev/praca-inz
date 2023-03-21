@@ -131,11 +131,6 @@ async function allCharacterData(nickname, server) {
   ]);
 }
 
-app.get("/achiv_sub_category", (req, res) => {
-  getAchiv(req.query.id)
-    .then((response) => res.json(response.data))
-    .catch((err) => console.error(err));
-});
 
 const errorHandler = (error, req, res, next) => {
   return res.status(404).send(error.message);
@@ -160,64 +155,30 @@ app.get("/pets", (req, res) => {
   const pets = getPets(req.query.nickname, req.query.server);
 
   pets.then(async (pet) => {
-    const pet_media_arr = []
+    const promises = _.reduce(
+      pet.data.pets,
+      (promises, pet) => {
+        promises.push(
+          getMountMedia(pet?.creature_display?.id)
+            .then((response) => response.data)
+            .catch(() => undefined)
+        );
+        return promises;
+      },
+      []
+    );
 
-    //console.log(pet.data)
-  //   await pet.data.pets.then((response) =>
-  //   response.map((pet) =>
-  //   pet_media_arr.push(
-  //       getMountMedia(pet.creature_displays[0].id).then(
-  //         (res) => res.data
-  //       )
-  //     )
-  //   )
-  // );
-
-  pet.data.pets.map((pet) => 
-  console.log(pet?.creature_display?.id !== undefined && pet?.creature_display?.id)
-  // pet_media_arr.push(
-  //    getMountMedia(pet?.creature_display?.id).then(
-  //      (res) => res.data
-  //    )
-    
-  // )
-
-  )
-  let pet_media_promises = Promise.all(pet_media_arr);
-
-  const promises = _.reduce(
-    pet.data.pets,
-    (promises, pet) => {
-      // let lower_name = member.character.name.toLowerCase();
-      // urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${req.query.server}/${lower_name}`;
-      // getMountMedia(pet?.creature_display?.id)
-      // .then((res) => res.data)
-      
-      promises.push(
-        getMountMedia(pet?.creature_display?.id)
-          .then((response) => response.data)
-          .catch(() => undefined)
-      );
-      return promises;
-    },
-    []
-  );
-
-  try{
-    let result = Promise.all(promises)
-    result.then((response) => {
-      res.json(({
-        pets: pet.data,
-        pets_media: _.compact(response)
-      }))
-    })
-  }
-  catch(err){
-    return err
-  }
-    // res.json({
-    //   pets: pet.data,
-    // });
+    try {
+      let result = Promise.all(promises);
+      result.then((response) => {
+        res.json({
+          pets: pet.data,
+          pets_media: _.compact(response),
+        });
+      });
+    } catch (err) {
+      return err;
+    }
   });
 });
 
@@ -372,7 +333,6 @@ app.get("/guild", (req, res) => {
 
     .then(
       axios.spread((guild, roster) => {
-
         const promises = _.reduce(
           roster.data.members,
           (promises, member) => {
@@ -413,6 +373,12 @@ app.get("/guild", (req, res) => {
     );
 });
 
+app.get('/achivs', (req,res) => {
+  
+  getAchiv(req.query.id)
+  .then((response) => res.json(response.data))
+  .catch((err) => console.error(err));
+})
 app.use(errorHandler);
 
 app.use(function (err, req, res, next) {

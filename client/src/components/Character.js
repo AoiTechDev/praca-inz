@@ -14,6 +14,8 @@ function Character() {
     getPets,
     fetchPetsData,
     petData,
+    getAchivsByCategory,
+    achivsData
   } = useOutletContext();
 
   return (
@@ -31,6 +33,8 @@ function Character() {
             getPets={getPets}
             fetchPetsData={fetchPetsData}
             petData={petData}
+            getAchivsByCategory={getAchivsByCategory}
+            achivsData={achivsData}
           />
         </>
       ) : (

@@ -106,11 +106,21 @@
 }
 .shrink-player-name{
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
-.shrink-player-name > h3{
+.shrink-player-title{
    margin: 0;
-   color: var(--crismon)
+   color: var(--crismon);
+   font-size: 2vmin;
+}
+.shrink-player-nickname{
+    font-size: 3vmin;
+}
+.shrink-player-spec{
+    font-size: 2.2vmin;
+    margin-bottom: 1rem;
 }
 .shrink-player-stats{
     display: flex;
@@ -128,11 +138,11 @@
 .rage{
     display: flex;
     flex-direction: column;
-    font-size: 1.5rem;
+    font-size: 1.8vmin;
 }
 .health{
     color: var(--crismon);
-    font-size: 2rem;
+    font-size: 3vmin;
 }
 .shrink-player-info{
     display: none;
