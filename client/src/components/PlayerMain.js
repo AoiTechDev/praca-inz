@@ -17,9 +17,11 @@ function PlayerMain({
   getPets,
   fetchPetsData,
   petData,
+  getAchivsByCategory,
+  achivsData
 }) {
   const [isHover, setIsHover] = useState(false);
-  
+  const [categoryState, setCategoryState] = useState('')
 
   function offset(el) {
     var rect = el.getBoundingClientRect();
@@ -101,9 +103,17 @@ function PlayerMain({
     setAchivState("subcategory");
   }
   function subAchivState() {
-    setAchivState("category");
+    if(achivState === 'achivs'){
+      setAchivState("subcategory");
+    }
+    else{
+      setAchivState("category");
+    }
+    
   }
-
+  function changeToAchivs(){
+    setAchivState('achivs')
+  }
   function supAchiv(id) {
     if (data.achiv_categories[id].name !== "Character") {
       setSubAchivs(data.achiv_categories[id].subcategories);
@@ -119,6 +129,7 @@ function PlayerMain({
       onClick={() => {
         supAchiv(index);
         addAchivState();
+        setCategoryState(item.name)
       }}
     >
       <div className="achiv_name">{item.name}</div>
@@ -162,11 +173,7 @@ function PlayerMain({
           <ItemInfo itemInfo={itemInfo} />
         </MouseTooltip>
       </div> 
-      {/* <div className="achievements">
-    
-        {achiv}
-       
-      </div> */}
+
       <ShrinkPlayerInfo data={data} />
       <Talents data={data} offset={offset} />
       <Achievements
@@ -176,6 +183,10 @@ function PlayerMain({
         subAchivState={subAchivState}
         subAchivs={subAchivs}
         data={data}
+        getAchivsByCategory={getAchivsByCategory}
+        changeToAchivs={changeToAchivs}
+        achivsData={achivsData}
+        categoryState={categoryState}
       />
       <Dungeons data={data} />
       <Raids data={data} />

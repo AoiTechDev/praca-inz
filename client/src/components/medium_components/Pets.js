@@ -11,7 +11,7 @@ export const Pets = ({
   collectionState,
   perPage
 }) => {
-  console.log(petData);
+  
  
   const indexOfLastPet = currentPetPage * perPage;
   const indexOfFirstPet = indexOfLastPet - perPage;
