@@ -13,7 +13,7 @@ export const Mounts = ({
   const indexOfLastMount = currentMountPage * perPage;
   const indexOfFirstMount = indexOfLastMount - perPage;
 
-  const currentMounts = data.mounts_media.slice(
+  const currentMounts = data?.mounts_media?.slice(
     indexOfFirstMount,
     indexOfLastMount
   );
@@ -43,17 +43,17 @@ export const Mounts = ({
     setCurrentPage((prev) => prev + 1);
   };
 
-  const mounts = currentMounts.map((mount, index) => (
+  const mounts = currentMounts?.map((mount, index) => (
     <div className="collection-container" key={index}>
       <div
         style={{
-          backgroundImage: `url(${mount.assets[0].value})`,
+          backgroundImage: `url(${mount?.assets[0]?.value})`,
         }}
         className="collection-img"
       ></div>
       <div className="collection-info">
-        {data.mounts.map(
-          (item) => item.creature_displays[0].id === mount.id && item.name
+        {data?.mounts?.map(
+          (item) => item?.creature_displays[0]?.id === mount?.id && item?.name
         )}
       </div>
     </div>
@@ -63,20 +63,12 @@ export const Mounts = ({
     currentPage,
     maxPageLimit,
     minPageLimit,
-    totalMounts: data.mounts_media.length,
+    totalMounts: data?.mounts_media?.length,
     perPage,
   };
 
   return (
     <>
-      {/* <Pagination
-        mountsPerPage={mountsPerPage}
-        totalMounts={data.mounts_media.length}
-        paginate={paginate}
-        collectionState={collectionState}
-        setCurrentMountPage={setCurrentMountPage}
-        currentMountPage={currentMountPage}
-      /> */}
       <Pagination
         {...paginationAttributes}
         onPrevClick={onPrevClick}

@@ -5,8 +5,9 @@ import "../styles/collection-styles.css";
 
 import { Mounts } from "./medium_components/Mounts";
 import { Pets } from "./medium_components/Pets";
+import SmallSlider from "./SmallSlider";
 
-function Collection({ data, getPets, fetchPetsData, petData }) {
+function Collection({ data, getPets, fetchPetsData, petData, restDataLoading }) {
   
   const [currentMountPage, setCurrentMountPage] = useState(1);
   const [currentPetPage, setCurrentPetPage] = useState(1);
@@ -30,7 +31,10 @@ function Collection({ data, getPets, fetchPetsData, petData }) {
  
   return (
 
-    <div className="section-container">
+    <div className="section-container" style={{
+      minHeight: restDataLoading && '150px'
+    }}>
+      {restDataLoading && <SmallSlider/>}
       <div className="section-title">
         <button
           onClick={collectionMountChange}
@@ -39,7 +43,7 @@ function Collection({ data, getPets, fetchPetsData, petData }) {
           Mounts
         </button>
         <button
-          onClick={async () => { Object.keys(petData).length === 0 && await getPets();collectionPetChange();}}
+          onClick={async () => { Object.keys(petData)?.length === 0 && await getPets();collectionPetChange();}}
           className="change-collection-btn"
         >
           Pets
@@ -63,6 +67,7 @@ function Collection({ data, getPets, fetchPetsData, petData }) {
           setCurrentPetPage={setCurrentPetPage}
           perPage={perPage}
         />
+       
       )}
     </div>
    

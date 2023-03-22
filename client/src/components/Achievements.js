@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/achiv-styles.css";
 import BackButton from "./small_components/BackButton";
-
+import SmallSlider from "./SmallSlider";
 function Achievements({
   achiv,
   achivState,
@@ -12,38 +12,44 @@ function Achievements({
   changeToAchivs,
   achivsData,
   categoryState,
+  restDataLoading
 }) {
+
+
   const subCatAchivs = subAchivs.map((item, index) => (
     <div key={index} className="achiv-category">
       <div
         className="achiv_name"
         onClick={async () => {
           if (categoryState !== "Character") {
-            await getAchivsByCategory(item.id);
+            await getAchivsByCategory(item?.id);
             changeToAchivs();
           }
         }}
       >
-        {item.name}
+        {item?.name}
       </div>
     </div>
   ));
 
   const achivs = achivsData?.achievements?.map((item) =>
     data?.achiv?.achievements?.map((ach, idx) => {
-      if (ach.id === item.id) {
+      if (ach?.id === item?.id) {
         return (
           <div className="achiv" key={idx}>
-            {item.name}
+            {item?.name}
           </div>
         );
       }
     })
   );
-
-  return (
+  
+  return data?(
     <>
-      <div className="achievements-container">
+      <div className="achievements-container" style={{
+        minHeight: restDataLoading && '150px'
+      }}>
+        {restDataLoading && <SmallSlider />}
         {achivState !== "category" && <BackButton onClick={subAchivState} />}
         <div className="achiv_title">Achievements</div>
         {achivState === "category"
@@ -53,7 +59,7 @@ function Achievements({
           : achivs}
       </div>
     </>
-  );
+  ):null;
 }
 
 export default Achievements;

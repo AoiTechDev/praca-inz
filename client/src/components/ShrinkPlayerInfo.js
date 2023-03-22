@@ -3,15 +3,15 @@ import "../styles/playerInfo-styles.css";
 import ShrinkPlayerStats from "./small_components/ShrinkPlayerStats";
 import PlayerInfoName from "./small_components/PlayerInfoName";
 
-function ShrinkPlayerInfo({data}) {
+function ShrinkPlayerInfo({mainCharacterData}) {
    
     return ( 
         <div className="shrink-player-info">
             <div className="shrink-player-name-container shrink-container">
-                <PlayerInfoName data={data}/>
+                <PlayerInfoName mainCharacterData={mainCharacterData}/>
             </div>
             <div className="shrink-player-stats shrink-container">
-                <ShrinkPlayerStats data={data}/>
+                <ShrinkPlayerStats mainCharacterData={mainCharacterData}/>
             </div>
         </div>
      );

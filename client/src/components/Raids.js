@@ -3,8 +3,9 @@ import "../styles/raids-styles.css";
 import raids_data from "../affixes/raidsImg";
 import BackButton from "./small_components/BackButton";
 import RaidStats from "./medium_components/RaidStats";
+import SmallSlider from "./SmallSlider";
 
-function Raids({ data }) {
+function Raids({ data, restDataLoading }) {
   const [raidState, setRaidState] = useState("raids");
   const [raidId, setRaidId] = useState(0);
   const raid_container = document.getElementsByClassName('raid-container')[0];
@@ -20,20 +21,20 @@ function Raids({ data }) {
     setRaidState("raids");
   }
 
-  const expansions = data.raids.expansions.map((xpac, index) => {
+  const expansions = data?.raids?.expansions.map((xpac, index) => {
     return raids_data.map((rdata) => {
       return (
-        xpac.expansion.name === rdata.name && (
+        xpac?.expansion?.name === rdata?.name && (
           <div
             key={index}
             style={{
-              backgroundImage: `url(${rdata.imgUrl})`,
+              backgroundImage: `url(${rdata?.imgUrl})`,
             }}
             className="raid-img"
             onClick={() => addRaidState(index)}
           >
             {" "}
-            <div className="raid-name">{xpac.expansion.name}</div>
+            <div className="raid-name">{xpac?.expansion?.name}</div>
           </div>
         )
       );
@@ -44,7 +45,10 @@ function Raids({ data }) {
 
 
   return (
-    <div className="raid-container">
+    <div className="raid-container" style={{
+      minHeight: restDataLoading && '150px'
+    }}>
+      {restDataLoading && <SmallSlider/>}
       {raidState === "raid_stats" && <BackButton onClick={subRaidState} />}
       {raidState === "raids" && <div className="raid-title">Raids</div>}
       {raidState === "raids" ? expansions : <RaidStats data={data} raidId={raidId}/>}

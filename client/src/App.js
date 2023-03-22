@@ -24,16 +24,17 @@ function App() {
   const [isFetch, setIsFetch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchState, setSearchState] = useState("");
-
+  const [mainCharacterData, setMainCharacterData] = useState({})
   const [isCharacterSearched, setIsCharacterSearched] = useState(false);
   const [isGuildSearched, setIsGuildSearched] = useState(false);
-  const [achivsData, setAchivData] = useState({})
+  const [achivsData, setAchivData] = useState({});
   const [guildFetch, setGuildFetch] = useState(false);
   //const [test, setTest] = useState(false);
   const [achivSubCategory, setAchivSubCategory] = useState({});
   const [responseStatus, setResponseStatus] = useState(0);
   const [petData, setPetData] = useState({});
   const [fetchPetsData, setFetchPetsData] = useState(false);
+  const [restDataLoading, setRestDataLoading] = useState(false)
   const navigate = useNavigate();
   function handleChange(e) {
     setFormData((prev) => {
@@ -53,18 +54,17 @@ function App() {
     }
   }, [responseStatus]);
 
-  async function getAchivsByCategory(id){
-    const url = 'http://localhost:9000/achivs'
+  async function getAchivsByCategory(id) {
+    const url = "http://localhost:9000/achivs";
     await axios
-    .get(url, {
-      params: {
-        id: id
-      }
-    })
-    .then((res) => setAchivData(res.data))
-    .catch((err) => console.error(err))
+      .get(url, {
+        params: {
+          id: id,
+        },
+      })
+      .then((res) => setAchivData(res.data))
+      .catch((err) => console.error(err));
   }
-
 
   async function getPets() {
     const url = "http://localhost:9000/pets";
@@ -78,7 +78,6 @@ function App() {
       .then((res) => {
         setPetData(res.data);
         setFetchPetsData(true);
-        
       })
       .catch((err) => {
         console.error(err);
@@ -86,11 +85,9 @@ function App() {
       });
   }
 
-  async function getPlayer() {
-    setFetchPetsData(false);
-    setLoading(true);
-    setPetData({})
-    const url = "http://localhost:9000/character";
+  async function getRestPlayerData() {
+    setRestDataLoading(true)
+    const url = "http://localhost:9000/restCharacterInfo";
     await axios
       .get(url, {
         params: {
@@ -107,15 +104,39 @@ function App() {
       .catch((err) => {
         console.log(err);
         setResponseStatus(err.response.status);
-        setLoading(false);
       });
-    setSearchState("character");
-    setIsCharacterSearched(true);
-    setLoading(false);
-
+      setRestDataLoading(false)
+  }
+  async function getPlayer() {
+    setFetchPetsData(false);
+    setLoading(true);
+    setPetData({});
+    const url = "http://localhost:9000/mainCharacterInfo";
+    await axios
+      .get(url, {
+        params: {
+          nickname: formData.Nickname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setResponseStatus(res.status);
+          setMainCharacterData(res.data);
+          setSearchState("character");
+          setIsCharacterSearched(true);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+        setResponseStatus(err.response.status);
+      });
+   
+      setLoading(false);
+    getRestPlayerData()
   }
 
- 
   async function getGuild() {
     setLoading(true);
     const url = "http://localhost:9000/guild";
@@ -152,12 +173,11 @@ function App() {
     //setLoading(false);
   }
 
-  
   const handleMouseLeave = (key) => {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-  console.log(achivsData)
+  console.log(data)
   return (
     <div
       className="app"
@@ -192,6 +212,7 @@ function App() {
                 formData={formData}
                 value={formData.Nickname}
                 Link={Link}
+                restData={getRestPlayerData}
               />
             </div>
             <div className="find-guild find-half-container">
@@ -209,7 +230,7 @@ function App() {
             </div>
           </div>
         )}
-
+  
         {isFetch && searchState === "character" ? (
           <NavBar
             Link={Link}
@@ -220,18 +241,21 @@ function App() {
             formData={formData}
             isFetch={isFetch}
             getFun={getPlayer}
+
           />
-        ) : isFetch && (
-          <NavBar
-            Link={Link}
-            setSearchState={setSearchState}
-            searchState={searchState}
-            // getGuild={getGuild}
-            handleChange={handleChange}
-            formData={formData}
-            isFetch={isFetch}
-            getFun={getGuild}
-          />
+        ) : (
+          isFetch && (
+            <NavBar
+              Link={Link}
+              setSearchState={setSearchState}
+              searchState={searchState}
+              // getGuild={getGuild}
+              handleChange={handleChange}
+              formData={formData}
+              isFetch={isFetch}
+              getFun={getGuild}
+            />
+          )
         )}
 
         {responseStatus === 404 && <div>no character</div>}
@@ -246,14 +270,15 @@ function App() {
               achivSubCategory: achivSubCategory,
               guildData: guildData,
               guildFetch: guildFetch,
-
+              mainCharacterData: mainCharacterData,
               getPlayer: getPlayer,
               responseStatus: responseStatus,
               getPets: getPets,
               fetchPetsData: fetchPetsData,
               petData: petData,
               getAchivsByCategory: getAchivsByCategory,
-              achivsData: achivsData
+              achivsData: achivsData,
+              restDataLoading: restDataLoading
               //test: test
               //guildMember: guildMember
             }}

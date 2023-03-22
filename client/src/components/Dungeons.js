@@ -3,10 +3,11 @@ import "../styles/dungeons-styles.css";
 import DungStats from "./medium_components/DungStats";
 import BackButton from "./small_components/BackButton";
 import dungeons_imgs from "../affixes/dunegonsImg";
-function Dungeons({ data }) {
+import SmallSlider from "./SmallSlider";
+function Dungeons({ data, restDataLoading }) {
   const [dungState, setDungState] = useState("dungeons");
   const [dungId, setDungId] = useState(0);
-  const mythic_rating = data.dungeons.mythic_rating.color;
+  const mythic_rating = data?.dungeons?.mythic_rating?.color;
   function addDungState(id) {
     setDungId(id);
 
@@ -19,25 +20,30 @@ function Dungeons({ data }) {
   const dungeons = data?.dungeons?.best_runs?.map((dungeons, index) =>
     dungeons_imgs.map((dungeon) => {
       return (
-        dungeon.name === dungeons.dungeon.name &&
-        dungeons.is_completed_within_time && (
+        dungeon?.name === dungeons?.dungeon?.name &&
+        dungeons?.is_completed_within_time && (
           <div
             key={index}
             className="dungeon"
             onClick={() => addDungState(index)}
             style={{
-              backgroundImage: `url(dungeons/${dungeon.imgUrl})`,
+              backgroundImage: `url(dungeons/${dungeon?.imgUrl})`,
             }}
           >
-            <div className="dung-name">{dungeons.dungeon.name}</div>
+            <div className="dung-name">{dungeons?.dungeon?.name}</div>
           </div>
         )
       );
     })
   );
 
+  
   return (
-    <div className="dung_container">
+  
+    <div className="dung_container" style={{
+      minHeight: restDataLoading && '150px'
+    }}>
+      {restDataLoading && <SmallSlider/>}
       {dungState === "dung_stats" && <BackButton onClick={subDungState} />}
       {dungState === "dungeons" && (
         <div className="dung-header">
@@ -46,10 +52,10 @@ function Dungeons({ data }) {
             <span>Mythic rating: </span>
             <span
               style={{
-                color: `rgb(${mythic_rating.r},${mythic_rating.g}, ${mythic_rating.b})`,
+                color: `rgb(${mythic_rating?.r},${mythic_rating?.g}, ${mythic_rating?.b})`,
               }}
             >
-              {Math.round(data.dungeons.mythic_rating.rating)}
+              {Math.round(data?.dungeons?.mythic_rating?.rating)}
             </span>
           </div>
         </div>
@@ -60,9 +66,9 @@ function Dungeons({ data }) {
       ) : (
         <DungStats data={data} dungId={dungId} />
       )}
-      {/* <DungStats data={data}/> */}
+      
     </div>
-  );
+  )
 }
 
 export default Dungeons;
