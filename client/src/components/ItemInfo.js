@@ -8,13 +8,13 @@ function ItemInfo({itemInfo}) {
     <h3
       style={{
         color:
-          itemInfo.quality === "Epic"
+          itemInfo?.quality === "Epic"
             ? "rgb(197,15,249)"
-            : itemInfo.quality === "Legendary"
+            : itemInfo?.quality === "Legendary"
             ? "rgb(238,119,1)"
-            : itemInfo.quality === "Rare"
+            : itemInfo?.quality === "Rare"
             ? "rgb(0,128,254)"
-            : itemInfo.quality === "Uncommon"
+            : itemInfo?.quality === "Uncommon"
             ? "green"
             : "grey",
       }}
@@ -26,12 +26,12 @@ function ItemInfo({itemInfo}) {
         color: "rgb(223,182,2)",
       }}
     >
-      Item level: {itemInfo.ilvl}
+      Item level: {itemInfo?.ilvl}
     </p>
-    <p>{itemInfo.boe}</p>
+    <p>{itemInfo?.boe}</p>
     <div className="type">
-      <div> {itemInfo.type}</div>
-      <div>{itemInfo.arrmor_type}</div>
+      <div> {itemInfo?.type}</div>
+      <div>{itemInfo?.arrmor_type}</div>
     </div>
     <div className="type">
       <div> {itemInfo?.weapon_dmg}</div>
@@ -49,13 +49,13 @@ function ItemInfo({itemInfo}) {
           }}
           key={key}
         >
-          +{stat.value} {stat?.type?.name}
+          +{stat?.value} {stat?.type?.name}
         </p>
       ))}
 
     <p
       style={{
-        color: itemInfo.spell !== "" ? "lime" : "white",
+        color: itemInfo?.spell !== "" ? "lime" : "white",
       }}
     >
       {itemInfo?.spell}
@@ -67,10 +67,10 @@ function ItemInfo({itemInfo}) {
         <div key={index} className="set_items_names"
           style={{
             color: 
-            item.is_equipped ? "rgb(245, 222, 15)"
+            item?.is_equipped ? "rgb(245, 222, 15)"
             : "rgb(77, 77, 76)"
           }}
-        >{item.item.name}</div>
+        >{item?.item?.name}</div>
       )
       )}
 
@@ -81,7 +81,7 @@ function ItemInfo({itemInfo}) {
       {itemInfo?.set_effects?.map((effect, key) =>
         <div key={key}
           style={{
-            color: effect.is_active ? "lime"
+            color: effect?.is_active ? "lime"
             : "rgb(77, 77, 76)"
           }}
         >{effect?.display_string}</div>
@@ -91,7 +91,7 @@ function ItemInfo({itemInfo}) {
 
     <div className="durability">{itemInfo?.durability}</div>
 
-    {itemInfo.sell_price && <div className="sell_price">
+    {itemInfo?.sell_price && <div className="sell_price">
       <div>{itemInfo?.sell_price?.header}  </div> 
       <div className="gold">{itemInfo?.sell_price?.gold}<span>g</span> </div>
       <div className="silver"> {itemInfo?.sell_price?.silver}<span>s</span> </div>

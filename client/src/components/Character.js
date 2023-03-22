@@ -15,17 +15,20 @@ function Character() {
     fetchPetsData,
     petData,
     getAchivsByCategory,
-    achivsData
+    achivsData,
+    mainCharacterData,
+    restDataLoading
   } = useOutletContext();
 
   return (
     <div className="player-info">
       {responseStatus === 200 ? (
         <>
-          <PlayerInfo data={data} />
+          <PlayerInfo mainCharacterData={mainCharacterData} />
 
           <PlayerMain
             data={data}
+            mainCharacterData={mainCharacterData}
             isFetch={isFetch}
             handleMouseLeave={handleMouseLeave}
             getSubCategory={getSubCategory}
@@ -35,6 +38,7 @@ function Character() {
             petData={petData}
             getAchivsByCategory={getAchivsByCategory}
             achivsData={achivsData}
+            restDataLoading={restDataLoading}
           />
         </>
       ) : (

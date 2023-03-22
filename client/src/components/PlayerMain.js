@@ -18,15 +18,13 @@ function PlayerMain({
   fetchPetsData,
   petData,
   getAchivsByCategory,
-  achivsData
+  achivsData,
+  mainCharacterData,
+  restDataLoading
 }) {
   const [isHover, setIsHover] = useState(false);
   const [categoryState, setCategoryState] = useState('')
 
-  function offset(el) {
-    var rect = el.getBoundingClientRect();
-    return rect;
-  }
 
 
   function toggleLeave() {
@@ -115,47 +113,47 @@ function PlayerMain({
     setAchivState('achivs')
   }
   function supAchiv(id) {
-    if (data.achiv_categories[id].name !== "Character") {
-      setSubAchivs(data.achiv_categories[id].subcategories);
+    if (data?.achiv_categories[id]?.name !== "Character") {
+      setSubAchivs(data?.achiv_categories[id]?.subcategories);
     } else {
-      setSubAchivs(data.achiv_categories[id].achievements);
+      setSubAchivs(data?.achiv_categories[id]?.achievements);
     }
   }
 
-  const achiv = data.achiv_categories.map((item, index) => (
+  const achiv = data?.achiv_categories?.map((item, index) => (
     <div
       key={index}
       className="achiv-category"
       onClick={() => {
         supAchiv(index);
         addAchivState();
-        setCategoryState(item.name)
+        setCategoryState(item?.name)
       }}
     >
-      <div className="achiv_name">{item.name}</div>
+      <div className="achiv_name">{item?.name}</div>
     </div>
   ));
-
+    
   return (
     <div className="player">
       <div
         className="player-img"
         style={{
-          backgroundImage: `url(${data.media.assets[3].value})`,
+          backgroundImage: `url(${mainCharacterData?.media?.assets[3]?.value})`,
         }}
       ></div>
       <div className="eq">
         {isFetch &&
-          data?.media_eq?.map((item, key) => {
+          mainCharacterData?.media_eq?.map((item, key) => {
             return (
               <div
                 className="item"
                 key={key}
                 style={{
-                  backgroundImage: `url(${item.assets[0].value})`,
+                  backgroundImage: `url(${item?.assets[0]?.value})`,
                 }}
                 onMouseEnter={() => {
-                  toggle(data.eq.equipped_items[key], key), setIsHover(true);
+                  toggle(mainCharacterData?.eq?.equipped_items[key], key), setIsHover(true);
                 }}
                 onMouseLeave={() => {
                   handleMouseLeave(key);
@@ -174,9 +172,9 @@ function PlayerMain({
         </MouseTooltip>
       </div> 
 
-      <ShrinkPlayerInfo data={data} />
-      <Talents data={data} offset={offset} />
-      <Achievements
+      <ShrinkPlayerInfo mainCharacterData={mainCharacterData} />
+      <Talents data={data} restDataLoading={restDataLoading} />
+       <Achievements
         achiv={achiv}
         achivState={achivState}
         addAchivState={addAchivState}
@@ -187,15 +185,17 @@ function PlayerMain({
         changeToAchivs={changeToAchivs}
         achivsData={achivsData}
         categoryState={categoryState}
+        restDataLoading={restDataLoading}
       />
-      <Dungeons data={data} />
-      <Raids data={data} />
+      <Dungeons data={data} restDataLoading={restDataLoading} />
+      <Raids data={data} restDataLoading={restDataLoading} />
 
       <Collection
         data={data}
         getPets={getPets}
         fetchPetsData={fetchPetsData}
         petData={petData}
+        restDataLoading={restDataLoading}
       />
     </div>
   );

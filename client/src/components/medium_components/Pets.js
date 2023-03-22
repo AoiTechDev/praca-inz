@@ -44,7 +44,7 @@ export const Pets = ({
 
 
   
-  const currentPets = petData?.pets_media.slice(indexOfFirstPet, indexOfLastPet);
+  const currentPets = petData?.pets_media?.slice(indexOfFirstPet, indexOfLastPet);
 
   const pets = currentPets?.map((pet, index) => (
     <div className="collection-container" key={index}>
@@ -55,12 +55,12 @@ export const Pets = ({
         }}
       ></div>
       <div className="collection-info">
-        {petData.pets.pets.map((item) => {
-          if (item.creature_display !== undefined) {
-            if (item.creature_display.id === pet.id) {
-              if (!idTable.includes(pet.id)) {
-                idTable.push(pet.id);
-                return item.species.name
+        {petData?.pets.pets?.map((item) => {
+          if (item?.creature_display !== undefined) {
+            if (item?.creature_display?.id === pet?.id) {
+              if (!idTable.includes(pet?.id)) {
+                idTable.push(pet?.id);
+                return item?.species?.name
               }
             }
           }
@@ -73,7 +73,7 @@ export const Pets = ({
     currentPage,
     maxPageLimit,
     minPageLimit,
-    totalPets: petData.pets_media.length,
+    totalPets: petData?.pets_media.length,
     perPage
   };
 

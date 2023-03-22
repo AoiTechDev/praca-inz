@@ -1,65 +1,65 @@
 import "../styles/playerInfo-styles.css";
 import React from "react";
 import class_colors from "../class_colors/classColors";
-function PlayerInfo({ data }) {
+function PlayerInfo({ mainCharacterData }) {
   const color_class_style = class_colors.find(
-    (color) => color.class === data.profile.character_class.name
+    (color) => color?.class === mainCharacterData?.profile?.character_class?.name
   );
 
   return (
     <div className="left-nav">
       <div className="player-name-left">
-        <span>{data?.profile.active_title?.name}</span>
+        <span>{mainCharacterData?.profile?.active_title?.name}</span>
 
         <span
           style={{
-            color: color_class_style.color,
+            color: color_class_style?.color,
           }}
           className="player-nickname"
         >
-          {data?.profile?.name}
+          {mainCharacterData?.profile?.name}
         </span>
         <span
           style={{
-            color: color_class_style.color,
+            color: color_class_style?.color,
           }}
         >
-          {data.talents.active_specialization.name}
+          {mainCharacterData?.talents?.active_specialization?.name}
         </span>
-        <div className="ilvl"> level: {data.profile.level}</div>
+        <div className="ilvl"> level: {mainCharacterData?.profile?.level}</div>
         <div className="ilvl">
-          Item level: {data.profile.equipped_item_level}
+          Item level: {mainCharacterData?.profile?.equipped_item_level}
         </div>
       </div>
       <div className="stats stats-left">
         <span className="stats-text">Health: </span>
-        <span>{data.stats.health}</span>
+        <span>{mainCharacterData?.stats?.health}</span>
         <br />
-        <span className="stats-text">{data.stats.power_type.name}:</span>
-        <span> {data.stats.power}</span>
+        <span className="stats-text">{mainCharacterData?.stats?.power_type?.name}:</span>
+        <span> {mainCharacterData?.stats?.power}</span>
         <hr />
-        <p className="stats-text">Stamina: {data.stats.stamina.base}</p>
-        <p className="stats-text">Strength: {data.stats.strength.base}</p>
-        <p className="stats-text">Intellect: {data.stats.intellect.base}</p>
-        <p className="stats-text">Agility: {data.stats.agility.base}</p>
+        <p className="stats-text">Stamina: {mainCharacterData?.stats?.stamina?.base}</p>
+        <p className="stats-text">Strength: {mainCharacterData?.stats?.strength?.base}</p>
+        <p className="stats-text">Intellect: {mainCharacterData?.stats?.intellect?.base}</p>
+        <p className="stats-text">Agility: {mainCharacterData?.stats?.agility?.base}</p>
         <hr />
-        <p className="stats-text">Mastery: {data.stats.mastery.rating}</p>
-        <p className="stats-text">Haste: {data.stats.spell_haste.rating}</p>
-        <p className="stats-text">Versatility: {data.stats.versatility} </p>
+        <p className="stats-text">Mastery: {mainCharacterData?.stats?.mastery?.rating}</p>
+        <p className="stats-text">Haste: {mainCharacterData?.stats?.spell_haste?.rating}</p>
+        <p className="stats-text">Versatility: {mainCharacterData?.stats?.versatility} </p>
         <p className="stats-text">
-          Critical Strike: {data.stats.spell_crit.rating}
+          Critical Strike: {mainCharacterData?.stats?.spell_crit?.rating}
         </p>
         <hr />
         <div className="minor-stats">
           <span>
             Show Minor attributes
             <div className="minor-stats-tooltip">
-              <p>Avoidance: {data.stats.avoidance.rating_bonus}</p>
-              <p>Block: {data.stats.block.value}</p>
-              <p>Dodge: {data.stats.dodge.value}</p>
-              <p>Parry: {data.stats.parry.value}</p>
-              <p>Lifesteal: {data.stats.lifesteal.value}</p>
-              <p>Speed: {data.stats.speed.rating}</p>
+              <p>Avoidance: {mainCharacterData?.stats?.avoidance?.rating_bonus}</p>
+              <p>Block: {mainCharacterData?.stats?.block?.value}</p>
+              <p>Dodge: {mainCharacterData?.stats?.dodge?.value}</p>
+              <p>Parry: {mainCharacterData?.stats?.parry?.value}</p>
+              <p>Lifesteal: {mainCharacterData?.stats?.lifesteal?.value}</p>
+              <p>Speed: {mainCharacterData?.stats?.speed?.rating}</p>
             </div>
           </span>
         </div>

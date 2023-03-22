@@ -47,7 +47,7 @@ export const SpecChart = ({ specCountsArr, class_colors, charClassName }) => {
                 textAnchor={x > cx ? "start" : "end"}
                 dominantBaseline="central"
               >
-                {specCountsArr[index].name} ({value})
+                {specCountsArr[index]?.name} ({value})
               </text>
             );
           }}

@@ -95,7 +95,8 @@ async function axiosGet(url, namespace = "profile-eu") {
     params: {
       locale: "en_US",
     },
-  });
+  })
+  
 }
 
 async function characterAchievements(nickname, server) {
@@ -105,23 +106,23 @@ async function characterAchievements(nickname, server) {
 }
 
 async function allCharacterData(nickname, server) {
-  urlMedia = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/character-media`;
-  urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}`;
-  urlStatistic = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/statistics`;
-  urlEq = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/equipment`;
-  test = `${EU_BLIZZARD}/data/wow/achievement-category/index`;
-  talents = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/specializations`;
-  dungeons = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/mythic-keystone-profile/season/9`;
-  raids = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/encounters/raids`;
-  mounts = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/mounts`;
-  pets = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/pets`;
+  const urlMedia = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/character-media`;
+  const urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}`;
+  const urlStatistic = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/statistics`;
+  const urlEq = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/equipment`;
+  const achivCategory = `${EU_BLIZZARD}/data/wow/achievement-category/index`;
+  const talents = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/specializations`;
+  const dungeons = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/mythic-keystone-profile/season/9`;
+  const raids = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/encounters/raids`;
+  const mounts = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/mounts`;
+  const pets = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/pets`;
 
   return await axios.all([
     axiosGet(urlMedia),
     axiosGet(urlProfileInfo),
     axiosGet(urlStatistic),
     characterAchievements(nickname, server),
-    axiosGet(test, "static-eu"),
+    axiosGet(achivCategory, "static-eu"),
     axiosGet(urlEq),
     axiosGet(talents),
     axiosGet(dungeons),
@@ -130,7 +131,38 @@ async function allCharacterData(nickname, server) {
     axiosGet(pets),
   ]);
 }
+async function mainCharacterData(nickname, server) {
+  const urlMedia = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/character-media`;
+  const urlProfileInfo = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}`;
+  const urlStatistic = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/statistics`;
+  const urlEq = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/equipment`;
 
+  return await axios.all([
+    axiosGet(urlMedia),
+    axiosGet(urlProfileInfo),
+    axiosGet(urlStatistic),
+    axiosGet(urlEq),
+  ]);
+
+  
+}
+
+async function restCharacterData(nickname, server) {
+  const achivCategory = `${EU_BLIZZARD}/data/wow/achievement-category/index`;
+  const talents = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/specializations`;
+  const dungeons = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/mythic-keystone-profile/season/9`;
+  const raids = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/encounters/raids`;
+  const mounts = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/mounts`;
+
+  return await axios.all([
+    characterAchievements(nickname, server),
+    axiosGet(achivCategory, "static-eu"),
+    axiosGet(talents),
+    axiosGet(dungeons),
+    axiosGet(raids),
+    axiosGet(mounts),
+  ]);
+}
 
 const errorHandler = (error, req, res, next) => {
   return res.status(404).send(error.message);
@@ -150,6 +182,141 @@ async function getPets(nickname, server) {
   const pets = `${EU_BLIZZARD}/profile/wow/character/${server}/${nickname}/collections/pets`;
   return await axiosGet(pets);
 }
+
+
+app.get("/restCharacterInfo", (req, res) => {
+  const character = restCharacterData(req.query.nickname, req.query.server);
+
+  character
+    .then(
+      axios.spread(
+        async (achiv, achiv_data, talents, dungeons, raids, mounts) => {
+          const promises_achiv_arr = [];
+          const class_talents_arr = [];
+          const spec_talents_arr = [];
+          const mounts_arr = [];
+          const mounts_media_arr = [];
+
+          achiv_data.data.root_categories.map((item) => {
+            promises_achiv_arr.push(
+              getAchiv(item.id).then((response) => response.data)
+            );
+          });
+
+          talents.data.specializations[0].loadouts.map((idx) => {
+            if (idx.is_active) {
+              idx.selected_spec_talents.map((index) => {
+                spec_talents_arr.push(
+                  getSpellMedia(index.tooltip.spell_tooltip.spell.id)
+                    .then((response) => response.data)
+                    .catch((err) => console.error(err.response))
+                );
+              });
+
+              idx.selected_class_talents.map((index) => {
+                class_talents_arr.push(
+                  getSpellMedia(index.tooltip.spell_tooltip.spell.id)
+                    .then((response) => response.data)
+                    .catch((err) => {
+                      console.error("Error response: ");
+                      console.error(err.response);
+                    })
+                );
+              });
+            }
+          });
+
+          mounts.data.mounts.map((mount) =>
+            mounts_arr.push(
+              getMount(mount.mount.id).then((response) => response.data)
+            )
+          );
+
+          let spec_talents_promises = Promise.all(spec_talents_arr);
+          let class_talents_promises = Promise.all(class_talents_arr);
+          let achiv_promises = Promise.all(promises_achiv_arr);
+          let mounts_promises = Promise.all(mounts_arr);
+
+          await mounts_promises.then((response) =>
+            response.map((mount) =>
+              mounts_media_arr.push(
+                getMountMedia(mount.creature_displays[0].id).then(
+                  (res) => res.data
+                )
+              )
+            )
+          );
+
+          let mounts_media_promises = Promise.all(mounts_media_arr);
+
+          try {
+            let result = Promise.all([
+              spec_talents_promises,
+              class_talents_promises,
+              achiv_promises,
+              mounts_promises,
+              mounts_media_promises,
+            ]);
+            result.then((response) => {
+              res.json({
+                achiv: achiv.data,
+                spec_talents_media: response[0],
+                class_talents_media: response[1],
+                achiv_categories: response[2],
+                talents: talents.data,
+                dungeons: dungeons.data,
+                raids: raids.data,
+                mounts: response[3],
+                mounts_media: response[4],
+              });
+            });
+          } catch (error) {
+            res.json(error)
+          }
+        }
+      )
+    )
+    .catch((error) => {
+      res.json(error)
+    });
+});
+
+app.get("/mainCharacterInfo", (req, res) => {
+  const character = mainCharacterData(req.query.nickname, req.query.server);
+
+  character
+    .then(
+      axios.spread(async (media, profile, stats, eq) => {
+        const promises_eq_arr = [];
+
+        eq.data.equipped_items.map((item) => {
+          promises_eq_arr.push(
+            getItem(item.item.id).then((response) => response.data)
+          );
+        });
+
+        let eq_promises = Promise.all(promises_eq_arr);
+
+        try {
+          let result = Promise.all([eq_promises]);
+          result.then((response) => {
+            res.json({
+              media: media.data,
+              profile: profile.data,
+              stats: stats.data,
+              eq: eq.data,
+              media_eq: response[0],
+            });
+          });
+        } catch (error) {
+          res.json(error)
+        }
+      })
+    )
+    .catch((error) => {
+      res.json(error)
+    });
+});
 
 app.get("/pets", (req, res) => {
   const pets = getPets(req.query.nickname, req.query.server);
@@ -176,8 +343,8 @@ app.get("/pets", (req, res) => {
           pets_media: _.compact(response),
         });
       });
-    } catch (err) {
-      return err;
+    } catch (error) {
+      res.json(error)
     }
   });
 });
@@ -373,12 +540,11 @@ app.get("/guild", (req, res) => {
     );
 });
 
-app.get('/achivs', (req,res) => {
-  
+app.get("/achivs", (req, res) => {
   getAchiv(req.query.id)
-  .then((response) => res.json(response.data))
-  .catch((err) => console.error(err));
-})
+    .then((response) => res.json(response.data))
+    .catch((error) =>  res.json(error));
+});
 app.use(errorHandler);
 
 app.use(function (err, req, res, next) {

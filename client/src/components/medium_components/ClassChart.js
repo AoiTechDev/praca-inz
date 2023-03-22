@@ -79,7 +79,7 @@ export const ClassChart = ({ guildData, setCharClassName, removeAll }) => {
   ];
 
   guildData?.roster_profile?.map((member) => {
-    guild_class_data.map((gclass) => {
+    guild_class_data?.map((gclass) => {
       if (gclass.name === member?.character_class?.name) {
         gclass.count = gclass.count + 1;
       }

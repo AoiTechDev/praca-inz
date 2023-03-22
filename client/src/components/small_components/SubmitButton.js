@@ -1,6 +1,6 @@
 import React from "react";
 
-export const SubmitButton = ({ state, getFun, Link, isFetch, searchState }) => {
+export const SubmitButton = ({ state, getFun, Link, isFetch, searchState, restData }) => {
   
   return (
     <Link to={state === 'Guild' ? 'guild' : '/'} className={isFetch ? 'nav-submit-btn-container' : "submit-btn-container"}>

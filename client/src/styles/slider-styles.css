@@ -1,5 +1,5 @@
 .loading{
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100vh;
     display: flex;
@@ -8,7 +8,19 @@
     flex-direction: column;
     
     background: rgba(0, 0, 0, 0.834);
-    z-index: 20;
+    z-index: 100;
+}
+.small-loading{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+    background: rgba(0, 0, 0, 0.834);
+    z-index: 100;
 }
 
 .spinner{
@@ -19,6 +31,15 @@
     animation: spinRight 800ms linear infinite;
   
 }
+.small-spinner{
+    width: 6vmax;
+    height: 6vmax;
+    border-right: 4px solid #ffffff;
+    border-radius: 100%;
+    animation: spinRight 800ms linear infinite;
+  
+}
+
 .spinner:before, .spinner:after{
     content: '';
     width: 6vmax;
@@ -31,6 +52,19 @@
     border-radius: 100%;
     animation: spinLeft 800ms linear infinite; 
 }
+.small-spinner:before, .small-spinner:after{
+    content: '';
+    width: 4vmax;
+    height: 4vmax;
+    display: block;
+    position: absolute;
+    top: calc(50% - 2vmax);
+    left: calc(50% - 2vmax);
+    border-left: 3px solid #ffffff;
+    border-radius: 100%;
+    animation: spinLeft 800ms linear infinite; 
+}
+
 .spinner:before{
     width: 4vmax;
     height: 4vmax;
@@ -40,6 +74,16 @@
     border-right: 2px solid #ffffff;
     animation: none;
 }
+.small-spinner:before{
+    width: 2vmax;
+    height: 2vmax;
+    top: calc(50% - 1vmax);
+    left: calc(50% - 1vmax);
+    border: 0;
+    border-right: 2px solid #ffffff;
+    animation: none;
+}
+
 
 @keyframes spinLeft {
     from {transform:rotate(0deg);}

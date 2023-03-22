@@ -19,7 +19,8 @@ export const Find = ({
   server,
   Link,
   isFetch,
-  searchState
+  searchState,
+  restData
 }) => {
   return (
     <div
@@ -50,7 +51,7 @@ export const Find = ({
           value={server === "Server" ? formData.Server : formData.GuildServer}
         />
 
-        <SubmitButton state={state} getFun={getFun} Link={Link} isFetch={isFetch} searchState={searchState}/>
+        <SubmitButton state={state} getFun={getFun} Link={Link} isFetch={isFetch} searchState={searchState} restData={restData}/>
       </div>
     </div>
   );
