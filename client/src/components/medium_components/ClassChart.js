@@ -97,11 +97,6 @@ export const ClassChart = ({ guildData, setCharClassName, removeAll }) => {
   Z`;
   };
 
-  const TriangleBar = (props) => {
-    const { fill, x, y, width, height } = props;
-
-    return <path d={getPath(x, y, width, height)} stroke="none" fill={fill} />;
-  };
 
   const CustomTooltip = ({ active, payload, label, guild_class_data }) => {
     const tooltip_class_color = guild_class_data.find(
@@ -155,6 +150,9 @@ export const ClassChart = ({ guildData, setCharClassName, removeAll }) => {
         //   shape={<TriangleBar />}
           label={{ position: "top" }}
           onClick={getClassNameFromBar}
+          style={{
+            cursor: 'pointer'
+          }}
         >
           {guild_class_data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={guild_class_data[index].color} />

@@ -1,4 +1,4 @@
-.achievements{
+.achievements-container{
     width: 75%;
     background-color: var(--black);
     color: var(--white);
@@ -11,6 +11,7 @@
     position: relative;
     box-shadow: black 10px 10px 15px 5px;
 }
+
 .achiv-category{
     
     color: var(--white);
@@ -53,7 +54,7 @@
 }
 .achiv{
     color: var(--white);
-    background-color: #b31923;
+    background-color: var(--black);
     font-size: 1rem;
     padding: 1rem;
     margin: 2rem 1rem 1rem 1rem;
@@ -62,5 +63,5 @@
     justify-content: center;
     align-items: center;
     min-height: 100px;
-    box-shadow: black 10px 10px 15px 5px;
+    box-shadow: #b31923 5px 5px 15px 5px;
 }

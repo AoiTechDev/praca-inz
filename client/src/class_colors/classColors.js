@@ -32,7 +32,7 @@ const class_colors = [
         color: "#FFFFFF",
     },
     {
-        class: "Rouge",
+        class: "Rogue",
         color: "#FFF468",
     },
     {
