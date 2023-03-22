@@ -110,7 +110,7 @@ function Guild() {
 
           <div className="guild-stats-container container-style">
             <div className="guild-stats">
-              <h2>Guild Statistics</h2>
+              <span className="guild-statistics-title">Class and Specialization Statistics</span>
             </div>
             <div className="guild-class-chart">
               <ClassChart

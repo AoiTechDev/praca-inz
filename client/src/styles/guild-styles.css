@@ -121,6 +121,9 @@
     font-size: 2vmin;
 }
 
+.guild-statistics-title{
+    font-size: 6vmin;
+}
 .active-member{
     height: 150px;
     place-items: start legacy;

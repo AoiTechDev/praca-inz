@@ -115,7 +115,7 @@ function App() {
 
   }
 
-  
+ 
   async function getGuild() {
     setLoading(true);
     const url = "http://localhost:9000/guild";
