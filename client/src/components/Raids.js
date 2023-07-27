@@ -5,7 +5,7 @@ import BackButton from "./small_components/BackButton";
 import RaidStats from "./medium_components/RaidStats";
 import SmallSlider from "./SmallSlider";
 
-function Raids({ data, restDataLoading }) {
+function Raids({ObjectsNLoaders}) {
   const [raidState, setRaidState] = useState("raids");
   const [raidId, setRaidId] = useState(0);
   const raid_container = document.getElementsByClassName('raid-container')[0];
@@ -21,7 +21,7 @@ function Raids({ data, restDataLoading }) {
     setRaidState("raids");
   }
 
-  const expansions = data?.raids?.expansions.map((xpac, index) => {
+  const expansions = ObjectsNLoaders.raids.raidsData?.raids?.expansions.map((xpac, index) => {
     return raids_data.map((rdata) => {
       return (
         xpac?.expansion?.name === rdata?.name && (
@@ -46,12 +46,12 @@ function Raids({ data, restDataLoading }) {
 
   return (
     <div className="raid-container" style={{
-      minHeight: restDataLoading && '150px'
+      minHeight: ObjectsNLoaders.raids.raidsLoader && '150px'
     }}>
-      {restDataLoading && <SmallSlider/>}
+      {ObjectsNLoaders.raids.raidsLoader && <SmallSlider/>}
       {raidState === "raid_stats" && <BackButton onClick={subRaidState} />}
       {raidState === "raids" && <div className="raid-title">Raids</div>}
-      {raidState === "raids" ? expansions : <RaidStats data={data} raidId={raidId}/>}
+      {raidState === "raids" ? expansions : <RaidStats data={ObjectsNLoaders.raids.raidsData} raidId={raidId}/>}
     </div>
   );
 }

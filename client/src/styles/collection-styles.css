@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 20px;
-    padding: 6rem 1.5rem 2rem 3rem;
+    padding: 6rem 2rem 2rem 3rem;
     
 }
 .collection-container{
@@ -105,3 +105,9 @@
     display: flex;
     gap: 25px;
 }
+@media only screen and (max-width: 1450px) {
+    .section-container {
+    
+        width: 90%;
+    }
+  }

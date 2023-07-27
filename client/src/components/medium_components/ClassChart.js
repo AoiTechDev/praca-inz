@@ -86,16 +86,6 @@ export const ClassChart = ({ guildData, setCharClassName, removeAll }) => {
     });
   });
 
-  const getPath = (x, y, width, height) => {
-    return `M${x},${y + height}C${x + width / 3},${y + height} ${
-      x + width / 2
-    },${y + height / 3}
-  ${x + width / 2}, ${y}
-  C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
-      x + width
-    }, ${y + height}
-  Z`;
-  };
 
 
   const CustomTooltip = ({ active, payload, label, guild_class_data }) => {
@@ -147,7 +137,7 @@ export const ClassChart = ({ guildData, setCharClassName, removeAll }) => {
         <Bar
           dataKey="count"
           fill="#8884d8"
-        //   shape={<TriangleBar />}
+       
           label={{ position: "top" }}
           onClick={getClassNameFromBar}
           style={{

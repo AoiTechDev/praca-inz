@@ -17,12 +17,16 @@ function Character() {
     getAchivsByCategory,
     achivsData,
     mainCharacterData,
-    restDataLoading
+    restDataLoading,
+
+    ObjectsNLoaders,
+    CollectionState,
+    tmpCharacterData,
   } = useOutletContext();
 
   return (
-    <div className="player-info">
-      {responseStatus === 200 ? (
+    Object.keys(mainCharacterData).length > 0 && (
+      <div className="player-info">
         <>
           <PlayerInfo mainCharacterData={mainCharacterData} />
 
@@ -39,12 +43,13 @@ function Character() {
             getAchivsByCategory={getAchivsByCategory}
             achivsData={achivsData}
             restDataLoading={restDataLoading}
+            ObjectsNLoaders={ObjectsNLoaders}
+            CollectionState={CollectionState}
+            tmpCharacterData={tmpCharacterData}
           />
         </>
-      ) : (
-        ""
-      )}
-    </div>
+      </div>
+    )
   );
 }
 

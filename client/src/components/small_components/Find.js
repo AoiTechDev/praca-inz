@@ -3,10 +3,13 @@ import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "../../styles/search-styles.css";
 import { alpha, styled } from "@mui/material/styles";
-import React from "react";
+import React, {useState} from "react";
 import { SubmitButton } from "./SubmitButton";
 import "animate.css";
 import { FindInputs } from "./FindInputs";
+
+import { NotFoundError } from "./Errors/NotFoundError";
+import { EmptyInputsError } from "./Errors/EmptyInputsError";
 
 export const Find = ({
   label,
@@ -20,9 +23,16 @@ export const Find = ({
   Link,
   isFetch,
   searchState,
-  restData
+  restData,
+  mainCharacterData,
+  tmpCharacterData,
+  guildData,
+  tmpGuildData
 }) => {
-  return (
+  const [isGuildEmpty, setIsGuildEmpty ] = useState(false);
+  const [isCharacterEmpty, setIsCharacterEmpty] = useState(false)
+ 
+    return (
     <div
       className={
         isFetch
@@ -38,6 +48,8 @@ export const Find = ({
             : "inputs animate__animated animate__fadeInDown animate__delay-1s"
         }
       >
+        
+       
         <FindInputs
           label={label}
           name={name}
@@ -50,8 +62,12 @@ export const Find = ({
           handleChange={handleChange}
           value={server === "Server" ? formData.Server : formData.GuildServer}
         />
-
-        <SubmitButton state={state} getFun={getFun} Link={Link} isFetch={isFetch} searchState={searchState} restData={restData}/>
+       
+        <SubmitButton state={state} getFun={getFun} Link={Link} isFetch={isFetch} formData={formData} setIsCharacterEmpty={setIsCharacterEmpty} setIsGuildEmpty={setIsGuildEmpty}/>
+        {state === 'Player' ? (!isCharacterEmpty &&  <NotFoundError tmpCharacterData={tmpCharacterData} tmpGuildData={tmpGuildData}  guildData={guildData} state={state}/>) :
+           (!isGuildEmpty &&  <NotFoundError tmpCharacterData={tmpCharacterData} tmpGuildData={tmpGuildData}  guildData={guildData} state={state}/>) 
+        }
+         <EmptyInputsError  isCharacterEmpty={isCharacterEmpty} isGuildEmpty={isGuildEmpty} state={state}/>
       </div>
     </div>
   );

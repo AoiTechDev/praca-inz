@@ -41,7 +41,9 @@ export const Pagination = (props) => {
     
     if (page <= maxPageLimit && page > minPageLimit) {
       return (
-        <li
+        <li style={{
+          cursor: 'pointer'
+        }}
           key={page}
           id={page}
           onClick={handlePageClick}

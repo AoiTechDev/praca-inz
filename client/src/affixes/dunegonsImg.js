@@ -1,36 +1,37 @@
 const dungeons_imgs = [
     {
-        name: "Temple of the Jade Serpent",
-        imgUrl: 'temple-of-the-jade-serpent-small.jpg'
+        name: "Brackenhide Hollow",
+        imgUrl: 'season10/brackenhide-hollow-small.jpg'
     },
     {
-        name: "Shadowmoon Burial Grounds",
-        imgUrl: 'shadowmoon-burial-grounds-small.jpg'
+        name: "Freehold",
+        imgUrl: 'season10/freehold-small.jpg'
     },
     {
-        name: "Halls of Valor",
-        imgUrl: 'halls-of-valor-small.jpg'
+        name: "Halls of Infusion",
+        imgUrl: 'season10/halls-of-infusion-small.jpg'
     },
     {
-        name: "Court of Stars",
-        imgUrl: 'court-of-stars-small.jpg'
+        name: "Neltharion's Lair",
+        imgUrl: 'season10/neltharions-lair-small.jpg'
     },
     {
-        name: "Ruby Life Pools",
-        imgUrl: 'ruby-life-pools-small.jpg'
+        name: "Neltharus",
+        imgUrl: 'season10/neltharus-small.jpg'
     },
     {
-        name: "The Nokhud Offensive",
-        imgUrl: 'the-nokhud-offensive-small.jpg'
+        name: "The Underrot",
+        imgUrl: 'season10/the-underrot-small.jpg'
     },
     {
-        name: "The Azure Vault",
-        imgUrl: 'the-azure-vault-small.jpg'
+        name: "The Vortex Pinnacle",
+        imgUrl: 'season10/the-vortex-pinnacle-small.jpg'
     },
     {
-        name: "Algeth'ar Academy",
-        imgUrl: 'algethar-academy-small.jpg'
-    }
+        name: "Uldaman: Legacy of Tyr",
+        imgUrl: 'season10/uldaman-legacy-of-tyr-small.jpg'
+    },
+    
     
 ]
 

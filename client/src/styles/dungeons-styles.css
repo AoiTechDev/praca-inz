@@ -3,7 +3,7 @@
     background-color: var(--black);
     color: var(--white);
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) ;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) ;
     border: 1px solid black;
     border-radius: 1rem;
     align-items: center;
@@ -148,7 +148,7 @@
     justify-content: center;
     gap: 15px;
 }
-.dung-member-ilvl{
+.dung-member-ilvl, .dung-member-realm{
     text-align: center;
 }
 
@@ -176,4 +176,13 @@
     .dung-header{
         left: 38%;
     }
+    .dung-member{
+        font-size: 1.2rem;
+    }
 }
+@media only screen and (max-width: 1450px) {
+    .dung_container {
+    
+        width: 90%;
+    }
+  }

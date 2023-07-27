@@ -7,7 +7,9 @@ export const NavBar = ({
   handleChange,
   formData,
   isFetch,
-  getFun
+  getFun,
+  tmpCharacterData,
+  tmpGuildData
 }) => {
   return (
     <div className="nav-bar">
@@ -38,6 +40,7 @@ export const NavBar = ({
             Link={Link}
             isFetch={isFetch}
             searchState={searchState}
+            tmpGuildData={tmpGuildData}
           />
         ) : (
           <Find
@@ -52,6 +55,7 @@ export const NavBar = ({
             Link={Link}
             isFetch={isFetch}
             searchState={searchState}
+            tmpCharacterData={tmpCharacterData}
           />
         )}
       </div>

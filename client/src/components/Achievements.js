@@ -7,15 +7,12 @@ function Achievements({
   achivState,
   subAchivState,
   subAchivs,
-  data,
   getAchivsByCategory,
   changeToAchivs,
   achivsData,
   categoryState,
-  restDataLoading
+  ObjectsNLoaders,
 }) {
-
-
   const subCatAchivs = subAchivs.map((item, index) => (
     <div key={index} className="achiv-category">
       <div
@@ -33,23 +30,28 @@ function Achievements({
   ));
 
   const achivs = achivsData?.achievements?.map((item) =>
-    data?.achiv?.achievements?.map((ach, idx) => {
-      if (ach?.id === item?.id) {
-        return (
-          <div className="achiv" key={idx}>
-            {item?.name}
-          </div>
-        );
+    ObjectsNLoaders.achievements.achievementsData?.achiv?.achievements?.map(
+      (ach, idx) => {
+        if (ach?.id === item?.id) {
+          return (
+            <div className="achiv" key={idx}>
+              {item?.name}
+            </div>
+          );
+        }
       }
-    })
+    )
   );
-  
-  return data?(
+
+  return ObjectsNLoaders.achievements.achievementsData ? (
     <>
-      <div className="achievements-container" style={{
-        minHeight: restDataLoading && '150px'
-      }}>
-        {restDataLoading && <SmallSlider />}
+      <div
+        className="achievements-container"
+        style={{
+          minHeight: ObjectsNLoaders.achievements.achievementsLoader && "150px",
+        }}
+      >
+        {ObjectsNLoaders.achievements.achievementsLoader && <SmallSlider />}
         {achivState !== "category" && <BackButton onClick={subAchivState} />}
         <div className="achiv_title">Achievements</div>
         {achivState === "category"
@@ -59,7 +61,7 @@ function Achievements({
           : achivs}
       </div>
     </>
-  ):null;
+  ) : null;
 }
 
 export default Achievements;

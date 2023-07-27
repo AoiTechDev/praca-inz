@@ -20,12 +20,14 @@ function PlayerMain({
   getAchivsByCategory,
   achivsData,
   mainCharacterData,
-  restDataLoading
+  restDataLoading,
+
+  ObjectsNLoaders,
+  CollectionState,
+  tmpCharacterData,
 }) {
   const [isHover, setIsHover] = useState(false);
-  const [categoryState, setCategoryState] = useState('')
-
-
+  const [categoryState, setCategoryState] = useState("");
 
   function toggleLeave() {
     const tooltip = document.getElementsByClassName("item-info")[0];
@@ -101,47 +103,64 @@ function PlayerMain({
     setAchivState("subcategory");
   }
   function subAchivState() {
-    if(achivState === 'achivs'){
+    if (achivState === "achivs") {
       setAchivState("subcategory");
-    }
-    else{
+    } else {
       setAchivState("category");
     }
-    
   }
-  function changeToAchivs(){
-    setAchivState('achivs')
+  function changeToAchivs() {
+    setAchivState("achivs");
   }
   function supAchiv(id) {
-    if (data?.achiv_categories[id]?.name !== "Character") {
-      setSubAchivs(data?.achiv_categories[id]?.subcategories);
+    if (
+      ObjectsNLoaders.achievements.achievementsData?.achiv_categories[id]
+        ?.name !== "Character"
+    ) {
+      setSubAchivs(
+        ObjectsNLoaders.achievements.achievementsData?.achiv_categories[id]
+          ?.subcategories
+      );
     } else {
-      setSubAchivs(data?.achiv_categories[id]?.achievements);
+      setSubAchivs(
+        ObjectsNLoaders.achievements.achievementsData?.achiv_categories[id]
+          ?.achievements
+      );
     }
   }
 
-  const achiv = data?.achiv_categories?.map((item, index) => (
-    <div
-      key={index}
-      className="achiv-category"
-      onClick={() => {
-        supAchiv(index);
-        addAchivState();
-        setCategoryState(item?.name)
-      }}
-    >
-      <div className="achiv_name">{item?.name}</div>
-    </div>
-  ));
-    
+  const achiv =
+    ObjectsNLoaders.achievements.achievementsData?.achiv_categories?.map(
+      (item, index) => (
+        <div
+          key={index}
+          className="achiv-category"
+          onClick={() => {
+            supAchiv(index);
+            addAchivState();
+            setCategoryState(item?.name);
+          }}
+        >
+          <div className="achiv_name">{item?.name}</div>
+        </div>
+      )
+    );
+
   return (
     <div className="player">
-      <div
-        className="player-img"
-        style={{
-          backgroundImage: `url(${mainCharacterData?.media?.assets[3]?.value})`,
-        }}
-      ></div>
+      {mainCharacterData?.media?.assets?.map(
+        (asset, index) =>
+          asset?.key === "main-raw" && (
+            <div
+              key={index}
+              className="player-img"
+              style={{
+                backgroundImage: `url(${asset?.value})`,
+              }}
+            ></div>
+          )
+      )}
+
       <div className="eq">
         {isFetch &&
           mainCharacterData?.media_eq?.map((item, key) => {
@@ -153,28 +172,27 @@ function PlayerMain({
                   backgroundImage: `url(${item?.assets[0]?.value})`,
                 }}
                 onMouseEnter={() => {
-                  toggle(mainCharacterData?.eq?.equipped_items[key], key), setIsHover(true);
+                  toggle(mainCharacterData?.eq?.equipped_items[key], key),
+                    setIsHover(true);
                 }}
                 onMouseLeave={() => {
                   handleMouseLeave(key);
                   toggleLeave();
                 }}
-              >
-                {/* <ItemInfo itemInfo={itemInfo} /> */}
-              </div>
+              ></div>
             );
           })}
       </div>
-     
+
       <div className="eq-tooltip">
-      <MouseTooltip visible={isHover} offsetX={70} offsetY={10}>
+        <MouseTooltip visible={isHover} offsetX={70} offsetY={10}>
           <ItemInfo itemInfo={itemInfo} />
         </MouseTooltip>
-      </div> 
+      </div>
 
       <ShrinkPlayerInfo mainCharacterData={mainCharacterData} />
-      <Talents data={data} restDataLoading={restDataLoading} />
-       <Achievements
+      <Talents ObjectsNLoaders={ObjectsNLoaders} />
+      <Achievements
         achiv={achiv}
         achivState={achivState}
         addAchivState={addAchivState}
@@ -186,16 +204,19 @@ function PlayerMain({
         achivsData={achivsData}
         categoryState={categoryState}
         restDataLoading={restDataLoading}
+        ObjectsNLoaders={ObjectsNLoaders}
       />
-      <Dungeons data={data} restDataLoading={restDataLoading} />
-      <Raids data={data} restDataLoading={restDataLoading} />
+      <Dungeons ObjectsNLoaders={ObjectsNLoaders} />
+      <Raids ObjectsNLoaders={ObjectsNLoaders} />
 
       <Collection
         data={data}
         getPets={getPets}
         fetchPetsData={fetchPetsData}
         petData={petData}
-        restDataLoading={restDataLoading}
+        CollectionState={CollectionState}
+        ObjectsNLoaders={ObjectsNLoaders}
+        tmpCharacterData={tmpCharacterData}
       />
     </div>
   );

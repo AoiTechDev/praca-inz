@@ -83,18 +83,20 @@
 
 .classname{
     position: absolute;
-    top: -15px;
+    top: 7px;
     width: 100%;
     text-align: center;
     margin-bottom: 1rem;
 }
-.classname > h3{
+.classname > .talent_title{
     font-size: 1.5rem;
 }
 
 @media only screen and (max-width: 1450px) {
     .container {
         grid-template-columns: repeat(1, minmax(200px, 1fr)) ;
+
+        width: 90%;
     }
     .tooltip_container{
         margin: 0;

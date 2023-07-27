@@ -4,37 +4,55 @@ import "./app.css";
 import Search from "./components/Search";
 
 import Slider from "./components/Slider";
-//import Character from './components/Character';
+
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { Find } from "./components/small_components/Find";
 import { NavBar } from "./components/medium_components/NavBar";
-import BackButton from "./components/small_components/BackButton";
-//import { useOutletContext } from "react-router-dom";
 
 function App() {
   const [data, setData] = useState({});
   const [guildData, setGuildData] = useState({});
+  const [tmpGuildData, setTmpGuildData] = useState({});
   const [formData, setFormData] = useState({
-    Nickname: " ",
-    Guild: " ",
-    Server: " ",
-    GuildServer: " ",
+    Nickname: "",
+    Guild: "",
+    Server: "",
+    GuildServer: "",
   });
-  //const [guildMember, setGuildMember] = useState({})
+
   const [isFetch, setIsFetch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchState, setSearchState] = useState("");
-  const [mainCharacterData, setMainCharacterData] = useState({})
+  const [mainCharacterData, setMainCharacterData] = useState({});
+  const [tmpCharacterData, setTmpCharacterData] = useState({});
   const [isCharacterSearched, setIsCharacterSearched] = useState(false);
   const [isGuildSearched, setIsGuildSearched] = useState(false);
   const [achivsData, setAchivData] = useState({});
   const [guildFetch, setGuildFetch] = useState(false);
-  //const [test, setTest] = useState(false);
+
   const [achivSubCategory, setAchivSubCategory] = useState({});
   const [responseStatus, setResponseStatus] = useState(0);
+  const [mainResponseStatus, setMainResponseStatus] = useState(0);
   const [petData, setPetData] = useState({});
   const [fetchPetsData, setFetchPetsData] = useState(false);
-  const [restDataLoading, setRestDataLoading] = useState(false)
+  const [restDataLoading, setRestDataLoading] = useState(false);
+  const [tmpCharacter, setTmpCharacter] = useState({
+    Nickname: "",
+    Server: "",
+  });
+  const [talentsData, setTalentsData] = useState({});
+  const [talentsLoader, setTalentsLoader] = useState(false);
+  const [achievementsData, setAchievementsData] = useState({});
+  const [achievementsLoader, setAchievementsLoader] = useState(false);
+  const [dungeonsData, setDungeonsData] = useState({});
+  const [dungeonsLoader, setDungeonsLoader] = useState(false);
+  const [raidsData, setRaidsData] = useState({});
+  const [raidsLoader, setRaidsLoader] = useState(false);
+  const [mountsData, setMountsData] = useState({});
+  const [mountsLoader, setMountsLoader] = useState(false);
+
+  const [collectionState, setCollectionState] = useState("mounts");
+  const [petLoader, setPetLoader] = useState(false);
   const navigate = useNavigate();
   function handleChange(e) {
     setFormData((prev) => {
@@ -45,14 +63,37 @@ function App() {
     });
   }
 
-  useEffect(() => {
-    if (responseStatus === 200) {
-      setIsFetch(true);
-      navigate("/");
-    } else if (responseStatus === 404) {
-      setIsFetch(false);
-    }
-  }, [responseStatus]);
+  const CollectionState = {
+    collectionState: collectionState,
+    collectionSet: setCollectionState,
+  };
+
+  const ObjectsNLoaders = {
+    talents: {
+      talentsData: talentsData,
+      talentsLoader: talentsLoader,
+    },
+    achievements: {
+      achievementsData: achievementsData,
+      achievementsLoader: achievementsLoader,
+    },
+    dungeons: {
+      dungeonsData: dungeonsData,
+      dungeonsLoader: dungeonsLoader,
+    },
+    raids: {
+      raidsData: raidsData,
+      raidsLoader: raidsLoader,
+    },
+    mounts: {
+      mountsData: mountsData,
+      mountsLoader: mountsLoader,
+    },
+    pets: {
+      petLoader: petLoader,
+      setPetLoader: setPetLoader,
+    },
+  };
 
   async function getAchivsByCategory(id) {
     const url = "http://localhost:9000/achivs";
@@ -67,12 +108,13 @@ function App() {
   }
 
   async function getPets() {
+    setPetLoader(true);
     const url = "http://localhost:9000/pets";
     await axios
       .get(url, {
         params: {
-          nickname: formData.Nickname.toLowerCase(),
-          server: formData.Server.toLowerCase(),
+          nickname: tmpCharacter.Nickname.toLowerCase(),
+          server: tmpCharacter.Server.toLowerCase(),
         },
       })
       .then((res) => {
@@ -83,10 +125,106 @@ function App() {
         console.error(err);
         setResponseStatus(err.response.status);
       });
+    setPetLoader(false);
+  }
+
+  async function getTalents() {
+    setTalentsLoader(true);
+    const url = "http://localhost:9000/talents";
+    await axios
+      .get(url, {
+        params: {
+          nickname: formData.Nickname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
+      })
+      .then((res) => {
+        setTalentsData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setTalentsLoader(false);
+  }
+
+  async function getAchievements() {
+    setAchievementsLoader(true);
+    const url = "http://localhost:9000/achievements";
+    await axios
+      .get(url, {
+        params: {
+          nickname: formData.Nickname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
+      })
+      .then((res) => {
+        setAchievementsData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setAchievementsLoader(false);
+  }
+
+  async function getDungeons() {
+    setDungeonsLoader(true);
+    const url = "http://localhost:9000/dungeons";
+    await axios
+      .get(url, {
+        params: {
+          nickname: formData.Nickname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
+      })
+      .then((res) => {
+        setDungeonsData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setDungeonsLoader(false);
+  }
+
+  async function getRaids() {
+    setRaidsLoader(true);
+    const url = "http://localhost:9000/raids";
+    await axios
+      .get(url, {
+        params: {
+          nickname: formData.Nickname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
+      })
+      .then((res) => {
+        setRaidsData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setRaidsLoader(false);
+  }
+
+  async function getMounts() {
+    setMountsLoader(true);
+    const url = "http://localhost:9000/mounts";
+    await axios
+      .get(url, {
+        params: {
+          nickname: formData.Nickname.toLowerCase(),
+          server: formData.Server.toLowerCase(),
+        },
+      })
+      .then((res) => {
+        setMountsData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setMountsLoader(false);
   }
 
   async function getRestPlayerData() {
-    setRestDataLoading(true)
+    setRestDataLoading(true);
     const url = "http://localhost:9000/restCharacterInfo";
     await axios
       .get(url, {
@@ -105,12 +243,11 @@ function App() {
         console.log(err);
         setResponseStatus(err.response.status);
       });
-      setRestDataLoading(false)
+    setRestDataLoading(false);
   }
   async function getPlayer() {
-    setFetchPetsData(false);
     setLoading(true);
-    setPetData({});
+
     const url = "http://localhost:9000/mainCharacterInfo";
     await axios
       .get(url, {
@@ -120,21 +257,39 @@ function App() {
         },
       })
       .then((res) => {
-        if (res.status === 200) {
-          setResponseStatus(res.status);
+        setTmpCharacterData(res.data);
+        if (res.data.status !== 404) {
+          setFetchPetsData(false);
+
+          setTmpCharacter({
+            Nickname: formData.Nickname.toLowerCase(),
+            Server: formData.Server.toLowerCase(),
+          });
+          setMainResponseStatus(res.data.status);
+          setIsFetch(true);
           setMainCharacterData(res.data);
           setSearchState("character");
           setIsCharacterSearched(true);
+          setPetData({});
+          setTalentsData({});
+          setAchievementsData({});
+          setDungeonsData({});
+          setRaidsData({});
+          setMountsData({});
+          setCollectionState("mounts");
+          getTalents();
+          getAchievements();
+          getDungeons();
+          getRaids();
+          getMounts();
         }
       })
       .catch((err) => {
         setLoading(false);
         console.log(err);
-        setResponseStatus(err.response.status);
       });
-   
-      setLoading(false);
-    getRestPlayerData()
+
+    setLoading(false);
   }
 
   async function getGuild() {
@@ -147,16 +302,22 @@ function App() {
           server: formData.GuildServer.toLowerCase(),
         },
       })
-      .then((res) => setGuildData(res.data))
+      .then((res) => {
+        setTmpGuildData(res.data);
+        if (res.data.status !== 404) {
+          setGuildData(res.data);
+          setIsFetch(true);
+          setSearchState("guild");
+          setIsGuildSearched(true);
+          setGuildFetch(true);
+        }
+      })
       .catch((err) => {
         setLoading(false);
         console.error(err.data);
       });
-    setIsFetch(true);
+
     setLoading(false);
-    setSearchState("guild");
-    setIsGuildSearched(true);
-    setGuildFetch(true);
   }
 
   async function getSubCategory(e) {
@@ -177,7 +338,8 @@ function App() {
     const item = document.getElementsByClassName("item")[key];
     item.style.boxShadow = "";
   };
-  console.log(data)
+
+  console.log(petData);
   return (
     <div
       className="app"
@@ -197,51 +359,60 @@ function App() {
               backgroundImage: "url(first-page-bg.jpg)",
             }}
           >
-            <div className="first-page-header animate__animated animate__backInDown animate__slow">
-              <h1>Wow</h1>
-              <h2>Profiles</h2>
+            <div className="logo-container animate__animated animate__backInDown animate__slow">
+              <div
+                className="first-page-header"
+                style={{
+                  backgroundImage: "url(header.png)",
+                }}
+              ></div>
             </div>
-            <div className="find-player find-half-container">
-              <Find
-                label={"Nickname"}
-                name={"Nickname"}
-                state={"Player"}
-                server={"Server"}
-                getFun={getPlayer}
-                handleChange={handleChange}
-                formData={formData}
-                value={formData.Nickname}
-                Link={Link}
-                restData={getRestPlayerData}
-              />
-            </div>
-            <div className="find-guild find-half-container">
-              <Find
-                label={"Guild"}
-                name={"Guild"}
-                state={"Guild"}
-                server={"GuildServer"}
-                getFun={getGuild}
-                handleChange={handleChange}
-                formData={formData}
-                value={formData.Guild}
-                Link={Link}
-              />
+
+            <div className="find-inputs">
+              <div className="find-player find-half-container">
+                <Find
+                  label={"Nickname"}
+                  name={"Nickname"}
+                  state={"Player"}
+                  server={"Server"}
+                  getFun={getPlayer}
+                  handleChange={handleChange}
+                  formData={formData}
+                  value={formData.Nickname}
+                  Link={Link}
+                  restData={getRestPlayerData}
+                  mainCharacterData={mainCharacterData}
+                  tmpCharacterData={tmpCharacterData}
+                />
+              </div>
+              <div className="find-guild find-half-container">
+                <Find
+                  label={"Guild"}
+                  name={"Guild"}
+                  state={"Guild"}
+                  server={"GuildServer"}
+                  getFun={getGuild}
+                  handleChange={handleChange}
+                  formData={formData}
+                  value={formData.Guild}
+                  Link={Link}
+                  guildData={guildData}
+                />
+              </div>
             </div>
           </div>
         )}
-  
+
         {isFetch && searchState === "character" ? (
           <NavBar
             Link={Link}
             setSearchState={setSearchState}
             searchState={searchState}
-            //getGuild={getGuild}
             handleChange={handleChange}
             formData={formData}
             isFetch={isFetch}
             getFun={getPlayer}
-
+            tmpCharacterData={tmpCharacterData}
           />
         ) : (
           isFetch && (
@@ -249,18 +420,16 @@ function App() {
               Link={Link}
               setSearchState={setSearchState}
               searchState={searchState}
-              // getGuild={getGuild}
               handleChange={handleChange}
               formData={formData}
               isFetch={isFetch}
               getFun={getGuild}
+              tmpGuildData={tmpGuildData}
             />
           )
         )}
 
-        {responseStatus === 404 && <div>no character</div>}
         {isFetch && (
-          //<Character data={data} isFetch={isFetch} handleMouseLeave={handleMouseLeave}/>
           <Outlet
             context={{
               data: data,
@@ -271,6 +440,7 @@ function App() {
               guildData: guildData,
               guildFetch: guildFetch,
               mainCharacterData: mainCharacterData,
+              tmpCharacterData: tmpCharacterData,
               getPlayer: getPlayer,
               responseStatus: responseStatus,
               getPets: getPets,
@@ -278,13 +448,13 @@ function App() {
               petData: petData,
               getAchivsByCategory: getAchivsByCategory,
               achivsData: achivsData,
-              restDataLoading: restDataLoading
-              //test: test
-              //guildMember: guildMember
+              restDataLoading: restDataLoading,
+              ObjectsNLoaders: ObjectsNLoaders,
+              CollectionState: CollectionState,
             }}
           />
         )}
-        {/* {isFetch && <div className="talents">s</div>} */}
+
         {loading && <Slider />}
       </main>
     </div>

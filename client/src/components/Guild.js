@@ -15,7 +15,7 @@ function Guild() {
   const [memberClick, setMemberClick] = useState(false);
   const [charClassName, setCharClassName] = useState("");
   const specCounts = {};
-  //const specCountsArr = []
+
   const [specCountsArr, setSpecCountsArr] = useState([]);
   const allSpeces = [];
   let test = [];
@@ -110,7 +110,9 @@ function Guild() {
 
           <div className="guild-stats-container container-style">
             <div className="guild-stats">
-              <span className="guild-statistics-title">Class and Specialization Statistics</span>
+              <span className="guild-statistics-title">
+                Classes and Specializations Statistics
+              </span>
             </div>
             <div className="guild-class-chart">
               <ClassChart

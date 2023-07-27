@@ -4,10 +4,10 @@ import DungStats from "./medium_components/DungStats";
 import BackButton from "./small_components/BackButton";
 import dungeons_imgs from "../affixes/dunegonsImg";
 import SmallSlider from "./SmallSlider";
-function Dungeons({ data, restDataLoading }) {
+function Dungeons({  ObjectsNLoaders }) {
   const [dungState, setDungState] = useState("dungeons");
   const [dungId, setDungId] = useState(0);
-  const mythic_rating = data?.dungeons?.mythic_rating?.color;
+  const mythic_rating = ObjectsNLoaders.dungeons.dungeonsData?.dungeons?.mythic_rating?.color;
   function addDungState(id) {
     setDungId(id);
 
@@ -17,8 +17,9 @@ function Dungeons({ data, restDataLoading }) {
     setDungState("dungeons");
   }
 
-  const dungeons = data?.dungeons?.best_runs?.map((dungeons, index) =>
+  const dungeons = ObjectsNLoaders.dungeons.dungeonsData?.dungeons?.best_runs?.map((dungeons, index) =>
     dungeons_imgs.map((dungeon) => {
+    
       return (
         dungeon?.name === dungeons?.dungeon?.name &&
         dungeons?.is_completed_within_time && (
@@ -41,9 +42,9 @@ function Dungeons({ data, restDataLoading }) {
   return (
   
     <div className="dung_container" style={{
-      minHeight: restDataLoading && '150px'
+      minHeight: ObjectsNLoaders.dungeons.dungeonsLoader && '150px'
     }}>
-      {restDataLoading && <SmallSlider/>}
+      {ObjectsNLoaders.dungeons.dungeonsLoader && <SmallSlider/>}
       {dungState === "dung_stats" && <BackButton onClick={subDungState} />}
       {dungState === "dungeons" && (
         <div className="dung-header">
@@ -55,7 +56,7 @@ function Dungeons({ data, restDataLoading }) {
                 color: `rgb(${mythic_rating?.r},${mythic_rating?.g}, ${mythic_rating?.b})`,
               }}
             >
-              {Math.round(data?.dungeons?.mythic_rating?.rating)}
+              {Math.round(ObjectsNLoaders?.dungeons?.dungeonsData?.dungeons?.mythic_rating?.rating).toString()}
             </span>
           </div>
         </div>
@@ -64,7 +65,7 @@ function Dungeons({ data, restDataLoading }) {
       {dungState === "dungeons" ? (
         dungeons
       ) : (
-        <DungStats data={data} dungId={dungId} />
+        <DungStats data={ObjectsNLoaders.dungeons.dungeonsData} dungId={dungId} />
       )}
       
     </div>
