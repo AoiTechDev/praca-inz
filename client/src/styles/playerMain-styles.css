@@ -34,7 +34,7 @@
     margin: 5px 0 0 7px;
 }
 .player-info{
-    margin-top: 10vh;
+    margin-top: 13vh;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -43,7 +43,7 @@
 
 .player{
     width: 80%;
-    height: 90vh;
+    height: 87vh;
    
     z-index: 2;
     overflow-y: scroll;

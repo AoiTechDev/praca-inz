@@ -1,40 +1,46 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
 import "../styles/collection-styles.css";
-//import Stack from '@mui/material/Stack';
 
 import { Mounts } from "./medium_components/Mounts";
 import { Pets } from "./medium_components/Pets";
 import SmallSlider from "./SmallSlider";
 
-function Collection({ data, getPets, fetchPetsData, petData, restDataLoading }) {
-  
+function Collection({
+  data,
+  getPets,
+  fetchPetsData,
+  petData,
+  restDataLoading,
+  ObjectsNLoaders,
+  CollectionState,
+}) {
   const [currentMountPage, setCurrentMountPage] = useState(1);
   const [currentPetPage, setCurrentPetPage] = useState(1);
-  const [collectionState, setCollectionState] = useState("mounts");
-  const [perPage] = useState(18)
+
+  const [perPage] = useState(18);
   function collectionMountChange() {
-    if (collectionState === "pets") {
-      setCollectionState("mounts");
+    if (CollectionState.collectionState === "pets") {
+      CollectionState.collectionSet("mounts");
     }
     setCurrentMountPage(1);
-    
   }
   function collectionPetChange() {
-    if (collectionState === "mounts") {
-      setCollectionState("pets");
+    if (CollectionState.collectionState === "mounts") {
+      CollectionState.collectionSet("pets");
     }
     setCurrentPetPage(1);
-    
   }
- 
- 
-  return (
 
-    <div className="section-container" style={{
-      minHeight: restDataLoading && '150px'
-    }}>
-      {restDataLoading && <SmallSlider/>}
+  return (
+    <div
+      className="section-container"
+      style={{
+        minHeight: ObjectsNLoaders.mounts.mountsLoader && "150px",
+      }}
+    >
+      {ObjectsNLoaders.mounts.mountsLoader && <SmallSlider />}
+      {ObjectsNLoaders.pets.petLoader && <SmallSlider />}
       <div className="section-title">
         <button
           onClick={collectionMountChange}
@@ -43,17 +49,20 @@ function Collection({ data, getPets, fetchPetsData, petData, restDataLoading }) 
           Mounts
         </button>
         <button
-          onClick={async () => { Object.keys(petData)?.length === 0 && await getPets();collectionPetChange();}}
+          onClick={async () => {
+            Object.keys(petData)?.length === 0 && (await getPets());
+            collectionPetChange();
+          }}
           className="change-collection-btn"
         >
           Pets
         </button>
       </div>
-      {collectionState === "mounts" ? (
+      {CollectionState.collectionState === "mounts" ? (
         <Mounts
-          data={data}
+          data={ObjectsNLoaders.mounts.mountsData}
           currentMountPage={currentMountPage}
-          collectionState={collectionState}
+          collectionState={CollectionState.collectionState}
           setCurrentMountPage={setCurrentMountPage}
           perPage={perPage}
         />
@@ -61,16 +70,15 @@ function Collection({ data, getPets, fetchPetsData, petData, restDataLoading }) 
         <Pets
           data={data}
           currentPetPage={currentPetPage}
-          collectionState={collectionState}
+          collectionState={CollectionState.collectionState}
           petData={petData}
           fetchPetsData={fetchPetsData}
           setCurrentPetPage={setCurrentPetPage}
           perPage={perPage}
+          ObjectsNLoaders={ObjectsNLoaders}
         />
-       
       )}
     </div>
-   
   );
 }
 

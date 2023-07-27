@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-//import { Pagination } from "../small_components/OldPagination";
+
 import { Pagination } from "../small_components/Pagination";
 
 export const Mounts = ({

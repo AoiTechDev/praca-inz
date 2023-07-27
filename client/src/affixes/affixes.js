@@ -15,7 +15,7 @@ const affixes_data = [
         description: "While in combat, enemies periodically summon Explosive Orbs that will detonate if not destroyed.",
     },
     {
-        name: ' Fortified',
+        name: 'Fortified',
         imgUrl: `Fortified.jpg`,
         description: "Non-boss enemies have 20% more health and inflict up to 30% increased damage.",
     },

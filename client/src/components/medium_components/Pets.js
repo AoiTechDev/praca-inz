@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-//import { Pagination } from "../small_components/OldPagination";
 import { Pagination } from "../small_components/Pagination";
+import SmallSlider from "../SmallSlider";
 export const Pets = ({
-  data,
-  paginate,
+
   currentPetPage,
   petData,
   fetchPetsData,
   setCurrentPetPage,
   collectionState,
-  perPage
+  perPage,
+
 }) => {
   
  
@@ -73,12 +73,13 @@ export const Pets = ({
     currentPage,
     maxPageLimit,
     minPageLimit,
-    totalPets: petData?.pets_media.length,
+    totalPets: petData?.pets_media?.length,
     perPage
   };
-
+ 
   return (
     <>
+    
       {fetchPetsData && (
         <>
          <Pagination

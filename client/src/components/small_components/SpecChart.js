@@ -2,10 +2,7 @@ import React from "react";
 import {
   PieChart,
   Pie,
-  Sector,
-  Cell,
   ResponsiveContainer,
-  Tooltip,
 } from "recharts";
 
 export const SpecChart = ({ specCountsArr, class_colors, charClassName }) => {

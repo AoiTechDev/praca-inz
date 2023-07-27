@@ -123,3 +123,9 @@
     text-align: center;
     margin-bottom: 15px;
 }
+@media only screen and (max-width: 1450px) {
+    .raid-container {
+    
+        width: 90%;
+    }
+  }

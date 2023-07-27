@@ -5,7 +5,8 @@ import MouseTooltip from "react-sticky-mouse-tooltip";
 
 import SmallSlider from "./SmallSlider";
 
-function Talents({ data, restDataLoading}) {
+function Talents({ ObjectsNLoaders }) {
+  const data = ObjectsNLoaders?.talents?.talentsData;
   const spec = data?.talents?.active_specialization?.name;
 
   const [spellInfo, setSpellInfo] = useState({
@@ -104,21 +105,23 @@ function Talents({ data, restDataLoading}) {
 
   return (
     <>
-     
-      <div className="container" style={{
-        minHeight: restDataLoading && '150px'
-      }}>
-      {restDataLoading && <SmallSlider />}
+      <div
+        className="container"
+        style={{
+          minHeight: ObjectsNLoaders?.talents?.talentsLoader && "150px",
+        }}
+      >
+        {ObjectsNLoaders?.talents?.talentsLoader && <SmallSlider />}
         <div className="talents_container class_con">
           <div className="classname class">
-            <h3>Class Talents</h3>
+            <div className="talent_title">Class Talents</div>
           </div>
           {class_talents}
         </div>
 
         <div className="talents_container spec_con">
           <div className="classname spec">
-            <h3>Specialization Talents</h3>
+            <div className="talent_title">Specialization Talents</div>
           </div>
           {spec_talents}
         </div>
@@ -128,7 +131,7 @@ function Talents({ data, restDataLoading}) {
         </MouseTooltip>
       </div>
     </>
-  )
+  );
 }
 
 export default Talents;
