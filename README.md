@@ -8,13 +8,8 @@ Application created as part of the thesis.
 * [General Info](#general-information)
 * [Technologies Used](#tech-stack)
 * [Features](#features)
-* [Screenshots](#screenshots)
-* [Setup](#setup)
 * [Usage](#usage)
-* [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
-* [Contact](#contact)
+
 ## General Information
 The application allows the user to search for any character or guild in game and presents all relevant information about them in a simple and clear way.
 
