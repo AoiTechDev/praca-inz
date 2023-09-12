@@ -56,5 +56,7 @@ Guild section:
 ## Usage
 
 Character section:
+[char.webm](https://github.com/BorPawel/praca-inz/assets/88384089/4c892169-226e-48f6-9b38-09a167823e53)
 
 Guild section:
+[guild.webm](https://github.com/BorPawel/praca-inz/assets/88384089/a4eaf1f0-a396-406d-9fa5-9ce5de6b6b52)
