@@ -23,9 +23,9 @@ Key things I had to do in this project to get it to work:
 
 ## Tech Stack
 
-**Client:** React, Javascript, CSS3
+**Front-end:**: `React`, `Javascript`, `CSS3`
 
-**Server:** Node, Express
+**Back-end:**: `Node`, `Express`
 
 
 ## Features
