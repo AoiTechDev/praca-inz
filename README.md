@@ -42,6 +42,7 @@ Character section:
 - Pet and Mounts collection
 
 Guild section:
+
 - Guild baner, name, server, members and avg item level
 - List of all members which contains:
     - Name
